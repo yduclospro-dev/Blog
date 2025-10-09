@@ -39,19 +39,6 @@ export default function LoginPage() {
               />
             </div>
 
-            <div className="flex items-center justify-between">
-              <label className="flex items-center cursor-pointer">
-                <input
-                  type="checkbox"
-                  className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
-                />
-                <span className="ml-2 text-sm text-gray-600">Se souvenir de moi</span>
-              </label>
-              <button className="text-sm text-indigo-600 hover:text-indigo-500 font-medium">
-                Mot de passe oublié ?
-              </button>
-            </div>
-
             <button className="w-full bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 transition duration-200 shadow-lg hover:shadow-xl">
               Se connecter
             </button>
