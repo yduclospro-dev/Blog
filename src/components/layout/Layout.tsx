@@ -2,7 +2,7 @@ import "./globals.css";
 import Navbar from "./nav";
 import Footer from "./footer";
 
-export default function RootLayout({
+export default function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -10,8 +10,10 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <body>
-        <main>
+        <header>
           <Navbar />
+        </header>
+        <main>
           {children}
         </main>
         <Footer />
