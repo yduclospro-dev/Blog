@@ -1,12 +1,12 @@
-import "./globals.css";
-import Navbar from "./Nav";
-import Footer from "./Footer";
+import "./globals.css"
+import Navbar from "../components/layout/Nav"
+import Footer from "../components/layout/Footer"
 
-export default function Layout({
+export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: {
+  children: React.ReactNode
+}) {
   return (
     <html lang="fr">
       <body>
@@ -19,5 +19,5 @@ export default function Layout({
         <Footer />
       </body>
     </html>
-  );
+  )
 }
