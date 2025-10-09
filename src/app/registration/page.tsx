@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function RegisterPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
@@ -56,9 +58,9 @@ export default function RegisterPage() {
 
           <p className="mt-6 text-center text-sm text-gray-600">
             Vous avez déjà un compte ?{' '}
-            <button className="text-indigo-600 hover:text-indigo-500 font-medium">
+            <Link href="/login" className="text-indigo-600 hover:text-indigo-500 font-medium">
               Se connecter
-            </button>
+            </Link>
           </p>
         </div>
       </div>
