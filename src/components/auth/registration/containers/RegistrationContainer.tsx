@@ -38,7 +38,7 @@ export default function RegistrationContainer() {
         return
       }
 
-      addUser({ id: Date.now().toString(), ...formData })
+      addUser({ id: crypto.randomUUID(), ...formData })
       router.push('/login')
     } catch (error) {
       console.error(error)
