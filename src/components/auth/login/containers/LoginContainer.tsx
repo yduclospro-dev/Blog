@@ -1,8 +1,8 @@
 "use client";
+
 import { useState, useEffect } from "react";
 import { useUserStore } from "@/stores/userStore";
-
-import LoginPresenter from "../presenters/LoginPresenter";
+import LoginPresenter from "@/components/auth/login/presenters/LoginPresenter";
 
 export default function LoginContainer() {
   const getUserByEmail = useUserStore((state) => state.getUserByEmail);
@@ -21,7 +21,6 @@ export default function LoginContainer() {
   }, [isLoggedIn, connectedEmail]);
 
 
-  // ✅ Définit un cookie
   const setCookie = (name: string, value: string, maxAgeSeconds = 60 * 60 * 24) => {
     document.cookie = `${name}=${encodeURIComponent(value)}; path=/; max-age=${maxAgeSeconds}; SameSite=Lax`;
   };
@@ -41,7 +40,6 @@ export default function LoginContainer() {
       return;
     }
 
-    // ✅ Crée les cookies de session
     setCookie("is_connected", "true");
     setCookie("connected_email", user.email);
 
@@ -58,8 +56,6 @@ export default function LoginContainer() {
     alert("Déconnexion réussie !")
     window.location.href = "/";
   };
-
-
 
   return (
     <LoginPresenter
