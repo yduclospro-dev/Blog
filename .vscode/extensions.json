@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "ms-vscode.vscode-jest",
+    "orta.vscode-jest",
+    "firsttris.vscode-jest-runner",
+    "ms-vscode.js-debug-nightly",
+    "bradlc.vscode-tailwindcss",
+    "ms-vscode.vscode-typescript-next"
+  ]
+}
