@@ -21,7 +21,6 @@ export default function LoginContainer() {
   }, [isLoggedIn, connectedEmail]);
 
 
-  // ✅ Définit un cookie
   const setCookie = (name: string, value: string, maxAgeSeconds = 60 * 60 * 24) => {
     document.cookie = `${name}=${encodeURIComponent(value)}; path=/; max-age=${maxAgeSeconds}; SameSite=Lax`;
   };
@@ -30,6 +29,11 @@ export default function LoginContainer() {
     e.preventDefault();
 
     const user = getUserByEmail(email);
+
+    if (!email || !password) {
+      setError("Veuillez remplir tous les champs.");
+      return;
+    }
 
     if (!user) {
       setError("Aucun compte trouvé avec cet email.");
@@ -41,7 +45,6 @@ export default function LoginContainer() {
       return;
     }
 
-    // ✅ Crée les cookies de session
     setCookie("is_connected", "true");
     setCookie("connected_email", user.email);
 
