@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { useEffect } from "react";
-import { useArticleStore } from "../../stores/articlesStore";
-import ArticleCard from "../../components/ArticleCard";
+import { useArticleStore } from "@/stores/articlesStore";
+import ArticleCard from "@/components/ArticleCard";
 
 export default function ArticlesPage() {
     const { articles, fetchArticles, deleteArticle } = useArticleStore();
