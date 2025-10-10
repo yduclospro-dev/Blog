@@ -9,11 +9,11 @@ jest.mock('next/navigation', () => ({
   useRouter: jest.fn(),
 }))
 
-jest.mock('../../../stores/userStore', () => ({
+jest.mock('@/stores/userStore', () => ({
   useUserStore: jest.fn(),
 }))
 
-jest.mock('../../../components/auth/presenters/RegistrationPresenter', () => {
+jest.mock('@/components/auth/registration/presenters/RegistrationPresenter', () => {
   return function MockRegistrationPresenter(props: {
     formData: { username: string; email: string; password: string }
     isLoading: boolean
