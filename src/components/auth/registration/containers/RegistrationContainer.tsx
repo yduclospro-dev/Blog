@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import RegistrationPresenter from '../presenters/RegistrationPresenter'
+import RegistrationPresenter from '@/components/auth/registration/presenters/RegistrationPresenter'
 import { useUserStore } from '@/stores/userStore'
 
 export default function RegistrationContainer() {
