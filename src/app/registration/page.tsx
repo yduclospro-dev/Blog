@@ -17,7 +17,7 @@ export default function RegisterPage() {
           <div className="space-y-6">
             <div>
               <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">
-                Nom d'utilisateur
+                Nom d&apos;utilisateur
               </label>
               <input
                 id="username"
@@ -52,7 +52,7 @@ export default function RegisterPage() {
             </div>
 
             <button className="w-full bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 transition duration-200 shadow-lg hover:shadow-xl">
-              S'inscrire
+              S&apos;inscrire
             </button>
           </div>
 
