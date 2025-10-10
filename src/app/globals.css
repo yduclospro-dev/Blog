@@ -9,6 +9,8 @@
 }
 
 @theme inline {
+  --color-cyan: #70C6FB;
+  --color-darkblue  : #106BA4;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
