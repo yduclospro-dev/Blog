@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { useEffect } from "react";
-import { useArticleStore } from "@/store/articlesStore";
-import ArticleCard from "@/components/ArticleCard";
+import { useArticleStore } from "../../stores/articlesStore";
+import ArticleCard from "../../components/ArticleCard";
 
 export default function ArticlesPage() {
     const { articles, fetchArticles, deleteArticle } = useArticleStore();
@@ -26,13 +26,13 @@ export default function ArticlesPage() {
             <div className="max-w-6xl mx-auto grid gap-12 sm:grid-cols-2 lg:grid-cols-3 justify-items-center">
                 {articles.map((article) => (
                     <div key={article.id} className="w-[90%] sm:w-[85%] md:w-[100%]">
-                        <Link href={`/pages/articles/${article.id}`}>
+                        <Link href={`/articles/${article.id}`}>
                             <ArticleCard article={article} />
                         </Link>
 
                         <div className="flex justify-between mt-3">
                             <Link
-                                href={`/pages/articles/${article.id}/edit`}
+                                href={`/articles/${article.id}/edit`}
                                 className="text-blue-600 hover:underline text-sm"
                             >
                                 Modifier

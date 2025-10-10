@@ -1,7 +1,7 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
-import { useArticleStore } from "@/store/articlesStore";
+import { useArticleStore } from "@/stores/articlesStore";
 import Link from "next/link";
 
 export default function ArticleDetailPage() {
@@ -33,7 +33,7 @@ export default function ArticleDetailPage() {
 
                 <div className="flex justify-end mt-8 gap-6">
                     <Link
-                        href={`/pages/articles/${article.id}/edit`}
+                        href={`/articles/${article.id}/edit`}
                         className="text-blue-600 hover:underline"
                     >
                         Modifier
@@ -41,7 +41,7 @@ export default function ArticleDetailPage() {
                     <button
                         onClick={() => {
                             deleteArticle(article.id);
-                            router.push("/pages/articles");
+                            router.push("/articles");
                         }}
                         className="text-red-500 hover:underline"
                     >
