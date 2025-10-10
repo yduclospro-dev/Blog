@@ -5,17 +5,14 @@ import { useRouter } from 'next/navigation'
 import RegistrationContainer from '../../components/auth/containers/RegistrationContainer'
 import { useUserStore } from '../../stores/userStore'
 
-// Mock Next.js router
 jest.mock('next/navigation', () => ({
   useRouter: jest.fn(),
 }))
 
-// Mock user store
 jest.mock('../../stores/userStore', () => ({
   useUserStore: jest.fn(),
 }))
 
-// Mock RegistrationPresenter pour isoler les tests du container
 jest.mock('../../components/auth/presenters/RegistrationPresenter', () => {
   return function MockRegistrationPresenter(props: {
     formData: { username: string; email: string; password: string }
@@ -61,9 +58,7 @@ describe('RegistrationContainer', () => {
   const mockCheckIfUsernameOrEmailExists = jest.fn()
 
   beforeEach(() => {
-    jest.clearAllMocks()
-    
-    // Supprimer les logs d'erreur pendant les tests
+    jest.clearAllMocks()    
     jest.spyOn(console, 'error').mockImplementation(() => {})
     
     mockUseRouter.mockReturnValue({
