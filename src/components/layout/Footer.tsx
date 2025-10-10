@@ -3,7 +3,6 @@ import Link from 'next/link';
 export default function Footer() {
   return (
     <footer className="relative bg-slate-900 border-t border-slate-800 overflow-hidden">
-      {/* Subtle gradient backdrop */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -bottom-1/2 -left-1/4 w-96 h-96 bg-gradient-to-br from-sky-400/20 to-blue-600/20 rounded-full blur-3xl"></div>
         <div className="absolute -bottom-1/2 -right-1/4 w-96 h-96 bg-gradient-to-tl from-purple-400/15 to-pink-600/15 rounded-full blur-3xl"></div>
@@ -11,7 +10,6 @@ export default function Footer() {
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
-          {/* Explore */}
           <div>
             <h3 className="text-sm font-bold text-white mb-4 uppercase tracking-wider">Explorer</h3>
             <ul className="space-y-3">
@@ -38,7 +36,6 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Categories */}
           <div>
             <h3 className="text-sm font-bold text-white mb-4 uppercase tracking-wider">Catégories</h3>
             <ul className="space-y-3">
@@ -65,7 +62,6 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Community */}
           <div>
             <h3 className="text-sm font-bold text-white mb-4 uppercase tracking-wider">Communauté</h3>
             <ul className="space-y-3">
@@ -92,7 +88,6 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* About */}
           <div>
             <h3 className="text-sm font-bold text-white mb-4 uppercase tracking-wider">À propos</h3>
             <ul className="space-y-3">
@@ -120,10 +115,8 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom section */}
         <div className="pt-8 border-t border-slate-800">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            {/* Logo and copyright */}
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 bg-gradient-to-br from-sky-500 to-blue-600 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-sm">BH</span>
@@ -131,7 +124,6 @@ export default function Footer() {
               <span className="text-sm text-slate-400">© 2025 BlogHub. Tous droits réservés.</span>
             </div>
 
-            {/* Social links */}
             <div className="flex items-center gap-4">
               <Link href="https://twitter.com" className="w-9 h-9 bg-slate-800 hover:bg-slate-700 rounded-lg flex items-center justify-center transition group">
                 <svg className="w-4 h-4 text-slate-400 group-hover:text-sky-400 transition" fill="currentColor" viewBox="0 0 24 24">
