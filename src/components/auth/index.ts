@@ -1,2 +1,2 @@
-export * from './containers'
-export * from './presenters'
+export * from './registration/containers'
+export * from './registration/presenters'

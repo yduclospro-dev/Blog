@@ -2,18 +2,18 @@ import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useRouter } from 'next/navigation'
-import RegistrationContainer from '@/components/auth/registration/containers/RegistrationContainer'
-import { useUserStore } from '@/stores/userStore'
+import RegistrationContainer from '../../components/auth/registration/containers/RegistrationContainer'
+import { useUserStore } from '../../stores/userStore'
 
 jest.mock('next/navigation', () => ({
   useRouter: jest.fn(),
 }))
 
-jest.mock('../../../stores/userStore', () => ({
+jest.mock('../../stores/userStore', () => ({
   useUserStore: jest.fn(),
 }))
 
-jest.mock('../../../components/auth/presenters/RegistrationPresenter', () => {
+jest.mock('../../components/auth/presenters/RegistrationPresenter', () => {
   return function MockRegistrationPresenter(props: {
     formData: { username: string; email: string; password: string }
     isLoading: boolean
