@@ -3,58 +3,97 @@
 import { useParams, useRouter } from "next/navigation";
 import { useArticleStore } from "@/stores/articlesStore";
 import Link from "next/link";
+import { useState, useEffect } from "react";
+import ConfirmModal from "@/components/ConfirmModal";
 
 export default function ArticleDetailPage() {
     const { id } = useParams();
     const router = useRouter();
     const { getArticleById, deleteArticle } = useArticleStore();
+    const [showConfirm, setShowConfirm] = useState(false);
     const article = getArticleById(Number(id));
 
+    useEffect(() => {
+        document.body.style.overflow = showConfirm ? "hidden" : "auto";
+    }, [showConfirm]);
+
     if (!article) {
-        return <p className="text-center mt-20 text-gray-600">Article introuvable.</p>;
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-gray-100">
+                <p className="text-center text-gray-500 text-lg">Article introuvable.</p>
+            </div>
+        );
     }
 
+    const confirmDelete = () => {
+        deleteArticle(article.id);
+        setShowConfirm(false);
+        router.push("/articles");
+    };
+
+    const cancelDelete = () => {
+        setShowConfirm(false);
+    };
+
     return (
-        <div className="bg-gray-50 min-h-screen py-16 px-10 md:px-20 lg:px-32">
-            <div className="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-md">
-                <button
-                    onClick={() => router.push("/articles")}
-                    className="text-blue-600 hover:underline mb-6 cursor-pointer"
-                >
-                    ← Retour
-                </button>
-                <h1 className="text-sky-700 text-3xl font-bold mb-4">{article.title}</h1>
-                <p className="text-gray-600 mb-8">{article.content}</p>
-
-                <div className="flex justify-between text-sm text-gray-500">
-                    <p>Par {article.author}</p>
-                    <p>
-                        {new Date(article.date).toLocaleDateString("fr-FR", {
-                            day: "numeric",
-                            month: "long",
-                            year: "numeric",
-                        })}
-                    </p>
-                </div>
-
-                <div className="flex justify-end mt-8 gap-6">
-                    <Link
-                        href={`/articles/${article.id}/edit`}
-                        className="text-blue-600 hover:underline"
-                    >
-                        Modifier
-                    </Link>
+        <div className="bg-gradient-to-b from-gray-50 to-white min-h-screen py-16 px-6 md:px-20 lg:px-32">
+            <div className="max-w-3xl mx-auto bg-white p-10 rounded-2xl shadow-lg border border-gray-100 relative">
+                <div className="mb-6 flex items-center justify-between">
                     <button
-                        onClick={() => {
-                            deleteArticle(article.id);
-                            router.push("/articles");
-                        }}
-                        className="text-red-500 hover:underline cursor-pointer"
+                        onClick={() => router.push("/articles")}
+                        className="text-sm text-blue-600 hover:text-blue-800 transition cursor-pointer"
                     >
-                        Supprimer
+                        ← Retour à la liste
                     </button>
+
+                    <div className="flex gap-4 text-sm">
+                        <Link
+                            href={`/articles/${article.id}/edit`}
+                            className="text-blue-600 hover:text-blue-800 transition cursor-pointer"
+                        >
+                            ✏️ Modifier
+                        </Link>
+                        <button
+                            onClick={() => setShowConfirm(true)}
+                            className="text-red-500 hover:text-red-700 transition cursor-pointer"
+                        >
+                            🗑️ Supprimer
+                        </button>
+                    </div>
                 </div>
+
+                <article>
+                    <h1 className="text-4xl font-extrabold text-gray-900 mb-4 leading-tight">
+                        {article.title}
+                    </h1>
+
+                    <div className="text-sm text-gray-500 mb-8 flex justify-between">
+                        <span>✍️ {article.author}</span>
+                        <span>
+                            📅{" "}
+                            {new Date(article.date).toLocaleDateString("fr-FR", {
+                                day: "numeric",
+                                month: "long",
+                                year: "numeric",
+                            })}
+                        </span>
+                    </div>
+
+                    <div className="prose prose-lg max-w-none text-justify text-gray-900">
+                        {article.content.split("\n").map((paragraph, i) => (
+                            <p key={i} className="mb-4">{paragraph}</p>
+                        ))}
+                    </div>
+                </article>
             </div>
+
+            {showConfirm && (
+                <ConfirmModal
+                    message="Cette action est irréversible."
+                    onConfirm={confirmDelete}
+                    onCancel={cancelDelete}
+                />
+            )}
         </div>
     );
 }
