@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import userEvent from '@testing-library/user-event'
-import RegistrationPresenter from '../../components/auth/presenters/RegistrationPresenter'
+import RegistrationPresenter from '@/components/auth/presenters/RegistrationPresenter'
 
 jest.mock('next/link', () => {
   const mockLink = ({ children, href }: { children: React.ReactNode; href: string }) => {
