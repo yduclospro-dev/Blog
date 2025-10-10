@@ -9,6 +9,11 @@ export default function Navbar() {
         </Link>
       </div>
       <div className="space-x-6">
+        <Link href="/articles" className="hover:text-gray-200 transition-colors">
+          Articles
+        </Link>
+      </div>
+      <div className="space-x-6">
         <Link href="/login" className="hover:text-gray-200 transition-colors">
           Connexion
         </Link>
