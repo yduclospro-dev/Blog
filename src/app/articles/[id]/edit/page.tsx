@@ -1,7 +1,7 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
-import { useArticleStore } from "@/store/articlesStore";
+import { useArticleStore } from "@/stores/articlesStore";
 import { useState } from "react";
 
 export default function EditArticlePage() {
@@ -21,7 +21,7 @@ export default function EditArticlePage() {
 
   const handleSave = () => {
     updateArticle(article.id, form);
-    router.push(`/pages/articles/${article.id}`);
+    router.push(`/articles/${article.id}`);
   };
 
   return (
