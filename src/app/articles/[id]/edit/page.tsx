@@ -47,15 +47,15 @@ export default function EditArticlePage() {
 
         <div className="flex justify-end gap-4">
           <button
-            onClick={() => router.push(`/pages/articles/${article.id}`)}
-            className="px-5 py-2 border border-gray-400 rounded-md text-gray-600 hover:bg-gray-100"
+            onClick={() => router.push(`/articles/${article.id}`)}
+            className="px-5 py-2 border border-gray-400 rounded-md text-gray-600 hover:bg-gray-100 cursor-pointer"
           >
             Annuler
           </button>
 
           <button
             onClick={handleSave}
-            className="px-5 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            className="px-5 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 cursor-pointer"
           >
             Enregistrer
           </button>

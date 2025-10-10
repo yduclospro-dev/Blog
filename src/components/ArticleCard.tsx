@@ -5,16 +5,21 @@ interface Props {
 }
 
 export default function ArticleCard({ article }: Props) {
-    return (
-        <div className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300">
-            <div className="h-40 w-full bg-gradient-to-r from-blue-400 to-blue-300"></div>
+    const preview =
+        article.content.length > 120
+            ? article.content.slice(0, 120) + "..."
+            : article.content;
 
-            <div className="p-6 flex flex-col justify-between">
+    return (
+        <div className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 h-[320px] flex flex-col">
+            <div className="h-32 w-full bg-gradient-to-r from-blue-400 to-blue-300"></div>
+
+            <div className="p-5 flex flex-col justify-between flex-grow">
                 <div>
-                    <h2 className="text-xl font-semibold text-gray-900 mb-2">
+                    <h2 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">
                         {article.title}
                     </h2>
-                    <p className="text-gray-600 text-sm">{article.content}</p>
+                    <p className="text-gray-600 text-sm leading-snug">{preview}</p>
                 </div>
 
                 <div className="flex items-center justify-between mt-4">

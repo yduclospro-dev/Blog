@@ -17,7 +17,13 @@ export default function ArticleDetailPage() {
     return (
         <div className="bg-gray-50 min-h-screen py-16 px-10 md:px-20 lg:px-32">
             <div className="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-md">
-                <h1 className="text-3xl font-bold mb-4">{article.title}</h1>
+                <button
+                    onClick={() => router.push("/articles")}
+                    className="text-blue-600 hover:underline mb-6 cursor-pointer"
+                >
+                    ← Retour
+                </button>
+                <h1 className="text-sky-700 text-3xl font-bold mb-4">{article.title}</h1>
                 <p className="text-gray-600 mb-8">{article.content}</p>
 
                 <div className="flex justify-between text-sm text-gray-500">
@@ -43,7 +49,7 @@ export default function ArticleDetailPage() {
                             deleteArticle(article.id);
                             router.push("/articles");
                         }}
-                        className="text-red-500 hover:underline"
+                        className="text-red-500 hover:underline cursor-pointer"
                     >
                         Supprimer
                     </button>
