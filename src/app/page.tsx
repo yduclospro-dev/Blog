@@ -1,7 +1,7 @@
-export default function Page() {
+import HomeContainer from "@/components/home/containers/HomeContainer";
+
+export default function LandingPage() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <h1>Bienvenue !!!</h1>
-    </div>
+    <HomeContainer />
   );
 }
