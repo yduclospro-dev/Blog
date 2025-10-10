@@ -8,6 +8,7 @@ interface LoginPresenterProps {
   onEmailChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onPasswordChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  onLogout: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 export default function LoginPresenter({
@@ -17,6 +18,7 @@ export default function LoginPresenter({
   onEmailChange,
   onPasswordChange,
   onSubmit,
+  onLogout,
 }: LoginPresenterProps) {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
@@ -98,6 +100,15 @@ export default function LoginPresenter({
             >
               S&apos;inscrire
             </Link>
+          </p>
+          <p className="mt-6 text-center text-sm">
+            <button 
+              type="button"
+              onClick={onLogout}
+              className="text-indigo-600 hover:text-indigo-500 font-medium cursor-pointer"
+            >
+              Se déconnecter
+            </button>
           </p>
         </div>
       </div>

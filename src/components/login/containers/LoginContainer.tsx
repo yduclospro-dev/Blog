@@ -14,6 +14,13 @@ export default function LoginContainer() {
   const [connectedEmail, setConnectedEmail] = useState<string | null>(null);
 
 
+  useEffect(() => {
+    if (isLoggedIn && connectedEmail) {
+      alert(`${connectedEmail} is connected {${isLoggedIn}}`);
+    }
+  }, [isLoggedIn, connectedEmail]);
+
+
   // ✅ Définit un cookie
   const setCookie = (name: string, value: string, maxAgeSeconds = 60 * 60 * 24) => {
     document.cookie = `${name}=${encodeURIComponent(value)}; path=/; max-age=${maxAgeSeconds}; SameSite=Lax`;
@@ -41,21 +48,20 @@ export default function LoginContainer() {
     setIsLoggedIn(true);
     setConnectedEmail(user.email);
     setError("");
-
-    // 🔹 Lecture du cookie pour afficher le mail
-    const cookies = document.cookie
-      .split("; ")
-      .reduce((acc: Record<string, string>, curr) => {
-        const [key, val] = curr.split("=");
-        acc[key] = decodeURIComponent(val);
-        return acc;
-      }, {});
-    
-    alert(`${cookies.connected_email} is connected {${cookies.is_connected}}`);
+    window.location.href = "/";
   };
 
 
-   return (
+  const handleLogout = () => {
+    document.cookie = "is_connected=false; path=/; max-age=0; SameSite=Lax";
+    document.cookie = "connected_email=; path=/; max-age=0; SameSite=Lax";
+    alert("Déconnexion réussie !")
+    window.location.href = "/";
+  };
+
+
+
+  return (
     <LoginPresenter
       email={email}
       password={password}
@@ -63,6 +69,7 @@ export default function LoginContainer() {
       onEmailChange={(e) => setEmail(e.target.value)}
       onPasswordChange={(e) => setPassword(e.target.value)}
       onSubmit={handleLogin}
+      onLogout={handleLogout}
     />
   );
 
