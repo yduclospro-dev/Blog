@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { Comment } from "@/types/Comment";
-import { Button, TextArea } from "@/components/ui";
+import { Button, TextArea, Toast } from "@/components/ui";
 import ConfirmModal from "@/components/ConfirmModal";
+import type { ToastType } from "@/components/ui/Toast/toastTypes";
 
 interface CommentsListProps {
     comments: Comment[];
@@ -21,6 +22,7 @@ export default function CommentsList({
     const [editingId, setEditingId] = useState<string | null>(null);
     const [editContent, setEditContent] = useState("");
     const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
+    const [toast, setToast] = useState<{ message: string; type: ToastType } | null>(null);
 
     useEffect(() => {
         document.body.style.overflow = deleteConfirmId ? "hidden" : "auto";
@@ -41,7 +43,7 @@ export default function CommentsList({
 
     const saveEdit = (commentId: string) => {
         if (!editContent.trim()) {
-            alert("Le commentaire ne peut pas être vide !");
+            setToast({ message: "Le commentaire ne peut pas être vide !", type: "error" });
             return;
         }
         onUpdate(commentId, editContent);
@@ -72,7 +74,15 @@ export default function CommentsList({
     }
 
     return (
-        <div className="space-y-4">
+        <>
+            {toast && (
+                <Toast 
+                    message={toast.message} 
+                    type={toast.type} 
+                    onClose={() => setToast(null)} 
+                />
+            )}
+            <div className="space-y-4">
             <h3 className="text-xl font-bold text-gray-900 mb-6">
                 💬 Commentaires ({comments.length})
             </h3>
@@ -168,5 +178,6 @@ export default function CommentsList({
                 />
             )}
         </div>
+        </>
     );
 }
