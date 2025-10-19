@@ -25,6 +25,8 @@ export const useCommentsStore = create<CommentsStore>()(
             addComment: (newComment) => {
                 const comment: Comment = {
                     ...newComment,
+                    content: newComment.content.trim(),
+                    authorName: newComment.authorName.trim(),
                     id: crypto.randomUUID(),
                     date: new Date().toISOString(),
                     likes: [],
@@ -36,7 +38,7 @@ export const useCommentsStore = create<CommentsStore>()(
             updateComment: (id, content) =>
                 set({
                     comments: get().comments.map((c) =>
-                        c.id === id ? { ...c, content } : c
+                        c.id === id ? { ...c, content: content.trim() } : c
                     ),
                 }),
             

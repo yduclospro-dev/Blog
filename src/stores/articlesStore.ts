@@ -29,6 +29,9 @@ export const useArticleStore = create<ArticleStore>()(
             addArticle: (articleData) => {
                 const newArticle: Article = {
                     ...articleData,
+                    title: articleData.title.trim(),
+                    content: articleData.content.trim(),
+                    author: articleData.author.trim(),
                     id: crypto.randomUUID(),
                     date: new Date().toISOString().split("T")[0],
                     likes: [],
@@ -39,7 +42,12 @@ export const useArticleStore = create<ArticleStore>()(
             updateArticle: (id, updatedData) =>
                 set({
                     articles: get().articles.map((a) =>
-                        a.id === id ? { ...a, ...updatedData } : a
+                        a.id === id ? { 
+                            ...a, 
+                            ...updatedData,
+                            ...(updatedData.title && { title: updatedData.title.trim() }),
+                            ...(updatedData.content && { content: updatedData.content.trim() }),
+                        } : a
                     ),
                 }),
             deleteArticle: (id) =>

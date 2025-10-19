@@ -142,7 +142,7 @@ describe('CommentFormContainer', () => {
       fireEvent.change(input, { target: { value: '  Valid comment  ' } })
       fireEvent.click(submitButton)
 
-      // Assert
+      // Assert - Container passes raw values, store handles trimming
       expect(mockOnSubmit).toHaveBeenCalledWith('  Valid comment  ')
       expect(global.alert).not.toHaveBeenCalled()
     })

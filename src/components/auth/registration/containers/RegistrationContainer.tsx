@@ -25,20 +25,24 @@ export default function RegistrationContainer() {
     setIsLoading(true)
     setError('')
 
-    if (!formData.username || !formData.email || !formData.password) {
+    if (!formData.username.trim() || !formData.email.trim() || !formData.password.trim()) {
       setError('Tous les champs sont obligatoires.')
       setIsLoading(false)
       return
     }
 
-    if (formData.password.length < 6) {
+    if (formData.password.trim().length < 6) {
       setError('Le mot de passe doit contenir au moins 6 caractères.')
       setIsLoading(false)
       return
     }
 
     try {
-      const result = await register(formData.username, formData.email, formData.password)
+      const result = await register(
+        formData.username,
+        formData.email,
+        formData.password
+      )
 
       if (!result.success) {
         setError(result.error || "Erreur lors de l'inscription")

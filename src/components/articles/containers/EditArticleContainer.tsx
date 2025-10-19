@@ -25,7 +25,10 @@ export default function EditArticleContainer() {
 
   const handleSave = () => {
     if (article) {
-      updateArticle(article.id, formData);
+      updateArticle(article.id, {
+        title: formData.title,
+        content: formData.content
+      });
       router.push(`/articles/${article.id}`);
     }
   };

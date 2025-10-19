@@ -44,7 +44,11 @@ const userStoreCreator: StateCreator<UserState, [], [], UserState> = (set, get) 
   login: async (email: string, password: string) => {
     const users = get().users;
     
-    const user = users.find(u => u.email === email && u.password === password);
+    // Trim inputs for comparison
+    const trimmedEmail = email.trim();
+    const trimmedPassword = password.trim();
+    
+    const user = users.find(u => u.email === trimmedEmail && u.password === trimmedPassword);
 
     if (!user) {
       return { success: false, error: 'Email ou mot de passe incorrect' };
@@ -67,23 +71,28 @@ const userStoreCreator: StateCreator<UserState, [], [], UserState> = (set, get) 
   },
 
   register: async (username: string, email: string, password: string) => {
-    if (!username || !email || !password) {
+    // Trim all inputs
+    const trimmedUsername = username.trim();
+    const trimmedEmail = email.trim();
+    const trimmedPassword = password.trim();
+
+    if (!trimmedUsername || !trimmedEmail || !trimmedPassword) {
       return { success: false, error: 'Tous les champs sont obligatoires' };
     }
 
-    if (password.length < 6) {
+    if (trimmedPassword.length < 6) {
       return { success: false, error: 'Le mot de passe doit contenir au moins 6 caractères' };
     }
 
-    if (get().checkIfUsernameOrEmailExists(username, email)) {
+    if (get().checkIfUsernameOrEmailExists(trimmedUsername, trimmedEmail)) {
       return { success: false, error: "Le nom d'utilisateur ou l'email existe déjà" };
     }
 
     const newUser: User = {
       id: crypto.randomUUID(),
-      username,
-      email,
-      password
+      username: trimmedUsername,
+      email: trimmedEmail,
+      password: trimmedPassword
     };
 
     get().addUser(newUser);

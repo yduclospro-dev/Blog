@@ -293,7 +293,7 @@ describe('NewArticleContainer', () => {
   })
 
   describe('Edge cases', () => {
-    it('should allow saving article with whitespace in title', () => {
+    it('should trim whitespace from title and content on save', () => {
       // Arrange
       render(<NewArticleContainer />)
       const titleInput = screen.getByTestId('title-input')
@@ -302,12 +302,34 @@ describe('NewArticleContainer', () => {
 
       // Act
       fireEvent.change(titleInput, { target: { value: '   Spaced Title   ' } })
+      fireEvent.change(contentInput, { target: { value: '  Spaced Content  ' } })
+      fireEvent.click(saveButton)
+
+      // Assert - Container passes raw values, store handles trimming
+      expect(mockAddArticle).toHaveBeenCalledWith({
+        title: '   Spaced Title   ',
+        content: '  Spaced Content  ',
+        author: 'TestUser',
+        authorId: 'user1'
+      })
+      expect(global.alert).not.toHaveBeenCalled()
+    })
+
+    it('should reject whitespace-only title after trim', () => {
+      // Arrange
+      render(<NewArticleContainer />)
+      const titleInput = screen.getByTestId('title-input')
+      const contentInput = screen.getByTestId('content-input')
+      const saveButton = screen.getByTestId('save-button')
+
+      // Act
+      fireEvent.change(titleInput, { target: { value: '   ' } })
       fireEvent.change(contentInput, { target: { value: 'Content' } })
       fireEvent.click(saveButton)
 
-      // Assert - Whitespace title is accepted (no trim in validation)
-      expect(mockAddArticle).toHaveBeenCalled()
-      expect(global.alert).not.toHaveBeenCalled()
+      // Assert - Whitespace-only should be rejected
+      expect(global.alert).toHaveBeenCalledWith('Le titre et le contenu sont requis !')
+      expect(mockAddArticle).not.toHaveBeenCalled()
     })
 
     it('should handle multiple save attempts', () => {
