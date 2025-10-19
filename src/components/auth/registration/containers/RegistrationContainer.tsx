@@ -52,11 +52,9 @@ export default function RegistrationContainer() {
         return
       }
 
-      console.log('✅ Inscription réussie ! Redirection vers /login')
       router.push('/login?registered=true')
       router.refresh()
     } catch (error) {
-      console.error('Erreur lors de l\'inscription:', error)
       setToast({ message: 'Une erreur est survenue. Veuillez réessayer.', type: 'error' })
     }
     

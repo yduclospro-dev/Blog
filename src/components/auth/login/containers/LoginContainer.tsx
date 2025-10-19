@@ -53,7 +53,6 @@ export default function LoginContainer() {
         router.push("/");
       }, 1500);
     } catch (error) {
-      console.error("Erreur de connexion:", error);
       setToast({ message: "Une erreur est survenue. Veuillez réessayer.", type: "error" });
       setIsLoading(false);
     }

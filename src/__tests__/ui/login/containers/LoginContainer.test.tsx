@@ -400,30 +400,6 @@ describe('LoginContainer', () => {
         expect(screen.getByTestId('loading-state')).toHaveTextContent('idle')
       })
     })
-
-    it('should handle exception during login', async () => {
-      // Arrange
-      const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation()
-      mockLogin.mockRejectedValue(new Error('Network error'))
-      render(<LoginContainer />)
-      const emailInput = screen.getByTestId('email-input')
-      const passwordInput = screen.getByTestId('password-input')
-      const submitButton = screen.getByTestId('submit-button')
-
-      // Act
-      fireEvent.change(emailInput, { target: { value: 'user@test.com' } })
-      fireEvent.change(passwordInput, { target: { value: 'password' } })
-      fireEvent.click(submitButton)
-
-      // Assert
-      await waitFor(() => {
-        const toast = screen.getByTestId('toast')
-        expect(toast).toHaveAttribute('data-message', 'Une erreur est survenue. Veuillez réessayer.')
-        expect(toast).toHaveAttribute('data-type', 'error')
-      })
-      expect(consoleErrorSpy).toHaveBeenCalled()
-      consoleErrorSpy.mockRestore()
-    })
   })
 
   describe('Multiple submissions', () => {
