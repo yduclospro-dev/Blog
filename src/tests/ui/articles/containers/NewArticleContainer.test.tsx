@@ -15,7 +15,12 @@ jest.mock('next/navigation', () => ({
 
 // Mock stores
 const mockAddArticle = jest.fn()
-const mockCurrentUser = { id: 'user1', username: 'TestUser', email: 'test@test.com', password: 'pass' }
+let mockCurrentUser: { id: string; username: string; email: string; password: string } | null = { 
+  id: 'user1', 
+  username: 'TestUser', 
+  email: 'test@test.com', 
+  password: 'pass' 
+}
 
 jest.mock('@/stores/articlesStore', () => ({
   useArticleStore: () => ({
@@ -27,12 +32,6 @@ jest.mock('@/stores/userStore', () => ({
   useUserStore: () => ({
     currentUser: mockCurrentUser
   })
-}))
-
-// Mock useRequireAuth
-let mockIsAuthenticated = true
-jest.mock('@/lib/hooks/useRequireAuth', () => ({
-  useRequireAuth: () => mockIsAuthenticated
 }))
 
 // Mock ForbiddenAccess
@@ -77,13 +76,13 @@ jest.mock('@/components/articles/presenters/NewArticlePresenter', () => ({
 describe('NewArticleContainer', () => {
   beforeEach(() => {
     jest.clearAllMocks()
-    mockIsAuthenticated = true
+    mockCurrentUser = { id: 'user1', username: 'TestUser', email: 'test@test.com', password: 'pass' }
   })
 
   describe('Authentication', () => {
     it('should show ForbiddenAccess when not authenticated', () => {
       // Arrange
-      mockIsAuthenticated = false
+      mockCurrentUser = null
 
       // Act
       render(<NewArticleContainer />)
@@ -95,7 +94,7 @@ describe('NewArticleContainer', () => {
 
     it('should render NewArticlePresenter when authenticated', () => {
       // Arrange
-      mockIsAuthenticated = true
+      mockCurrentUser = { id: 'user1', username: 'TestUser', email: 'test@test.com', password: 'pass' }
 
       // Act
       render(<NewArticleContainer />)
