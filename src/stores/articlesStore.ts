@@ -8,9 +8,11 @@ interface ArticleStore {
     articles: Article[];
     getArticleById: (id: string) => Article | undefined;
     getLatestArticles: (limit: number) => Article[];
-    addArticle: (articleData: Omit<Article, "id" | "date">) => void;
+    addArticle: (articleData: Omit<Article, "id" | "date" | "likes" | "dislikes">) => void;
     updateArticle: (id: string, updatedData: Partial<Article>) => void;
     deleteArticle: (id: string) => void;
+    toggleArticleLike: (articleId: string, userId: string) => void;
+    toggleArticleDislike: (articleId: string, userId: string) => void;
 }
 
 export const useArticleStore = create<ArticleStore>()(
@@ -29,6 +31,8 @@ export const useArticleStore = create<ArticleStore>()(
                     ...articleData,
                     id: crypto.randomUUID(),
                     date: new Date().toISOString().split("T")[0],
+                    likes: [],
+                    dislikes: [],
                 };
                 set({ articles: [...get().articles, newArticle] });
             },
@@ -40,6 +44,46 @@ export const useArticleStore = create<ArticleStore>()(
                 }),
             deleteArticle: (id) =>
                 set({ articles: get().articles.filter((a) => a.id !== id) }),
+            toggleArticleLike: (articleId, userId) => {
+                set({
+                    articles: get().articles.map((article) => {
+                        if (article.id !== articleId) return article;
+                        
+                        const hasLiked = article.likes.includes(userId);
+                        const hasDisliked = article.dislikes.includes(userId);
+                        
+                        return {
+                            ...article,
+                            likes: hasLiked 
+                                ? article.likes.filter(id => id !== userId)
+                                : [...article.likes, userId],
+                            dislikes: hasDisliked
+                                ? article.dislikes.filter(id => id !== userId)
+                                : article.dislikes,
+                        };
+                    }),
+                });
+            },
+            toggleArticleDislike: (articleId, userId) => {
+                set({
+                    articles: get().articles.map((article) => {
+                        if (article.id !== articleId) return article;
+                        
+                        const hasLiked = article.likes.includes(userId);
+                        const hasDisliked = article.dislikes.includes(userId);
+                        
+                        return {
+                            ...article,
+                            likes: hasLiked
+                                ? article.likes.filter(id => id !== userId)
+                                : article.likes,
+                            dislikes: hasDisliked
+                                ? article.dislikes.filter(id => id !== userId)
+                                : [...article.dislikes, userId],
+                        };
+                    }),
+                });
+            },
         }),
         { name: "articles-storage" }
     )

@@ -7,9 +7,11 @@ import { Comment } from "@/types/Comment";
 interface CommentsStore {
     comments: Comment[];
     getCommentsByArticle: (articleId: string) => Comment[];
-    addComment: (newComment: Omit<Comment, "id" | "date">) => void;
+    addComment: (newComment: Omit<Comment, "id" | "date" | "likes" | "dislikes">) => void;
     updateComment: (id: string, content: string) => void;
     deleteComment: (id: string) => void;
+    toggleCommentLike: (commentId: string, userId: string) => void;
+    toggleCommentDislike: (commentId: string, userId: string) => void;
 }
 
 export const useCommentsStore = create<CommentsStore>()(
@@ -25,6 +27,8 @@ export const useCommentsStore = create<CommentsStore>()(
                     ...newComment,
                     id: crypto.randomUUID(),
                     date: new Date().toISOString(),
+                    likes: [],
+                    dislikes: [],
                 };
                 set({ comments: [...get().comments, comment] });
             },
@@ -40,6 +44,46 @@ export const useCommentsStore = create<CommentsStore>()(
                 set({ 
                     comments: get().comments.filter((c) => c.id !== id) 
                 }),
+            toggleCommentLike: (commentId, userId) => {
+                set({
+                    comments: get().comments.map((comment) => {
+                        if (comment.id !== commentId) return comment;
+                        
+                        const hasLiked = comment.likes.includes(userId);
+                        const hasDisliked = comment.dislikes.includes(userId);
+                        
+                        return {
+                            ...comment,
+                            likes: hasLiked 
+                                ? comment.likes.filter(id => id !== userId)
+                                : [...comment.likes, userId],
+                            dislikes: hasDisliked
+                                ? comment.dislikes.filter(id => id !== userId)
+                                : comment.dislikes,
+                        };
+                    }),
+                });
+            },
+            toggleCommentDislike: (commentId, userId) => {
+                set({
+                    comments: get().comments.map((comment) => {
+                        if (comment.id !== commentId) return comment;
+                        
+                        const hasLiked = comment.likes.includes(userId);
+                        const hasDisliked = comment.dislikes.includes(userId);
+                        
+                        return {
+                            ...comment,
+                            likes: hasLiked
+                                ? comment.likes.filter(id => id !== userId)
+                                : comment.likes,
+                            dislikes: hasDisliked
+                                ? comment.dislikes.filter(id => id !== userId)
+                                : [...comment.dislikes, userId],
+                        };
+                    }),
+                });
+            },
         }),
         { name: "comments-storage" }
     )
