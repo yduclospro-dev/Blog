@@ -1,25 +1,40 @@
 import { Article } from "@/types/Article";
+import { Comment } from "@/types/Comment";
 import ConfirmModal from "@/components/ConfirmModal";
 import { Button, ButtonLink, Card } from "@/components/ui";
+import CommentsListContainer from "../comments/containers/CommentsListContainer";
+import CommentFormContainer from "../comments/containers/CommentFormContainer";
 
 interface ArticleDetailPresenterProps {
     article: Article;
     isAuthenticated: boolean;
+    isAuthor: boolean;
     showConfirm: boolean;
     onDelete: () => void;
     onCancelDelete: () => void;
     onShowConfirm: () => void;
     onBack: () => void;
+    comments: Comment[];
+    currentUserId?: string;
+    onAddComment: (content: string) => void;
+    onUpdateComment: (commentId: string, content: string) => void;
+    onDeleteComment: (commentId: string) => void;
 }
 
 export default function ArticleDetailPresenter({
     article,
     isAuthenticated,
+    isAuthor,
     showConfirm,
     onDelete,
     onCancelDelete,
     onShowConfirm,
     onBack,
+    comments,
+    currentUserId,
+    onAddComment,
+    onUpdateComment,
+    onDeleteComment,
 }: ArticleDetailPresenterProps) {
     return (
         <div className="bg-gradient-to-b from-gray-50 to-white min-h-screen py-16 px-6 md:px-20 lg:px-32">
@@ -32,7 +47,7 @@ export default function ArticleDetailPresenter({
                         label="← Retour à la liste"
                     />
 
-                    {isAuthenticated && (
+                    {isAuthenticated && isAuthor && (
                         <div className="flex gap-3">
                             <ButtonLink
                                 href={`/articles/${article.id}/edit`}
@@ -83,6 +98,27 @@ export default function ArticleDetailPresenter({
                         ))}
                     </div>
                 </article>
+
+                <div className="mt-12 pt-8 border-t-2 border-gray-200">
+                    {isAuthenticated ? (
+                        <div className="mb-8">
+                            <CommentFormContainer onSubmit={onAddComment} />
+                        </div>
+                    ) : (
+                        <div className="mb-8 p-6 bg-blue-50 border border-blue-200 rounded-lg text-center">
+                            <p className="text-blue-800">
+                                🔒 <strong>Connectez-vous</strong> pour ajouter un commentaire
+                            </p>
+                        </div>
+                    )}
+                    
+                    <CommentsListContainer
+                        comments={comments}
+                        currentUserId={currentUserId}
+                        onDelete={onDeleteComment}
+                        onUpdate={onUpdateComment}
+                    />
+                </div>
             </Card>
 
             {showConfirm && (
