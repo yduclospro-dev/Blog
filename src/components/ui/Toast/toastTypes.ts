@@ -1,5 +1,3 @@
-// Toast types and interfaces
-
 export type ToastType = 'success' | 'error' | 'warning' | 'info';
 
 export interface ToastProps {

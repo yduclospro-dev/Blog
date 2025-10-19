@@ -24,12 +24,10 @@ export default function Navbar() {
     }, 1500);
   }
 
-  // Fermer le menu lors du changement de route
   useEffect(() => {
     setIsMenuOpen(false)
   }, [router])
 
-  // Empêcher le scroll quand le menu est ouvert
   useEffect(() => {
     if (isMenuOpen) {
       document.body.style.overflow = 'hidden'
