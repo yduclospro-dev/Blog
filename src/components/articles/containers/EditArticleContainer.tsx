@@ -13,10 +13,9 @@ export default function EditArticleContainer() {
   const { getArticleById, updateArticle } = useArticleStore();
   const isAuthenticated = useRequireAuth();
 
-  const article = getArticleById(Number(id));
+  const article = getArticleById(String(id));
   const [formData, setFormData] = useState({
     title: article?.title || "",
-    date: article?.date || new Date().toISOString().split("T")[0],
     content: article?.content || "",
   });
 
@@ -26,10 +25,7 @@ export default function EditArticleContainer() {
 
   const handleSave = () => {
     if (article) {
-      updateArticle(article.id, {
-        ...formData,
-        author: article.author,
-      });
+      updateArticle(article.id, formData);
       router.push(`/articles/${article.id}`);
     }
   };
