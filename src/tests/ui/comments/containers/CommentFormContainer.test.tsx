@@ -2,8 +2,14 @@ import { render, screen, fireEvent } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import CommentFormContainer from '@/components/articles/comments/containers/CommentFormContainer'
 
-// Mock window.alert
-global.alert = jest.fn()
+// Mock Toast component
+jest.mock('@/components/ui', () => ({
+  Toast: ({ message, type }: { message: string; type: string }) => (
+    <div data-testid="toast" data-message={message} data-type={type}>
+      {message}
+    </div>
+  )
+}))
 
 jest.mock('@/components/articles/comments/presenters/CommentFormPresenter', () => ({
   __esModule: true,
@@ -104,7 +110,7 @@ describe('CommentFormContainer', () => {
       expect((input as HTMLInputElement).value).toBe('')
     })
 
-    it('should show alert when submitting empty content', () => {
+    it('should show toast when submitting empty content', () => {
       // Arrange
       render(<CommentFormContainer onSubmit={mockOnSubmit} />)
       const submitButton = screen.getByTestId('submit-button')
@@ -113,11 +119,13 @@ describe('CommentFormContainer', () => {
       fireEvent.click(submitButton)
 
       // Assert
-      expect(global.alert).toHaveBeenCalledWith('Le commentaire ne peut pas être vide !')
+      const toast = screen.getByTestId('toast')
+      expect(toast).toHaveAttribute('data-message', 'Le commentaire ne peut pas être vide !')
+      expect(toast).toHaveAttribute('data-type', 'error')
       expect(mockOnSubmit).not.toHaveBeenCalled()
     })
 
-    it('should show alert when submitting whitespace only', () => {
+    it('should show toast when submitting whitespace only', () => {
       // Arrange
       render(<CommentFormContainer onSubmit={mockOnSubmit} />)
       const input = screen.getByTestId('content-input')
@@ -128,7 +136,9 @@ describe('CommentFormContainer', () => {
       fireEvent.click(submitButton)
 
       // Assert
-      expect(global.alert).toHaveBeenCalledWith('Le commentaire ne peut pas être vide !')
+      const toast = screen.getByTestId('toast')
+      expect(toast).toHaveAttribute('data-message', 'Le commentaire ne peut pas être vide !')
+      expect(toast).toHaveAttribute('data-type', 'error')
       expect(mockOnSubmit).not.toHaveBeenCalled()
     })
 
@@ -144,7 +154,7 @@ describe('CommentFormContainer', () => {
 
       // Assert - Container passes raw values, store handles trimming
       expect(mockOnSubmit).toHaveBeenCalledWith('  Valid comment  ')
-      expect(global.alert).not.toHaveBeenCalled()
+      expect(screen.queryByTestId('toast')).not.toBeInTheDocument()
     })
   })
 

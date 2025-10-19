@@ -3,8 +3,14 @@ import '@testing-library/jest-dom'
 import CommentsListContainer from '@/components/articles/comments/containers/CommentsListContainer'
 import { Comment } from '@/types/Comment'
 
-// Mock window.alert
-global.alert = jest.fn()
+// Mock Toast component
+jest.mock('@/components/ui', () => ({
+  Toast: ({ message, type }: { message: string; type: string }) => (
+    <div data-testid="toast" data-message={message} data-type={type}>
+      {message}
+    </div>
+  )
+}))
 
 jest.mock('@/components/articles/comments/presenters/CommentsListPresenter', () => ({
   __esModule: true,
@@ -207,7 +213,7 @@ describe('CommentsListContainer', () => {
       expect(screen.getByTestId('edit-content')).toHaveTextContent('')
     })
 
-    it('should show alert when trying to save empty content', () => {
+    it('should show toast when trying to save empty content', () => {
       // Arrange
       render(<CommentsListContainer {...mockProps} />)
       fireEvent.click(screen.getByText('Edit 1'))
@@ -219,11 +225,13 @@ describe('CommentsListContainer', () => {
       fireEvent.click(saveButton)
 
       // Assert
-      expect(global.alert).toHaveBeenCalledWith('Le commentaire ne peut pas être vide !')
+      const toast = screen.getByTestId('toast')
+      expect(toast).toHaveAttribute('data-message', 'Le commentaire ne peut pas être vide !')
+      expect(toast).toHaveAttribute('data-type', 'error')
       expect(mockProps.onUpdate).not.toHaveBeenCalled()
     })
 
-    it('should show alert when trying to save whitespace only', () => {
+    it('should show toast when trying to save whitespace only', () => {
       // Arrange
       render(<CommentsListContainer {...mockProps} />)
       fireEvent.click(screen.getByText('Edit 1'))
@@ -235,7 +243,9 @@ describe('CommentsListContainer', () => {
       fireEvent.click(saveButton)
 
       // Assert
-      expect(global.alert).toHaveBeenCalledWith('Le commentaire ne peut pas être vide !')
+      const toast = screen.getByTestId('toast')
+      expect(toast).toHaveAttribute('data-message', 'Le commentaire ne peut pas être vide !')
+      expect(toast).toHaveAttribute('data-type', 'error')
       expect(mockProps.onUpdate).not.toHaveBeenCalled()
     })
 

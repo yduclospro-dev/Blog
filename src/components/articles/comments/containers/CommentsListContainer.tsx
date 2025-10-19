@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import { Comment } from "@/types/Comment";
 import CommentsListPresenter from "../presenters/CommentsListPresenter";
+import { Toast } from "@/components/ui";
+import type { ToastType } from "@/components/ui/Toast/toastTypes";
 
 interface CommentsListContainerProps {
     comments: Comment[];
@@ -24,6 +26,7 @@ export default function CommentsListContainer({
     const [editingId, setEditingId] = useState<string | null>(null);
     const [editContent, setEditContent] = useState("");
     const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
+    const [toast, setToast] = useState<{ message: string; type: ToastType } | null>(null);
 
     useEffect(() => {
         document.body.style.overflow = deleteConfirmId ? "hidden" : "auto";
@@ -48,7 +51,7 @@ export default function CommentsListContainer({
 
     const handleSaveEdit = (commentId: string) => {
         if (!editContent.trim()) {
-            alert("Le commentaire ne peut pas être vide !");
+            setToast({ message: "Le commentaire ne peut pas être vide !", type: "error" });
             return;
         }
         onUpdate(commentId, editContent);
@@ -71,21 +74,30 @@ export default function CommentsListContainer({
     };
 
     return (
-        <CommentsListPresenter
-            comments={comments}
-            currentUserId={currentUserId}
-            editingId={editingId}
-            editContent={editContent}
-            deleteConfirmId={deleteConfirmId}
-            onStartEditing={handleStartEditing}
-            onCancelEditing={handleCancelEditing}
-            onEditContentChange={handleEditContentChange}
-            onSaveEdit={handleSaveEdit}
-            onShowDeleteConfirm={handleShowDeleteConfirm}
-            onConfirmDelete={handleConfirmDelete}
-            onCancelDelete={handleCancelDelete}
-            onCommentLike={onLike}
-            onCommentDislike={onDislike}
-        />
+        <>
+            {toast && (
+                <Toast 
+                    message={toast.message} 
+                    type={toast.type} 
+                    onClose={() => setToast(null)} 
+                />
+            )}
+            <CommentsListPresenter
+                comments={comments}
+                currentUserId={currentUserId}
+                editingId={editingId}
+                editContent={editContent}
+                deleteConfirmId={deleteConfirmId}
+                onStartEditing={handleStartEditing}
+                onCancelEditing={handleCancelEditing}
+                onEditContentChange={handleEditContentChange}
+                onSaveEdit={handleSaveEdit}
+                onShowDeleteConfirm={handleShowDeleteConfirm}
+                onConfirmDelete={handleConfirmDelete}
+                onCancelDelete={handleCancelDelete}
+                onCommentLike={onLike}
+                onCommentDislike={onDislike}
+            />
+        </>
     );
 }

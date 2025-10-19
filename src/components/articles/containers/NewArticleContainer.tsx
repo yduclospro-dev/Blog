@@ -6,6 +6,8 @@ import { useArticleStore } from "@/stores/articlesStore";
 import { useUserStore } from "@/stores/userStore";
 import ForbiddenAccess from "@/components/ForbiddenAccess";
 import NewArticlePresenter from "../presenters/NewArticlePresenter";
+import { Toast } from "@/components/ui";
+import type { ToastType } from "@/components/ui/Toast/toastTypes";
 
 export default function NewArticleContainer() {
     const router = useRouter();
@@ -17,18 +19,20 @@ export default function NewArticleContainer() {
         content: "",
     });
 
+    const [toast, setToast] = useState<{ message: string; type: ToastType } | null>(null);
+
     const handleInputChange = (field: string, value: string) => {
         setFormData(prev => ({ ...prev, [field]: value }));
     };
 
     const handleSave = () => {
         if (!formData.title.trim() || !formData.content.trim()) {
-            alert("Le titre et le contenu sont requis !");
+            setToast({ message: "Le titre et le contenu sont requis !", type: "error" });
             return;
         }
 
         if (!currentUser) {
-            alert("Erreur : utilisateur non connecté");
+            setToast({ message: "Erreur : utilisateur non connecté", type: "error" });
             return;
         }
 
@@ -56,11 +60,20 @@ export default function NewArticleContainer() {
     }
 
     return (
-        <NewArticlePresenter
-            formData={formData}
-            onInputChange={handleInputChange}
-            onSave={handleSave}
-            onCancel={handleCancel}
-        />
+        <>
+            {toast && (
+                <Toast 
+                    message={toast.message} 
+                    type={toast.type} 
+                    onClose={() => setToast(null)} 
+                />
+            )}
+            <NewArticlePresenter
+                formData={formData}
+                onInputChange={handleInputChange}
+                onSave={handleSave}
+                onCancel={handleCancel}
+            />
+        </>
     );
 }

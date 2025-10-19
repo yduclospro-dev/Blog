@@ -2,9 +2,6 @@ import { render, screen, fireEvent } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import NewArticleContainer from '@/components/articles/containers/NewArticleContainer'
 
-// Mock alert
-global.alert = jest.fn()
-
 // Mock router
 const mockPush = jest.fn()
 jest.mock('next/navigation', () => ({
@@ -32,6 +29,15 @@ jest.mock('@/stores/userStore', () => ({
   useUserStore: () => ({
     currentUser: mockCurrentUser
   })
+}))
+
+// Mock Toast component
+jest.mock('@/components/ui', () => ({
+  Toast: ({ message, type }: { message: string; type: string }) => (
+    <div data-testid="toast" data-message={message} data-type={type}>
+      {message}
+    </div>
+  )
 }))
 
 // Mock ForbiddenAccess
@@ -157,7 +163,7 @@ describe('NewArticleContainer', () => {
   })
 
   describe('Form validation', () => {
-    it('should show alert when title is empty on save', () => {
+    it('should show toast when title is empty on save', () => {
       // Arrange
       render(<NewArticleContainer />)
       const contentInput = screen.getByTestId('content-input')
@@ -168,11 +174,13 @@ describe('NewArticleContainer', () => {
       fireEvent.click(saveButton)
 
       // Assert
-      expect(global.alert).toHaveBeenCalledWith('Le titre et le contenu sont requis !')
+      const toast = screen.getByTestId('toast')
+      expect(toast).toHaveAttribute('data-message', 'Le titre et le contenu sont requis !')
+      expect(toast).toHaveAttribute('data-type', 'error')
       expect(mockAddArticle).not.toHaveBeenCalled()
     })
 
-    it('should show alert when content is empty on save', () => {
+    it('should show toast when content is empty on save', () => {
       // Arrange
       render(<NewArticleContainer />)
       const titleInput = screen.getByTestId('title-input')
@@ -183,11 +191,13 @@ describe('NewArticleContainer', () => {
       fireEvent.click(saveButton)
 
       // Assert
-      expect(global.alert).toHaveBeenCalledWith('Le titre et le contenu sont requis !')
+      const toast = screen.getByTestId('toast')
+      expect(toast).toHaveAttribute('data-message', 'Le titre et le contenu sont requis !')
+      expect(toast).toHaveAttribute('data-type', 'error')
       expect(mockAddArticle).not.toHaveBeenCalled()
     })
 
-    it('should show alert when both fields are empty on save', () => {
+    it('should show toast when both fields are empty on save', () => {
       // Arrange
       render(<NewArticleContainer />)
       const saveButton = screen.getByTestId('save-button')
@@ -196,7 +206,9 @@ describe('NewArticleContainer', () => {
       fireEvent.click(saveButton)
 
       // Assert
-      expect(global.alert).toHaveBeenCalledWith('Le titre et le contenu sont requis !')
+      const toast = screen.getByTestId('toast')
+      expect(toast).toHaveAttribute('data-message', 'Le titre et le contenu sont requis !')
+      expect(toast).toHaveAttribute('data-type', 'error')
       expect(mockAddArticle).not.toHaveBeenCalled()
     })
   })
@@ -311,7 +323,7 @@ describe('NewArticleContainer', () => {
         author: 'TestUser',
         authorId: 'user1'
       })
-      expect(global.alert).not.toHaveBeenCalled()
+      expect(screen.queryByTestId('toast')).not.toBeInTheDocument()
     })
 
     it('should reject whitespace-only title after trim', () => {
@@ -327,7 +339,9 @@ describe('NewArticleContainer', () => {
       fireEvent.click(saveButton)
 
       // Assert - Whitespace-only should be rejected
-      expect(global.alert).toHaveBeenCalledWith('Le titre et le contenu sont requis !')
+      const toast = screen.getByTestId('toast')
+      expect(toast).toHaveAttribute('data-message', 'Le titre et le contenu sont requis !')
+      expect(toast).toHaveAttribute('data-type', 'error')
       expect(mockAddArticle).not.toHaveBeenCalled()
     })
 
@@ -341,13 +355,15 @@ describe('NewArticleContainer', () => {
       // Act - First save (invalid)
       fireEvent.click(saveButton)
 
+      // Assert - Toast shown for invalid attempt
+      expect(screen.getByTestId('toast')).toBeInTheDocument()
+
       // Act - Second save (valid)
       fireEvent.change(titleInput, { target: { value: 'Title' } })
       fireEvent.change(contentInput, { target: { value: 'Content' } })
       fireEvent.click(saveButton)
 
       // Assert
-      expect(global.alert).toHaveBeenCalledTimes(1) // Only for invalid attempt
       expect(mockAddArticle).toHaveBeenCalledTimes(1) // Only for valid attempt
     })
 
