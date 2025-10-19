@@ -4,12 +4,31 @@ import userEvent from '@testing-library/user-event'
 import RegistrationPresenter from '@/components/auth/registration/presenters/RegistrationPresenter'
 
 jest.mock('next/link', () => {
-  const mockLink = ({ children, href }: { children: React.ReactNode; href: string }) => {
+  const MockLink = ({ children, href }: { children: React.ReactNode; href: string }) => {
     return <a href={href}>{children}</a>
   }
-  mockLink.displayName = 'MockLink'
-  return mockLink
+  return MockLink
 })
+
+jest.mock('@/components/ui', () => ({
+  Button: ({ label, disabled, type, variant }: { label: string; disabled?: boolean; type?: 'button' | 'submit' | 'reset'; variant?: string }) => (
+    <button type={type} disabled={disabled} data-variant={variant}>
+      {label}
+    </button>
+  ),
+  Input: ({ label, id, value, onChange, disabled, type }: { label: string; id: string; value: string; onChange: (e: React.ChangeEvent<HTMLInputElement>) => void; disabled?: boolean; type?: string }) => (
+    <div>
+      <label htmlFor={id}>{label}</label>
+      <input
+        id={id}
+        type={type}
+        value={value}
+        onChange={onChange}
+        disabled={disabled}
+      />
+    </div>
+  )
+}))
 
 describe('RegistrationPresenter', () => {
   const mockProps = {

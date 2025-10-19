@@ -1,6 +1,6 @@
 import { act } from '@testing-library/react'
 import { useUserStore } from '@/stores/userStore'
-import { User } from '@/types/user'
+import { User } from '@/types/User'
 
 const localStorageMock = {
   getItem: jest.fn(),
