@@ -1,5 +1,5 @@
 import { Comment } from "@/types/Comment";
-import { Button, Textarea } from "@/components/ui";
+import { Button, Textarea, LikeDislikeButtons } from "@/components/ui";
 import ConfirmModal from "@/components/ConfirmModal";
 
 interface CommentsListPresenterProps {
@@ -15,6 +15,8 @@ interface CommentsListPresenterProps {
     onShowDeleteConfirm: (commentId: string) => void;
     onConfirmDelete: () => void;
     onCancelDelete: () => void;
+    onCommentLike: (commentId: string) => void;
+    onCommentDislike: (commentId: string) => void;
 }
 
 export default function CommentsListPresenter({
@@ -30,6 +32,8 @@ export default function CommentsListPresenter({
     onShowDeleteConfirm,
     onConfirmDelete,
     onCancelDelete,
+    onCommentLike,
+    onCommentDislike,
 }: CommentsListPresenterProps) {
     if (comments.length === 0) {
         return (
@@ -51,7 +55,11 @@ export default function CommentsListPresenter({
                 return (
                     <div
                         key={comment.id}
-                        className="bg-gray-50 border border-gray-200 rounded-lg p-5 shadow-sm hover:shadow-md transition-shadow"
+                        className={`border rounded-lg p-5 shadow-sm hover:shadow-md transition-shadow ${
+                            isAuthor
+                                ? 'bg-blue-50 border-blue-200'
+                                : 'bg-gray-50 border-gray-200'
+                        }`}
                     >
                         <div className="flex justify-between items-start mb-3">
                             <div>
@@ -71,7 +79,7 @@ export default function CommentsListPresenter({
                             {isAuthor && !isEditing && (
                                 <div className="flex gap-2">
                                     <Button
-                                        variant="ghost"
+                                        variant="primary"
                                         size="sm"
                                         onClick={() => onStartEditing(comment)}
                                         label=""
@@ -120,9 +128,23 @@ export default function CommentsListPresenter({
                                 </div>
                             </div>
                         ) : (
-                            <p className="text-gray-700 leading-relaxed">
-                                {comment.content}
-                            </p>
+                            <>
+                                <p className="text-gray-700 leading-relaxed mb-3">
+                                    {comment.content}
+                                </p>
+                                {currentUserId && !isAuthor && (
+                                    <div className="flex justify-end">
+                                        <LikeDislikeButtons
+                                            likesCount={comment.likes.length}
+                                            dislikesCount={comment.dislikes.length}
+                                            hasLiked={comment.likes.includes(currentUserId)}
+                                            hasDisliked={comment.dislikes.includes(currentUserId)}
+                                            onLike={() => onCommentLike(comment.id)}
+                                            onDislike={() => onCommentDislike(comment.id)}
+                                        />
+                                    </div>
+                                )}
+                            </>
                         )}
                     </div>
                 );
