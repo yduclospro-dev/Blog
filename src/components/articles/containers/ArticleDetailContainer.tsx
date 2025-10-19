@@ -40,7 +40,6 @@ export default function ArticleDetailContainer() {
             setShowConfirm(false);
             setToast({ message: "Article supprimé avec succès !", type: "success" });
             
-            // Redirection après un court délai pour voir le toast
             setTimeout(() => {
                 router.push("/articles");
             }, 1500);

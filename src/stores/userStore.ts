@@ -44,7 +44,6 @@ const userStoreCreator: StateCreator<UserState, [], [], UserState> = (set, get) 
   login: async (email: string, password: string) => {
     const users = get().users;
     
-    // Trim inputs for comparison
     const trimmedEmail = email.trim();
     const trimmedPassword = password.trim();
     
@@ -71,7 +70,6 @@ const userStoreCreator: StateCreator<UserState, [], [], UserState> = (set, get) 
   },
 
   register: async (username: string, email: string, password: string) => {
-    // Trim all inputs
     const trimmedUsername = username.trim();
     const trimmedEmail = email.trim();
     const trimmedPassword = password.trim();
