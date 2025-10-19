@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { Button, Input, Card } from '@/components/ui'
 
 interface RegistrationFormData {
   username: string
@@ -25,7 +26,7 @@ export default function RegistrationPresenter({
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
       <div className="w-full max-w-md">
-        <div className="bg-white rounded-2xl shadow-xl p-8">
+        <Card variant="auth" padding="lg">
           <div className="text-center mb-8">
             <div className="inline-flex items-center justify-center w-16 h-16 bg-indigo-600 rounded-2xl mb-4">
               <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -42,58 +43,46 @@ export default function RegistrationPresenter({
           )}
 
           <form onSubmit={onSubmit} className="space-y-6">
-            <div>
-              <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">
-                Nom d&apos;utilisateur
-              </label>
-              <input
-                id="username"
-                type="text"
-                value={formData.username}
-                onChange={(e) => onInputChange('username', e.target.value)}
-                placeholder="john_doe"
-                disabled={isLoading}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition placeholder:text-gray-400 disabled:opacity-50"
-              />
-            </div>
+            <Input
+              id="username"
+              type="text"
+              label="Nom d'utilisateur"
+              value={formData.username}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => onInputChange('username', e.target.value)}
+              placeholder="john_doe"
+              disabled={isLoading}
+              variant="auth"
+            />
 
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                Email
-              </label>
-              <input
-                id="email"
-                type="email"
-                value={formData.email}
-                onChange={(e) => onInputChange('email', e.target.value)}
-                placeholder="john@example.com"
-                disabled={isLoading}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition placeholder:text-gray-400 disabled:opacity-50"
-              />
-            </div>
+            <Input
+              id="email"
+              type="email"
+              label="Email"
+              value={formData.email}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => onInputChange('email', e.target.value)}
+              placeholder="john@example.com"
+              disabled={isLoading}
+              variant="auth"
+            />
 
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-                Mot de passe
-              </label>
-              <input
-                id="password"
-                type="password"
-                value={formData.password}
-                onChange={(e) => onInputChange('password', e.target.value)}
-                placeholder="••••••••"
-                disabled={isLoading}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition placeholder:text-gray-400 disabled:opacity-50"
-              />
-            </div>
+            <Input
+              id="password"
+              type="password"
+              label="Mot de passe"
+              value={formData.password}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => onInputChange('password', e.target.value)}
+              placeholder="••••••••"
+              disabled={isLoading}
+              variant="auth"
+            />
 
-            <button
+            <Button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 transition duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isLoading ? 'Inscription...' : 'S\'inscrire'}
-            </button>
+              variant="primary"
+              fullWidth
+              label={isLoading ? 'Inscription...' : "S'inscrire"}
+            />
           </form>
 
           <p className="mt-6 text-center text-sm text-gray-600">
@@ -102,7 +91,7 @@ export default function RegistrationPresenter({
               Se connecter
             </Link>
           </p>
-        </div>
+        </Card>
       </div>
     </div>
   )

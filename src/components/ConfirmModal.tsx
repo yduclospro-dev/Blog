@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { Card } from "@/components/ui";
 
 interface ConfirmModalProps {
     message: string;
@@ -21,9 +22,10 @@ export default function ConfirmModal({ message, onConfirm, onCancel }: ConfirmMo
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-            <div
-                className={`bg-white rounded-2xl shadow-xl p-8 w-[90%] max-w-md text-center transform transition-all duration-300 ${visible ? "scale-100 opacity-100" : "scale-95 opacity-0"
-                    }`}
+            <Card 
+                variant="modal" 
+                padding="lg"
+                className={`w-[90%] max-w-md text-center transform transition-all duration-300 ${visible ? "scale-100 opacity-100" : "scale-95 opacity-0"}`}
             >
                 <h2 className="text-xl font-semibold text-gray-900 mb-4">Supprimer cet article ?</h2>
                 <p className="text-gray-700 mb-6">{message}</p>
@@ -42,7 +44,7 @@ export default function ConfirmModal({ message, onConfirm, onCancel }: ConfirmMo
                         Supprimer
                     </button>
                 </div>
-            </div>
+            </Card>
         </div>
     );
 }

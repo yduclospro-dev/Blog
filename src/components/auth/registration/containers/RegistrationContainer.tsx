@@ -2,8 +2,8 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import RegistrationPresenter from '../presenters/RegistrationPresenter'
 import { useUserStore } from '@/stores/userStore'
+import RegistrationPresenter from '../presenters/RegistrationPresenter'
 
 export default function RegistrationContainer() {
   const [formData, setFormData] = useState({
@@ -14,7 +14,7 @@ export default function RegistrationContainer() {
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
   const [error, setError] = useState('')
-  const { addUser, checkIfUsernameOrEmailExists } = useUserStore()
+  const { register } = useUserStore();
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }))
@@ -26,26 +26,35 @@ export default function RegistrationContainer() {
     setError('')
 
     if (!formData.username || !formData.email || !formData.password) {
-      setError('Tous les champs sont obligatoires')
+      setError('Tous les champs sont obligatoires.')
+      setIsLoading(false)
+      return
+    }
+
+    if (formData.password.length < 6) {
+      setError('Le mot de passe doit contenir au moins 6 caractères.')
       setIsLoading(false)
       return
     }
 
     try {
-      if (checkIfUsernameOrEmailExists(formData.username, formData.email)) {
-        setError('Le nom d\'utilisateur ou l\'email existe déjà')
+      const result = await register(formData.username, formData.email, formData.password)
+
+      if (!result.success) {
+        setError(result.error || "Erreur lors de l'inscription")
         setIsLoading(false)
         return
       }
 
-      addUser({ id: crypto.randomUUID(), ...formData })
-      router.push('/login')
+      console.log('✅ Inscription réussie ! Redirection vers /login')
+      router.push('/login?registered=true')
+      router.refresh()
     } catch (error) {
-      console.error(error)
-      setError('Erreur lors de l\'inscription')
-    } finally {
-      setIsLoading(false)
+      console.error('Erreur lors de l\'inscription:', error)
+      setError('Une erreur est survenue. Veuillez réessayer.')
     }
+    
+    setIsLoading(false)
   }
 
   return (
