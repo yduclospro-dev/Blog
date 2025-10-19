@@ -6,21 +6,32 @@ import { Article } from "@/types/Article";
 
 interface ArticleStore {
     articles: Article[];
-    fetchArticles: () => void;
-    getArticleById: (id: number) => Article | undefined;
-    addArticle: (newArticle: Article) => void;
-    updateArticle: (id: number, updatedData: Partial<Article>) => void;
-    deleteArticle: (id: number) => void;
+    getArticleById: (id: string) => Article | undefined;
+    getLatestArticles: (limit: number) => Article[];
+    addArticle: (articleData: Omit<Article, "id" | "date">) => void;
+    updateArticle: (id: string, updatedData: Partial<Article>) => void;
+    deleteArticle: (id: string) => void;
 }
 
 export const useArticleStore = create<ArticleStore>()(
     persist(
         (set, get) => ({
             articles: [],
-            fetchArticles: () => {},
             getArticleById: (id) => get().articles.find((a) => a.id === id),
-            addArticle: (newArticle) =>
-                set({ articles: [...get().articles, newArticle] }),
+            getLatestArticles: (limit) => {
+                const sorted = [...get().articles].sort((a, b) => 
+                    new Date(b.date).getTime() - new Date(a.date).getTime()
+                );
+                return sorted.slice(0, limit);
+            },
+            addArticle: (articleData) => {
+                const newArticle: Article = {
+                    ...articleData,
+                    id: crypto.randomUUID(),
+                    date: new Date().toISOString().split("T")[0],
+                };
+                set({ articles: [...get().articles, newArticle] });
+            },
             updateArticle: (id, updatedData) =>
                 set({
                     articles: get().articles.map((a) =>

@@ -6,7 +6,7 @@ import { Comment } from "@/types/Comment";
 
 interface CommentsStore {
     comments: Comment[];
-    getCommentsByArticle: (articleId: number) => Comment[];
+    getCommentsByArticle: (articleId: string) => Comment[];
     addComment: (newComment: Omit<Comment, "id" | "date">) => void;
     updateComment: (id: string, content: string) => void;
     deleteComment: (id: string) => void;
@@ -23,7 +23,7 @@ export const useCommentsStore = create<CommentsStore>()(
             addComment: (newComment) => {
                 const comment: Comment = {
                     ...newComment,
-                    id: `comment-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+                    id: crypto.randomUUID(),
                     date: new Date().toISOString(),
                 };
                 set({ comments: [...get().comments, comment] });
