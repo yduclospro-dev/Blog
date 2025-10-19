@@ -44,7 +44,12 @@ export default function NewArticleContainer() {
         };
 
         addArticle(newArticle);
-        router.push("/articles");
+        setToast({ message: "Article créé avec succès !", type: "success" });
+        
+        // Redirection après un court délai pour voir le toast
+        setTimeout(() => {
+            router.push("/articles");
+        }, 1500);
     };
 
     const handleCancel = () => {

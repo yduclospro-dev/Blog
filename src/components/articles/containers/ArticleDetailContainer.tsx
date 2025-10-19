@@ -6,6 +6,8 @@ import { useCommentsStore } from "@/stores/commentsStore";
 import { useUserStore } from "@/stores/userStore";
 import { useState, useEffect } from "react";
 import ArticleDetailPresenter from "../presenters/ArticleDetailPresenter";
+import { Toast } from "@/components/ui";
+import type { ToastType } from "@/components/ui/Toast/toastTypes";
 
 export default function ArticleDetailContainer() {
     const { id } = useParams();
@@ -22,6 +24,7 @@ export default function ArticleDetailContainer() {
     } = useCommentsStore();
     
     const [showConfirm, setShowConfirm] = useState(false);
+    const [toast, setToast] = useState<{ message: string; type: ToastType } | null>(null);
     const article = getArticleById(String(id));
     const comments = article ? getCommentsByArticle(article.id) : [];
 
@@ -35,7 +38,12 @@ export default function ArticleDetailContainer() {
         if (article) {
             deleteArticle(article.id);
             setShowConfirm(false);
-            router.push("/articles");
+            setToast({ message: "Article supprimé avec succès !", type: "success" });
+            
+            // Redirection après un court délai pour voir le toast
+            setTimeout(() => {
+                router.push("/articles");
+            }, 1500);
         }
     };
 
@@ -60,14 +68,17 @@ export default function ArticleDetailContainer() {
             authorName: currentUser.username,
             content,
         });
+        setToast({ message: "Commentaire ajouté avec succès !", type: "success" });
     };
 
     const handleUpdateComment = (commentId: string, content: string) => {
         updateComment(commentId, content);
+        setToast({ message: "Commentaire modifié avec succès !", type: "success" });
     };
 
     const handleDeleteComment = (commentId: string) => {
         deleteComment(commentId);
+        setToast({ message: "Commentaire supprimé avec succès !", type: "success" });
     };
 
     const handleArticleLike = () => {
@@ -99,24 +110,33 @@ export default function ArticleDetailContainer() {
     }
 
     return (
-        <ArticleDetailPresenter
-            article={article}
-            isAuthenticated={isAuthenticated}
-            isAuthor={isAuthor}
-            showConfirm={showConfirm}
-            onDelete={handleDelete}
-            onCancelDelete={handleCancelDelete}
-            onShowConfirm={handleShowConfirm}
-            onBack={handleBack}
-            comments={comments}
-            currentUserId={currentUser?.id}
-            onAddComment={handleAddComment}
-            onUpdateComment={handleUpdateComment}
-            onDeleteComment={handleDeleteComment}
-            onArticleLike={handleArticleLike}
-            onArticleDislike={handleArticleDislike}
-            onCommentLike={handleCommentLike}
-            onCommentDislike={handleCommentDislike}
-        />
+        <>
+            {toast && (
+                <Toast 
+                    message={toast.message} 
+                    type={toast.type} 
+                    onClose={() => setToast(null)} 
+                />
+            )}
+            <ArticleDetailPresenter
+                article={article}
+                isAuthenticated={isAuthenticated}
+                isAuthor={isAuthor}
+                showConfirm={showConfirm}
+                onDelete={handleDelete}
+                onCancelDelete={handleCancelDelete}
+                onShowConfirm={handleShowConfirm}
+                onBack={handleBack}
+                comments={comments}
+                currentUserId={currentUser?.id}
+                onAddComment={handleAddComment}
+                onUpdateComment={handleUpdateComment}
+                onDeleteComment={handleDeleteComment}
+                onArticleLike={handleArticleLike}
+                onArticleDislike={handleArticleDislike}
+                onCommentLike={handleCommentLike}
+                onCommentDislike={handleCommentDislike}
+            />
+        </>
     );
 }
