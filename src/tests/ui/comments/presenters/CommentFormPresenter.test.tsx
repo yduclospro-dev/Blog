@@ -6,7 +6,7 @@ jest.mock('@/components/ui', () => ({
   Button: ({ label, onClick, disabled, variant }: { label: string; onClick?: () => void; disabled?: boolean; variant?: string }) => (
     <button onClick={onClick} disabled={disabled} data-variant={variant}>{label}</button>
   ),
-  Textarea: ({ label, value, onChange, placeholder, rows }: { label: string; value: string; onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void; placeholder?: string; rows?: number }) => (
+  TextArea: ({ label, value, onChange, placeholder, rows }: { label: string; value: string; onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void; placeholder?: string; rows?: number }) => (
     <div>
       <label>{label}</label>
       <textarea

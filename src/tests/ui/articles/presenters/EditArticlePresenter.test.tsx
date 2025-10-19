@@ -9,7 +9,7 @@ jest.mock('@/components/ui', () => ({
   Input: ({ value, onChange, placeholder, type }: { value: string; onChange: (e: React.ChangeEvent<HTMLInputElement>) => void; placeholder?: string; type?: string }) => (
     <input value={value} onChange={onChange} placeholder={placeholder} type={type} />
   ),
-  Textarea: ({ value, onChange, placeholder, rows }: { value: string; onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void; placeholder?: string; rows?: number }) => (
+  TextArea: ({ value, onChange, placeholder, rows }: { value: string; onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void; placeholder?: string; rows?: number }) => (
     <textarea value={value} onChange={onChange} placeholder={placeholder} rows={rows} />
   ),
   Card: ({ children }: { children: React.ReactNode }) => <div>{children}</div>

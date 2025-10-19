@@ -1,5 +1,5 @@
 import { Comment } from "@/types/Comment";
-import { Button, Textarea, LikeDislikeButtons } from "@/components/ui";
+import { Button, TextArea, LikeDislikeButtons } from "@/components/ui";
 import ConfirmModal from "@/components/ConfirmModal";
 
 interface CommentsListPresenterProps {
@@ -106,7 +106,7 @@ export default function CommentsListPresenter({
 
                         {isEditing ? (
                             <div className="space-y-3">
-                                <Textarea
+                                <TextArea
                                     label=""
                                     value={editContent}
                                     onChange={(e) => onEditContentChange(e.target.value)}

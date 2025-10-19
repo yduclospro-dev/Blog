@@ -1,8 +1,8 @@
 import React, { forwardRef } from 'react';
-import { TextareaProps } from './textareaTypes';
-import { baseStyles, variantStyles } from './textareaStyles';
+import { TextAreaProps } from './textAreaTypes';
+import { baseStyles, variantStyles } from './textAreaStyles';
 
-const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
+const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
   (
     {
       value,
@@ -76,6 +76,6 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
   }
 );
 
-Textarea.displayName = 'Textarea';
+TextArea.displayName = 'TextArea';
 
-export default Textarea;
+export default TextArea;

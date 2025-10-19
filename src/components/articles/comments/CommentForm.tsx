@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Textarea } from "@/components/ui";
+import { Button, TextArea } from "@/components/ui";
 
 interface CommentFormProps {
     onSubmit: (content: string) => void;
@@ -24,7 +24,7 @@ export default function CommentForm({ onSubmit }: CommentFormProps) {
             <h3 className="text-lg font-semibold text-gray-900 mb-4">
                 💬 Ajouter un commentaire
             </h3>
-            <Textarea
+            <TextArea
                 label="Votre commentaire"
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
