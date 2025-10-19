@@ -101,7 +101,7 @@ describe('ArticlesListPresenter', () => {
       render(<ArticlesListPresenter articles={[]} isAuthenticated={false} />)
 
       // Assert
-      expect(screen.getByText('Articles')).toBeInTheDocument()
+      expect(screen.getAllByText('Articles')).toHaveLength(2) // Mobile + Desktop headers
     })
 
     it('should not render any cards when empty', () => {
@@ -196,8 +196,10 @@ describe('ArticlesListPresenter', () => {
       render(<ArticlesListPresenter articles={mockArticles} isAuthenticated={true} />)
 
       // Assert
-      expect(screen.getByTestId('button-link')).toBeInTheDocument()
-      expect(screen.getByText('+ Créer un article')).toBeInTheDocument()
+      const buttonLinks = screen.getAllByTestId('button-link')
+      expect(buttonLinks).toHaveLength(2) // Mobile + Desktop buttons
+      const labels = screen.getAllByText('+ Créer un article')
+      expect(labels).toHaveLength(2) // Mobile + Desktop labels
     })
 
     it('should not show create button when not authenticated', () => {
