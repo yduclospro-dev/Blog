@@ -1,24 +1,24 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useUserStore } from "@/stores/userStore";
+import { useArticleStore } from "@/stores/articlesStore";
 import HomePresenter from "../presenters/HomePresenter";
 
 export default function HomeContainer() {
-  const [connectedEmail, setConnectedEmail] = useState<string | null>(null);
+  const { currentUser, isAuthenticated } = useUserStore();
+  const { articles, fetchArticles } = useArticleStore();
 
-  // 🔹 Récupération du cookie au chargement
   useEffect(() => {
-    const cookies = document.cookie
-      .split("; ")
-      .reduce((acc: Record<string, string>, curr) => {
-        const [key, val] = curr.split("=");
-        acc[key] = decodeURIComponent(val);
-        return acc;
-      }, {});
+    fetchArticles();
+  }, [fetchArticles]);
 
-    if (cookies.is_connected === "true" && cookies.connected_email) {
-      setConnectedEmail(cookies.connected_email);
-    }
-  }, []);
+  const featuredArticles = articles.slice(0, 3);
 
-    return <HomePresenter connectedEmail={connectedEmail} />;
+  return (
+    <HomePresenter
+      currentUser={currentUser}
+      isAuthenticated={isAuthenticated}
+      featuredArticles={featuredArticles}
+    />
+  );
 }

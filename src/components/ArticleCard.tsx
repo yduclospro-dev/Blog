@@ -1,4 +1,5 @@
 import { Article } from "@/types/Article";
+import { Card } from "@/components/ui";
 
 interface Props {
     article: Article;
@@ -11,7 +12,7 @@ export default function ArticleCard({ article }: Props) {
             : article.content;
 
     return (
-        <div className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 h-[320px] flex flex-col">
+        <Card variant="default" padding="none" hover className="overflow-hidden flex flex-col">
             <div className="h-32 w-full bg-gradient-to-r from-blue-400 to-blue-300"></div>
 
             <div className="p-5 flex flex-col justify-between flex-grow">
@@ -22,23 +23,25 @@ export default function ArticleCard({ article }: Props) {
                     <p className="text-gray-600 text-sm leading-snug">{preview}</p>
                 </div>
 
-                <div className="flex items-center justify-between mt-4">
-                    <div className="flex items-center gap-2">
-                        <div className="h-8 w-8 rounded-full bg-blue-500"></div>
-                        <span className="text-sm font-medium text-gray-700">
-                            {article.author}
+                <div className="mt-4 space-y-3">
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                            <div className="h-8 w-8 rounded-full bg-blue-500"></div>
+                            <span className="text-sm font-medium text-gray-700">
+                                {article.author}
+                            </span>
+                        </div>
+
+                        <span className="text-xs text-gray-500">
+                            {new Date(article.date).toLocaleDateString("fr-FR", {
+                                day: "numeric",
+                                month: "long",
+                                year: "numeric",
+                            })}
                         </span>
                     </div>
-
-                    <span className="text-xs text-gray-500">
-                        {new Date(article.date).toLocaleDateString("fr-FR", {
-                            day: "numeric",
-                            month: "long",
-                            year: "numeric",
-                        })}
-                    </span>
                 </div>
             </div>
-        </div>
+        </Card>
     );
 }
