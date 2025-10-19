@@ -1,93 +1,309 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📝 Blog Platform
 
-## Getting Started
+A modern, full-featured blog platform built with Next.js 15, React 19, TypeScript, and Tailwind CSS 4.
 
-First, install the dependencies:
+## ✨ Features
 
-```bash
-npm i
-```
+- **User Authentication**: Registration, login, and session management
+- **Article Management**: Create, read, update, and delete articles
+- **Comment System**: Add, edit, delete, and interact with comments
+- **Like/Dislike System**: React to articles and comments
+- **Responsive Design**: Mobile-first approach with burger menu navigation
+- **Author Permissions**: Only authors can edit/delete their own content
+- **Container/Presenter Architecture**: Clean separation of concerns
+- **Comprehensive Testing**: 382+ tests with Jest and React Testing Library
+- **Type Safety**: Full TypeScript coverage
+- **State Management**: Zustand for global state
 
-Then, run the development server:
+## 🚀 Getting Started
+
+### Prerequisites
+
+Before you begin, ensure you have the following installed:
+
+- **Node.js**: Version 20.x or higher ([Download](https://nodejs.org/))
+- **npm**: Version 10.x or higher (comes with Node.js)
+- **Git**: For version control ([Download](https://git-scm.com/))
+
+### Installation
+
+1. **Clone the repository**
+
+   ```bash
+   git clone https://github.com/yduclospro-dev/Blog.git
+   cd Blog
+   ```
+
+2. **Install dependencies**
+
+   ```bash
+   npm install
+   ```
+
+   This will install all required packages including:
+   - Next.js 15.5.4 (with Turbopack)
+   - React 19.1.0
+   - TypeScript 5
+   - Tailwind CSS 4
+   - Zustand 5.0.8
+   - Jest 30.2.0
+   - And all development dependencies
+
+3. **Verify installation**
+
+   Check that all dependencies are correctly installed:
+
+   ```bash
+   npm list --depth=0
+   ```
+
+### Running the Application
+
+#### Development Mode
+
+Start the development server with hot reload:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The application will be available at [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**Development Features:**
+- Hot Module Replacement (HMR)
+- Turbopack for faster builds
+- Real-time error reporting
+- Automatic TypeScript checking
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+#### Production Build
 
-## Context
+Build the application for production:
 
-The goal of this project is to explore modern web development tools using JavaScript.
-We use Next.js with TypeScript for the structure, Tailwind CSS for styling, Zustand for global state management, and Jest for testing.
+```bash
+npm run build
+```
 
-We’ve built a blogging application where users can create an account, log in, and access a page with blog posts.
-Authenticated users can create, edit, and delete their own posts.
+Start the production server:
 
-## Architecture
+```bash
+npm start
+```
 
-The project follows a Container/Presenter architecture.
-Each page or component has a Container (for the functional logic) and a Presenter (for the UI).
+The optimized application will run at [http://localhost:3000](http://localhost:3000)
 
-This structure keeps the project cleaner and easier to understand.
-When changes are needed, you can simply locate the relevant component and decide whether you need to update the Container (logic) or the Presenter (view).
+### Running Tests
 
-## Components
+#### Watch Mode (Recommended for Development)
 
-**Home Page :**
-The Home container retrieves connection cookies.
-If the user is logged in, they can access the blog and articles page.
-Otherwise, they must log in and can navigate to the Login page.
+Run all tests in watch mode with automatic re-runs on file changes:
 
-**Gestion des utilisateurs :**
-- Login
-The login container manages session cookies to authenticate users who already have an account.
-If the login fails, an error message is displayed.
+```bash
+npm test
+```
 
-User information is stored locally using Zustand and localStorage.
-The Presenter contains the login form and a link to the registration page for new users.
-Users can also log out, which deletes the authentication cookies.
+#### Run All Tests Once
 
-- Registration
-The registration container validates user input and checks whether the account already exists.
-If everything is correct, a new user account is created and persisted in localStorage.
-Otherwise, appropriate error messages are displayed.
+```bash
+npm test -- --watchAll=false
+```
 
-The Presenter handles the registration form’s visual layout.
-        
-**Layout :**
-- Nav & Footer
-The components in ```/components/layout``` are shared across all pages and are imported into the ```RootLayout```.
+#### Run Specific Test File
 
-## Data Persistence
+```bash
+npm test -- NewArticleContainer
+```
 
-Data is stored locally using the browser’s localStorage.
-We use Zustand stores to manage accessibility and persistence of data across the app.
+#### Run Tests with Coverage
 
-The user store allows creating, retrieving, and persisting user data.
-The blog store allows creating, editing, deleting, and persisting blog posts, as well as retrieving them through getter functions.
+```bash
+npm test -- --coverage --watchAll=false
+```
 
-## Deploy on Vercel
+**Test Coverage:**
+- Unit tests: Components, presenters, containers
+- Integration tests: Store interactions
+- 382+ tests covering all major features
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Code Quality
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+#### Linting
 
-## Learn More
+Check code quality with ESLint:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run lint
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📁 Project Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+Blog/
+├── src/
+│   ├── app/                      # Next.js app router pages
+│   │   ├── articles/            # Article pages
+│   │   ├── login/               # Login page
+│   │   ├── registration/        # Registration page
+│   │   ├── layout.tsx           # Root layout
+│   │   └── page.tsx             # Home page
+│   │
+│   ├── components/               # React components
+│   │   ├── articles/            # Article-related components
+│   │   │   ├── containers/      # Container components (logic)
+│   │   │   ├── presenters/      # Presenter components (UI)
+│   │   │   └── comments/        # Comment system
+│   │   │
+│   │   ├── auth/                # Authentication components
+│   │   │   ├── login/
+│   │   │   └── registration/
+│   │   │
+│   │   ├── home/                # Home page components
+│   │   ├── layout/              # Layout components (Nav, Footer)
+│   │   └── ui/                  # Reusable UI components
+│   │       ├── Button/
+│   │       ├── ButtonLink/
+│   │       ├── Card/
+│   │       ├── Input/
+│   │       ├── TextArea/
+│   │       └── LikeDislikeButtons/
+│   │
+│   ├── stores/                   # Zustand stores
+│   │   ├── articlesStore.ts     # Article state management
+│   │   ├── commentsStore.ts     # Comment state management
+│   │   └── userStore.ts         # User authentication state
+│   │
+│   ├── types/                    # TypeScript type definitions
+│   │   ├── Article.ts
+│   │   ├── Comment.ts
+│   │   └── User.ts
+│   │
+│   └── tests/                    # Test files
+│       └── ui/                   # Component tests
+│
+├── public/                       # Static assets
+├── jest.config.mjs              # Jest configuration
+├── tailwind.config.ts           # Tailwind CSS configuration
+├── tsconfig.json                # TypeScript configuration
+└── package.json                 # Project dependencies
+```
+
+## 🏗️ Architecture
+
+### Container/Presenter Pattern
+
+The project uses a clean separation between logic and presentation:
+
+- **Containers**: Handle business logic, state management, and side effects
+- **Presenters**: Pure UI components that receive props and render
+
+**Example:**
+```
+ArticlesListContainer (logic) → ArticlesListPresenter (UI)
+```
+
+### State Management
+
+**Zustand Stores:**
+- `articlesStore`: Manages articles, CRUD operations, and likes/dislikes
+- `commentsStore`: Manages comments with full CRUD and reactions
+- `userStore`: Handles authentication and user session
+
+### Component Library
+
+Reusable UI components with variants and TypeScript types:
+- Button (primary, secondary, outline, ghost)
+- ButtonLink (navigation with styling)
+- Card (content containers)
+- Input (form inputs with auth variant)
+- TextArea (auto-resize with variants)
+- LikeDislikeButtons (interactive reactions)
+
+## 🛠️ Technologies
+
+### Core
+- **Next.js 15.5.4**: React framework with App Router
+- **React 19.1.0**: UI library
+- **TypeScript 5**: Type safety
+- **Tailwind CSS 4**: Utility-first styling
+
+### State Management
+- **Zustand 5.0.8**: Lightweight state management
+
+### Testing
+- **Jest 30.2.0**: Testing framework
+- **React Testing Library 16.3.0**: Component testing
+- **@testing-library/jest-dom**: Custom matchers
+
+### Development Tools
+- **Turbopack**: Fast bundler (Next.js)
+- **ESLint 9**: Code linting
+- **ts-jest**: TypeScript support for Jest
+
+## 📝 Development Guidelines
+
+### Naming Conventions
+- **Components**: PascalCase (e.g., `ArticleCard.tsx`)
+- **Functions**: camelCase (e.g., `handleSubmit`)
+- **Constants**: UPPER_SNAKE_CASE (e.g., `MAX_ARTICLE_LENGTH`)
+- **Types/Interfaces**: PascalCase (e.g., `ArticleProps`)
+
+### File Organization
+- Container components: `*Container.tsx`
+- Presenter components: `*Presenter.tsx`
+- Test files: `*.test.tsx`
+- Type files: Use singular names (e.g., `Article.ts`)
+
+### Testing Best Practices
+- Write tests for all new features
+- Follow AAA pattern: Arrange, Act, Assert
+- Use descriptive test names
+- Mock external dependencies
+- Aim for high coverage (currently 382+ tests)
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+**Port already in use:**
+```bash
+# Kill process on port 3000 (Windows)
+npx kill-port 3000
+```
+
+**Module not found errors:**
+```bash
+# Clear node_modules and reinstall
+rm -rf node_modules package-lock.json
+npm install
+```
+
+**TypeScript errors:**
+```bash
+# Restart TypeScript server in VS Code
+Ctrl+Shift+P → "TypeScript: Restart TS Server"
+```
+
+**Test failures:**
+```bash
+# Clear Jest cache
+npm test -- --clearCache
+```
+
+## 📄 License
+
+This project is private and intended for educational purposes.
+
+## 👥 Contributing
+
+This is a school project. For any questions or suggestions, please contact the repository owner.
+
+## 🔗 Links
+
+- [Next.js Documentation](https://nextjs.org/docs)
+- [React Documentation](https://react.dev)
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
+- [Zustand Documentation](https://docs.pmnd.rs/zustand)
+- [Jest Documentation](https://jestjs.io/docs/getting-started)
+
+---
+
+Made with ❤️ using Next.js and React
