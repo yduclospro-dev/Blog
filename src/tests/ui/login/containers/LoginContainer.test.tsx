@@ -36,15 +36,11 @@ jest.mock('@/components/auth/login/presenters/LoginPresenter', () => ({
   __esModule: true,
   default: ({
     formData,
-    error,
-    successMessage,
     isLoading,
     onInputChange,
     onSubmit
   }: {
     formData: { email: string; password: string }
-    error: string
-    successMessage?: string
     isLoading?: boolean
     onInputChange: (field: string, value: string) => void
     onSubmit: (e: React.FormEvent<HTMLFormElement>) => void
