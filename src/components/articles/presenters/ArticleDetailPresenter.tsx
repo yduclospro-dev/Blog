@@ -1,7 +1,7 @@
 import { Article } from "@/types/Article";
 import { Comment } from "@/types/Comment";
 import ConfirmModal from "@/components/ConfirmModal";
-import { Button, ButtonLink, Card } from "@/components/ui";
+import { Button, ButtonLink, Card, LikeDislikeButtons } from "@/components/ui";
 import CommentsListContainer from "../comments/containers/CommentsListContainer";
 import CommentFormContainer from "../comments/containers/CommentFormContainer";
 
@@ -19,6 +19,10 @@ interface ArticleDetailPresenterProps {
     onAddComment: (content: string) => void;
     onUpdateComment: (commentId: string, content: string) => void;
     onDeleteComment: (commentId: string) => void;
+    onArticleLike: () => void;
+    onArticleDislike: () => void;
+    onCommentLike: (commentId: string) => void;
+    onCommentDislike: (commentId: string) => void;
 }
 
 export default function ArticleDetailPresenter({
@@ -35,6 +39,10 @@ export default function ArticleDetailPresenter({
     onAddComment,
     onUpdateComment,
     onDeleteComment,
+    onArticleLike,
+    onArticleDislike,
+    onCommentLike,
+    onCommentDislike,
 }: ArticleDetailPresenterProps) {
     return (
         <div className="bg-gradient-to-b from-gray-50 to-white min-h-screen py-16 px-6 md:px-20 lg:px-32">
@@ -97,6 +105,19 @@ export default function ArticleDetailPresenter({
                             <p key={i} className="mb-4">{paragraph}</p>
                         ))}
                     </div>
+
+                    {isAuthenticated && (
+                        <div className="mt-8 flex justify-center">
+                            <LikeDislikeButtons
+                                likesCount={article.likes.length}
+                                dislikesCount={article.dislikes.length}
+                                hasLiked={currentUserId ? article.likes.includes(currentUserId) : false}
+                                hasDisliked={currentUserId ? article.dislikes.includes(currentUserId) : false}
+                                onLike={onArticleLike}
+                                onDislike={onArticleDislike}
+                            />
+                        </div>
+                    )}
                 </article>
 
                 <div className="mt-12 pt-8 border-t-2 border-gray-200">
@@ -117,6 +138,8 @@ export default function ArticleDetailPresenter({
                         currentUserId={currentUserId}
                         onDelete={onDeleteComment}
                         onUpdate={onUpdateComment}
+                        onLike={onCommentLike}
+                        onDislike={onCommentDislike}
                     />
                 </div>
             </Card>

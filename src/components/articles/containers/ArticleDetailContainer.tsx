@@ -10,13 +10,15 @@ import ArticleDetailPresenter from "../presenters/ArticleDetailPresenter";
 export default function ArticleDetailContainer() {
     const { id } = useParams();
     const router = useRouter();
-    const { getArticleById, deleteArticle } = useArticleStore();
+    const { getArticleById, deleteArticle, toggleArticleLike, toggleArticleDislike } = useArticleStore();
     const { isAuthenticated, currentUser } = useUserStore();
     const { 
         getCommentsByArticle, 
         addComment, 
         updateComment, 
-        deleteComment 
+        deleteComment,
+        toggleCommentLike,
+        toggleCommentDislike
     } = useCommentsStore();
     
     const [showConfirm, setShowConfirm] = useState(false);
@@ -68,6 +70,26 @@ export default function ArticleDetailContainer() {
         deleteComment(commentId);
     };
 
+    const handleArticleLike = () => {
+        if (!article || !currentUser) return;
+        toggleArticleLike(article.id, currentUser.id);
+    };
+
+    const handleArticleDislike = () => {
+        if (!article || !currentUser) return;
+        toggleArticleDislike(article.id, currentUser.id);
+    };
+
+    const handleCommentLike = (commentId: string) => {
+        if (!currentUser) return;
+        toggleCommentLike(commentId, currentUser.id);
+    };
+
+    const handleCommentDislike = (commentId: string) => {
+        if (!currentUser) return;
+        toggleCommentDislike(commentId, currentUser.id);
+    };
+
     if (!article) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -91,6 +113,10 @@ export default function ArticleDetailContainer() {
             onAddComment={handleAddComment}
             onUpdateComment={handleUpdateComment}
             onDeleteComment={handleDeleteComment}
+            onArticleLike={handleArticleLike}
+            onArticleDislike={handleArticleDislike}
+            onCommentLike={handleCommentLike}
+            onCommentDislike={handleCommentDislike}
         />
     );
 }
