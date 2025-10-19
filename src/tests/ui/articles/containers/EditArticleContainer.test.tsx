@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import EditArticleContainer from '@/components/articles/containers/EditArticleContainer'
 import { Article } from '@/types/Article'
@@ -54,6 +54,15 @@ jest.mock('@/components/ForbiddenAccess', () => ({
   __esModule: true,
   default: ({ message }: { message: string }) => (
     <div data-testid="forbidden-access">{message}</div>
+  )
+}))
+
+// Mock Toast
+jest.mock('@/components/ui', () => ({
+  Toast: ({ message, type }: { message: string; type: string }) => (
+    <div data-testid="toast" data-message={message} data-type={type}>
+      {message}
+    </div>
   )
 }))
 
@@ -235,16 +244,30 @@ describe('EditArticleContainer', () => {
       })
     })
 
-    it('should redirect to article detail after save', () => {
+    it('should redirect to article detail after save', async () => {
       // Arrange
+      jest.useFakeTimers()
       render(<EditArticleContainer />)
       const saveButton = screen.getByTestId('save-button')
 
       // Act
       fireEvent.click(saveButton)
 
-      // Assert
-      expect(mockPush).toHaveBeenCalledWith('/articles/article1')
+      // Assert - Toast appears
+      await waitFor(() => {
+        const toast = screen.getByTestId('toast')
+        expect(toast).toHaveAttribute('data-message', 'Article modifié avec succès !')
+        expect(toast).toHaveAttribute('data-type', 'success')
+      })
+      
+      // Assert - Redirect happens after delay
+      jest.advanceTimersByTime(1500)
+      
+      await waitFor(() => {
+        expect(mockPush).toHaveBeenCalledWith('/articles/article1')
+      })
+      
+      jest.useRealTimers()
     })
 
     it('should save with only title changed', () => {
