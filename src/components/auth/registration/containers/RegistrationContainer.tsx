@@ -4,6 +4,8 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useUserStore } from '@/stores/userStore'
 import RegistrationPresenter from '../presenters/RegistrationPresenter'
+import { Toast } from "@/components/ui";
+import type { ToastType } from "@/components/ui/Toast/toastTypes";
 
 export default function RegistrationContainer() {
   const [formData, setFormData] = useState({
@@ -13,7 +15,7 @@ export default function RegistrationContainer() {
   })
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
-  const [error, setError] = useState('')
+  const [toast, setToast] = useState<{ message: string; type: ToastType } | null>(null);
   const { register } = useUserStore();
 
   const handleInputChange = (field: string, value: string) => {
@@ -23,16 +25,16 @@ export default function RegistrationContainer() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
-    setError('')
+    setToast(null)
 
     if (!formData.username.trim() || !formData.email.trim() || !formData.password.trim()) {
-      setError('Tous les champs sont obligatoires.')
+      setToast({ message: 'Tous les champs sont obligatoires.', type: 'error' })
       setIsLoading(false)
       return
     }
 
     if (formData.password.trim().length < 6) {
-      setError('Le mot de passe doit contenir au moins 6 caractères.')
+      setToast({ message: 'Le mot de passe doit contenir au moins 6 caractères.', type: 'error' })
       setIsLoading(false)
       return
     }
@@ -45,7 +47,7 @@ export default function RegistrationContainer() {
       )
 
       if (!result.success) {
-        setError(result.error || "Erreur lors de l'inscription")
+        setToast({ message: result.error || "Erreur lors de l'inscription", type: 'error' })
         setIsLoading(false)
         return
       }
@@ -55,19 +57,28 @@ export default function RegistrationContainer() {
       router.refresh()
     } catch (error) {
       console.error('Erreur lors de l\'inscription:', error)
-      setError('Une erreur est survenue. Veuillez réessayer.')
+      setToast({ message: 'Une erreur est survenue. Veuillez réessayer.', type: 'error' })
     }
     
     setIsLoading(false)
   }
 
   return (
-    <RegistrationPresenter
-      formData={formData}
-      isLoading={isLoading}
-      error={error}
-      onInputChange={handleInputChange}
-      onSubmit={handleSubmit}
-    />
+    <>
+      {toast && (
+        <Toast 
+          message={toast.message} 
+          type={toast.type} 
+          onClose={() => setToast(null)} 
+        />
+      )}
+      <RegistrationPresenter
+        formData={formData}
+        isLoading={isLoading}
+        error="" // Deprecated: now using Toast
+        onInputChange={handleInputChange}
+        onSubmit={handleSubmit}
+      />
+    </>
   )
 }

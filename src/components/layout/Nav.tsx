@@ -3,19 +3,25 @@
 import Link from 'next/link'
 import { useUserStore } from '@/stores/userStore'
 import { useRouter } from 'next/navigation'
-import { Button, ButtonLink } from '@/components/ui'
+import { Button, ButtonLink, Toast } from '@/components/ui'
 import { useState, useEffect } from 'react'
+import type { ToastType } from "@/components/ui/Toast/toastTypes";
 
 export default function Navbar() {
   const { currentUser, isAuthenticated, logout } = useUserStore()
   const router = useRouter()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [toast, setToast] = useState<{ message: string; type: ToastType } | null>(null);
 
   const handleLogout = () => {
     logout()
-    router.push('/')
-    router.refresh()
+    setToast({ message: "Déconnexion réussie !", type: "success" });
     setIsMenuOpen(false)
+    
+    setTimeout(() => {
+      router.push('/')
+      router.refresh()
+    }, 1500);
   }
 
   // Fermer le menu lors du changement de route
@@ -36,7 +42,15 @@ export default function Navbar() {
   }, [isMenuOpen])
 
   return (
-    <nav className="bg-blue-600 shadow-lg sticky top-0 z-50">
+    <>
+      {toast && (
+        <Toast 
+          message={toast.message} 
+          type={toast.type} 
+          onClose={() => setToast(null)} 
+        />
+      )}
+      <nav className="bg-blue-600 shadow-lg sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
         {/* Desktop & Mobile Header */}
         <div className="flex items-center justify-between">
@@ -181,5 +195,6 @@ export default function Navbar() {
         )}
       </div>
     </nav>
+    </>
   );
 }

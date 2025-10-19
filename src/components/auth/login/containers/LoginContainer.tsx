@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useUserStore } from "@/stores/userStore";
 import LoginPresenter from "../presenters/LoginPresenter";
+import { Toast } from "@/components/ui";
+import type { ToastType } from "@/components/ui/Toast/toastTypes";
 
 export default function LoginContainer() {
   const router = useRouter();
@@ -13,13 +15,12 @@ export default function LoginContainer() {
     email: "",
     password: ""
   });
-  const [error, setError] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
+  const [toast, setToast] = useState<{ message: string; type: ToastType } | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (searchParams.get('registered') === 'true') {
-      setSuccessMessage("Inscription réussie ! Vous pouvez maintenant vous connecter.");
+      setToast({ message: "Inscription réussie ! Vous pouvez maintenant vous connecter.", type: "success" });
     }
   }, [searchParams]);
 
@@ -29,11 +30,11 @@ export default function LoginContainer() {
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError("");
+    setToast(null);
     setIsLoading(true);
 
     if (!formData.email.trim() || !formData.password.trim()) {
-      setError("Veuillez remplir tous les champs.");
+      setToast({ message: "Veuillez remplir tous les champs.", type: "error" });
       setIsLoading(false);
       return;
     }
@@ -42,27 +43,39 @@ export default function LoginContainer() {
       const result = await login(formData.email, formData.password);
 
       if (!result.success) {
-        setError(result.error || "Email ou mot de passe incorrect.");
+        setToast({ message: result.error || "Email ou mot de passe incorrect.", type: "error" });
         setIsLoading(false);
         return;
       }
 
-      router.push("/");
+      setToast({ message: "Connexion réussie !", type: "success" });
+      setTimeout(() => {
+        router.push("/");
+      }, 1500);
     } catch (error) {
       console.error("Erreur de connexion:", error);
-      setError("Une erreur est survenue. Veuillez réessayer.");
+      setToast({ message: "Une erreur est survenue. Veuillez réessayer.", type: "error" });
       setIsLoading(false);
     }
   };
 
   return (
-    <LoginPresenter
-      formData={formData}
-      error={error}
-      successMessage={successMessage}
-      isLoading={isLoading}
-      onInputChange={handleInputChange}
-      onSubmit={handleLogin}
-    />
+    <>
+      {toast && (
+        <Toast 
+          message={toast.message} 
+          type={toast.type} 
+          onClose={() => setToast(null)} 
+        />
+      )}
+      <LoginPresenter
+        formData={formData}
+        error="" // Deprecated: now using Toast
+        successMessage="" // Deprecated: now using Toast
+        isLoading={isLoading}
+        onInputChange={handleInputChange}
+        onSubmit={handleLogin}
+      />
+    </>
   );
 }

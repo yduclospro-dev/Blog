@@ -6,6 +6,8 @@ import { useUserStore } from "@/stores/userStore";
 import { useState } from "react";
 import ForbiddenAccess from "@/components/ForbiddenAccess";
 import EditArticlePresenter from "../presenters/EditArticlePresenter";
+import { Toast } from "@/components/ui";
+import type { ToastType } from "@/components/ui/Toast/toastTypes";
 
 export default function EditArticleContainer() {
   const { id } = useParams();
@@ -18,6 +20,7 @@ export default function EditArticleContainer() {
     title: article?.title || "",
     content: article?.content || "",
   });
+  const [toast, setToast] = useState<{ message: string; type: ToastType } | null>(null);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -29,7 +32,12 @@ export default function EditArticleContainer() {
         title: formData.title,
         content: formData.content
       });
-      router.push(`/articles/${article.id}`);
+      setToast({ message: "Article modifié avec succès !", type: "success" });
+      
+      // Redirection après un court délai pour voir le toast
+      setTimeout(() => {
+        router.push(`/articles/${article.id}`);
+      }, 1500);
     }
   };
 
@@ -56,11 +64,20 @@ export default function EditArticleContainer() {
   }
 
   return (
-    <EditArticlePresenter
-      formData={formData}
-      onInputChange={handleInputChange}
-      onSave={handleSave}
-      onCancel={handleCancel}
-    />
+    <>
+      {toast && (
+        <Toast 
+          message={toast.message} 
+          type={toast.type} 
+          onClose={() => setToast(null)} 
+        />
+      )}
+      <EditArticlePresenter
+        formData={formData}
+        onInputChange={handleInputChange}
+        onSave={handleSave}
+        onCancel={handleCancel}
+      />
+    </>
   );
 }
