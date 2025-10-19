@@ -1,1 +1,1 @@
-export { default as LikeDislikeButtons } from './LikeDislikeButtons';
+export { default } from './LikeDislikeButtons';
