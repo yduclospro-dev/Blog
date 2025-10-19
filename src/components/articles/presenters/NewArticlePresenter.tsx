@@ -3,7 +3,6 @@ import { Button, Input, Textarea, Card } from "@/components/ui";
 
 interface NewArticleFormData {
     title: string;
-    date: string;
     content: string;
 }
 
@@ -51,13 +50,6 @@ export default function NewArticlePresenter({
                         placeholder="Titre"
                         value={formData.title}
                         onChange={(e) => onInputChange('title', e.target.value)}
-                        variant="default"
-                    />
-
-                    <Input
-                        type="date"
-                        value={formData.date}
-                        onChange={(e) => onInputChange('date', e.target.value)}
                         variant="default"
                     />
 
