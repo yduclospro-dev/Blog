@@ -14,8 +14,23 @@ export default function ArticlesListPresenter({
 }: ArticlesListPresenterProps) {
     return (
         <div className="bg-gray-50 min-h-screen py-16 px-10 md:px-20 lg:px-32">
-            <div className="max-w-6xl mx-auto mb-10 flex justify-between items-center">
-                <h1 className="text-4xl font-extrabold text-gray-900 mb-8">
+            {/* Mobile: Titre et bouton empilés */}
+            <div className="max-w-6xl mx-auto mb-10 lg:hidden">
+                <h1 className="text-4xl font-extrabold text-gray-900 mb-4">
+                    Articles
+                </h1>
+                {isAuthenticated && (
+                    <ButtonLink
+                        href="/articles/new"
+                        variant="primary"
+                        label="+ Créer un article"
+                    />
+                )}
+            </div>
+
+            {/* Desktop: Titre et bouton côte à côte */}
+            <div className="max-w-6xl mx-auto mb-10 hidden lg:flex justify-between items-center">
+                <h1 className="text-4xl font-extrabold text-gray-900">
                     Articles
                 </h1>
                 {isAuthenticated && (
