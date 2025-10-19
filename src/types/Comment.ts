@@ -5,4 +5,6 @@ export interface Comment {
     authorName: string;
     content: string;
     date: string;
+    likes: string[];
+    dislikes: string[];
 }
