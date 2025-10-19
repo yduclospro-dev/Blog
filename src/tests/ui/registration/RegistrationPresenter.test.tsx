@@ -27,7 +27,8 @@ jest.mock('@/components/ui', () => ({
         disabled={disabled}
       />
     </div>
-  )
+  ),
+  Card: ({ children }: { children: React.ReactNode }) => <div>{children}</div>
 }))
 
 describe('RegistrationPresenter', () => {
