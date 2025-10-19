@@ -39,6 +39,7 @@ export default function NewArticleContainer() {
             id: Date.now(),
             ...formData,
             author: currentUser.username,
+            authorId: currentUser.id,
         };
 
         addArticle(newArticle);
