@@ -20,7 +20,7 @@ export default function ArticleDetailContainer() {
     } = useCommentsStore();
     
     const [showConfirm, setShowConfirm] = useState(false);
-    const article = getArticleById(Number(id));
+    const article = getArticleById(String(id));
     const comments = article ? getCommentsByArticle(article.id) : [];
 
     const isAuthor = !!(article && currentUser?.id === article.authorId);
