@@ -16,7 +16,6 @@ export default function NewArticleContainer() {
 
     const [formData, setFormData] = useState({
         title: "",
-        date: new Date().toISOString().split("T")[0],
         content: "",
     });
 
@@ -36,7 +35,6 @@ export default function NewArticleContainer() {
         }
 
         const newArticle = {
-            id: Date.now(),
             ...formData,
             author: currentUser.username,
             authorId: currentUser.id,
