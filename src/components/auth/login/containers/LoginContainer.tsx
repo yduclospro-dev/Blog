@@ -32,7 +32,7 @@ export default function LoginContainer() {
     setError("");
     setIsLoading(true);
 
-    if (!formData.email || !formData.password) {
+    if (!formData.email.trim() || !formData.password.trim()) {
       setError("Veuillez remplir tous les champs.");
       setIsLoading(false);
       return;

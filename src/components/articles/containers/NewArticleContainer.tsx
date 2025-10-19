@@ -24,7 +24,7 @@ export default function NewArticleContainer() {
     };
 
     const handleSave = () => {
-        if (!formData.title || !formData.content) {
+        if (!formData.title.trim() || !formData.content.trim()) {
             alert("Le titre et le contenu sont requis !");
             return;
         }
@@ -35,7 +35,8 @@ export default function NewArticleContainer() {
         }
 
         const newArticle = {
-            ...formData,
+            title: formData.title,
+            content: formData.content,
             author: currentUser.username,
             authorId: currentUser.id,
         };

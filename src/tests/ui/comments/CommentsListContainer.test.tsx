@@ -184,11 +184,11 @@ describe('CommentsListContainer', () => {
       const saveButton = screen.getByText('Save Edit')
 
       // Act
-      fireEvent.change(input, { target: { value: 'Nouveau contenu' } })
+      fireEvent.change(input, { target: { value: '  Nouveau contenu  ' } })
       fireEvent.click(saveButton)
 
-      // Assert
-      expect(mockProps.onUpdate).toHaveBeenCalledWith('1', 'Nouveau contenu')
+      // Assert - Container passes raw values, store handles trimming
+      expect(mockProps.onUpdate).toHaveBeenCalledWith('1', '  Nouveau contenu  ')
     })
 
     it('should reset editing state after successful save', () => {
