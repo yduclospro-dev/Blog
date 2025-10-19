@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import NewArticleContainer from '@/components/articles/containers/NewArticleContainer'
 
@@ -235,8 +235,9 @@ describe('NewArticleContainer', () => {
       })
     })
 
-    it('should redirect to articles list after successful save', () => {
+    it('should redirect to articles list after successful save', async () => {
       // Arrange
+      jest.useFakeTimers()
       render(<NewArticleContainer />)
       const titleInput = screen.getByTestId('title-input')
       const contentInput = screen.getByTestId('content-input')
@@ -247,8 +248,22 @@ describe('NewArticleContainer', () => {
       fireEvent.change(contentInput, { target: { value: 'Content' } })
       fireEvent.click(saveButton)
 
+      // Wait for Toast to appear
+      await waitFor(() => {
+        const toast = screen.getByTestId('toast')
+        expect(toast).toHaveAttribute('data-message', 'Article créé avec succès !')
+        expect(toast).toHaveAttribute('data-type', 'success')
+      })
+
+      // Fast-forward time to trigger redirect
+      jest.advanceTimersByTime(1500)
+
       // Assert
-      expect(mockPush).toHaveBeenCalledWith('/articles')
+      await waitFor(() => {
+        expect(mockPush).toHaveBeenCalledWith('/articles')
+      })
+      
+      jest.useRealTimers()
     })
 
     it('should include current user information in article', () => {
@@ -304,8 +319,9 @@ describe('NewArticleContainer', () => {
   })
 
   describe('Edge cases', () => {
-    it('should trim whitespace from title and content on save', () => {
+    it('should trim whitespace from title and content on save', async () => {
       // Arrange
+      jest.useFakeTimers()
       render(<NewArticleContainer />)
       const titleInput = screen.getByTestId('title-input')
       const contentInput = screen.getByTestId('content-input')
@@ -323,7 +339,14 @@ describe('NewArticleContainer', () => {
         author: 'TestUser',
         authorId: 'user1'
       })
-      expect(screen.queryByTestId('toast')).not.toBeInTheDocument()
+      
+      await waitFor(() => {
+        const toast = screen.getByTestId('toast')
+        expect(toast).toHaveAttribute('data-message', 'Article créé avec succès !')
+        expect(toast).toHaveAttribute('data-type', 'success')
+      })
+      
+      jest.useRealTimers()
     })
 
     it('should reject whitespace-only title after trim', () => {

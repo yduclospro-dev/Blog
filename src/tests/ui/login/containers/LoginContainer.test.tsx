@@ -23,6 +23,15 @@ jest.mock('@/stores/userStore', () => ({
   })
 }))
 
+// Mock Toast component
+jest.mock('@/components/ui', () => ({
+  Toast: ({ message, type }: { message: string; type: string }) => (
+    <div data-testid="toast" data-message={message} data-type={type}>
+      {message}
+    </div>
+  )
+}))
+
 jest.mock('@/components/auth/login/presenters/LoginPresenter', () => ({
   __esModule: true,
   default: ({
@@ -43,8 +52,6 @@ jest.mock('@/components/auth/login/presenters/LoginPresenter', () => ({
     <div data-testid="login-presenter">
       <div data-testid="email-value">{formData.email}</div>
       <div data-testid="password-value">{formData.password}</div>
-      <div data-testid="error-message">{error}</div>
-      <div data-testid="success-message">{successMessage || ''}</div>
       <div data-testid="loading-state">{isLoading ? 'loading' : 'idle'}</div>
       
       <input
@@ -91,7 +98,7 @@ describe('LoginContainer', () => {
       render(<LoginContainer />)
 
       // Assert
-      expect(screen.getByTestId('error-message')).toHaveTextContent('')
+      expect(screen.queryByTestId('toast')).not.toBeInTheDocument()
     })
 
     it('should initialize with idle loading state', () => {
@@ -110,7 +117,9 @@ describe('LoginContainer', () => {
       render(<LoginContainer />)
 
       // Assert
-      expect(screen.getByTestId('success-message')).toHaveTextContent(/inscription réussie/i)
+      const toast = screen.getByTestId('toast')
+      expect(toast).toHaveAttribute('data-message', 'Inscription réussie ! Vous pouvez maintenant vous connecter.')
+      expect(toast).toHaveAttribute('data-type', 'success')
     })
 
     it('should not show success message when registered param is false', () => {
@@ -121,7 +130,7 @@ describe('LoginContainer', () => {
       render(<LoginContainer />)
 
       // Assert
-      expect(screen.getByTestId('success-message')).toHaveTextContent('')
+      expect(screen.queryByTestId('toast')).not.toBeInTheDocument()
     })
   })
 
@@ -177,7 +186,9 @@ describe('LoginContainer', () => {
 
       // Assert
       await waitFor(() => {
-        expect(screen.getByTestId('error-message')).toHaveTextContent(/veuillez remplir tous les champs/i)
+        const toast = screen.getByTestId('toast')
+        expect(toast).toHaveAttribute('data-message', 'Veuillez remplir tous les champs.')
+        expect(toast).toHaveAttribute('data-type', 'error')
       })
       expect(mockLogin).not.toHaveBeenCalled()
     })
@@ -194,7 +205,9 @@ describe('LoginContainer', () => {
 
       // Assert
       await waitFor(() => {
-        expect(screen.getByTestId('error-message')).toHaveTextContent(/veuillez remplir tous les champs/i)
+        const toast = screen.getByTestId('toast')
+        expect(toast).toHaveAttribute('data-message', 'Veuillez remplir tous les champs.')
+        expect(toast).toHaveAttribute('data-type', 'error')
       })
       expect(mockLogin).not.toHaveBeenCalled()
     })
@@ -209,7 +222,9 @@ describe('LoginContainer', () => {
 
       // Assert
       await waitFor(() => {
-        expect(screen.getByTestId('error-message')).toHaveTextContent(/veuillez remplir tous les champs/i)
+        const toast = screen.getByTestId('toast')
+        expect(toast).toHaveAttribute('data-message', 'Veuillez remplir tous les champs.')
+        expect(toast).toHaveAttribute('data-type', 'error')
       })
       expect(mockLogin).not.toHaveBeenCalled()
     })
@@ -256,6 +271,7 @@ describe('LoginContainer', () => {
 
     it('should redirect to home on successful login', async () => {
       // Arrange
+      jest.useFakeTimers()
       mockLogin.mockResolvedValue({ success: true })
       render(<LoginContainer />)
       const emailInput = screen.getByTestId('email-input')
@@ -267,10 +283,22 @@ describe('LoginContainer', () => {
       fireEvent.change(passwordInput, { target: { value: 'password123' } })
       fireEvent.click(submitButton)
 
+      // Wait for login to complete and Toast to appear
+      await waitFor(() => {
+        const toast = screen.getByTestId('toast')
+        expect(toast).toHaveAttribute('data-message', 'Connexion réussie !')
+        expect(toast).toHaveAttribute('data-type', 'success')
+      })
+
+      // Fast-forward time to trigger redirect
+      jest.advanceTimersByTime(1500)
+
       // Assert
       await waitFor(() => {
         expect(mockPush).toHaveBeenCalledWith('/')
       })
+
+      jest.useRealTimers()
     })
 
     it('should clear error on new submission attempt', async () => {
@@ -287,19 +315,30 @@ describe('LoginContainer', () => {
       fireEvent.click(submitButton)
 
       await waitFor(() => {
-        expect(screen.getByTestId('error-message')).toHaveTextContent(/invalid credentials/i)
+        const toast = screen.getByTestId('toast')
+        expect(toast).toHaveAttribute('data-message', 'Invalid credentials')
       })
 
-      // Act - Second attempt
+      // Act - Second attempt (successful)
+      jest.useFakeTimers()
       mockLogin.mockResolvedValue({ success: true })
       fireEvent.change(emailInput, { target: { value: 'correct@test.com' } })
       fireEvent.change(passwordInput, { target: { value: 'correctpass' } })
       fireEvent.click(submitButton)
 
-      // Assert - Error should be cleared during second submission
+      // Assert - Should show success toast
+      await waitFor(() => {
+        const toast = screen.getByTestId('toast')
+        expect(toast).toHaveAttribute('data-message', 'Connexion réussie !')
+      })
+
+      jest.advanceTimersByTime(1500)
+      
       await waitFor(() => {
         expect(mockPush).toHaveBeenCalledWith('/')
       })
+      
+      jest.useRealTimers()
     })
   })
 
@@ -319,7 +358,9 @@ describe('LoginContainer', () => {
 
       // Assert
       await waitFor(() => {
-        expect(screen.getByTestId('error-message')).toHaveTextContent(/email ou mot de passe incorrect/i)
+        const toast = screen.getByTestId('toast')
+        expect(toast).toHaveAttribute('data-message', 'Email ou mot de passe incorrect')
+        expect(toast).toHaveAttribute('data-type', 'error')
       })
       expect(mockPush).not.toHaveBeenCalled()
     })
@@ -339,7 +380,9 @@ describe('LoginContainer', () => {
 
       // Assert
       await waitFor(() => {
-        expect(screen.getByTestId('error-message')).toHaveTextContent(/email ou mot de passe incorrect/i)
+        const toast = screen.getByTestId('toast')
+        expect(toast).toHaveAttribute('data-message', 'Email ou mot de passe incorrect.')
+        expect(toast).toHaveAttribute('data-type', 'error')
       })
     })
 
@@ -378,7 +421,9 @@ describe('LoginContainer', () => {
 
       // Assert
       await waitFor(() => {
-        expect(screen.getByTestId('error-message')).toHaveTextContent(/une erreur est survenue/i)
+        const toast = screen.getByTestId('toast')
+        expect(toast).toHaveAttribute('data-message', 'Une erreur est survenue. Veuillez réessayer.')
+        expect(toast).toHaveAttribute('data-type', 'error')
       })
       expect(consoleErrorSpy).toHaveBeenCalled()
       consoleErrorSpy.mockRestore()
@@ -400,7 +445,8 @@ describe('LoginContainer', () => {
       fireEvent.click(submitButton)
 
       await waitFor(() => {
-        expect(screen.getByTestId('error-message')).toHaveTextContent('Error 1')
+        const toast = screen.getByTestId('toast')
+        expect(toast).toHaveAttribute('data-message', 'Error 1')
       })
 
       // Act - Second attempt
@@ -411,13 +457,15 @@ describe('LoginContainer', () => {
 
       // Assert
       await waitFor(() => {
-        expect(screen.getByTestId('error-message')).toHaveTextContent('Error 2')
+        const toast = screen.getByTestId('toast')
+        expect(toast).toHaveAttribute('data-message', 'Error 2')
       })
       expect(mockLogin).toHaveBeenCalledTimes(2)
     })
 
     it('should not call login multiple times for single submit', async () => {
       // Arrange
+      jest.useFakeTimers()
       mockLogin.mockResolvedValue({ success: true })
       render(<LoginContainer />)
       const emailInput = screen.getByTestId('email-input')
@@ -433,6 +481,8 @@ describe('LoginContainer', () => {
       await waitFor(() => {
         expect(mockLogin).toHaveBeenCalledTimes(1)
       })
+      
+      jest.useRealTimers()
     })
   })
 })
