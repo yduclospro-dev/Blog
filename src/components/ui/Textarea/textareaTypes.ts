@@ -1,15 +1,15 @@
 import React from 'react';
 
-export type TextareaVariant = 'default' | 'auth';
+export type TextAreaVariant = 'default' | 'auth';
 
-export interface TextareaProps {
+export interface TextAreaProps {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   placeholder?: string;
   label?: string;
   id?: string;
   name?: string;
-  variant?: TextareaVariant;
+  variant?: TextAreaVariant;
   className?: string;
   disabled?: boolean;
   error?: string;

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Comment } from "@/types/Comment";
-import { Button, Textarea } from "@/components/ui";
+import { Button, TextArea } from "@/components/ui";
 import ConfirmModal from "@/components/ConfirmModal";
 
 interface CommentsListProps {
@@ -130,7 +130,7 @@ export default function CommentsList({
 
                         {isEditing ? (
                             <div className="space-y-3">
-                                <Textarea
+                                <TextArea
                                     label=""
                                     value={editContent}
                                     onChange={(e) => setEditContent(e.target.value)}

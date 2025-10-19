@@ -10,7 +10,7 @@ jest.mock('@/components/ui', () => ({
       {label}
     </button>
   ),
-  Textarea: ({ value, onChange, rows }: { value: string; onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void; rows?: number }) => (
+  TextArea: ({ value, onChange, rows }: { value: string; onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void; rows?: number }) => (
     <textarea value={value} onChange={onChange} rows={rows} />
   ),
   LikeDislikeButtons: ({ likesCount, dislikesCount, hasLiked, hasDisliked, onLike, onDislike }: { likesCount: number; dislikesCount: number; hasLiked: boolean; hasDisliked: boolean; onLike: () => void; onDislike: () => void }) => (

@@ -1,5 +1,5 @@
 import { useRef, useEffect } from "react";
-import { Button, Input, Textarea, Card } from "@/components/ui";
+import { Button, Input, TextArea, Card } from "@/components/ui";
 
 interface NewArticleFormData {
     title: string;
@@ -53,7 +53,7 @@ export default function NewArticlePresenter({
                         variant="default"
                     />
 
-                    <Textarea
+                    <TextArea
                         ref={textareaRef}
                         placeholder="Contenu de l'article..."
                         value={formData.content}

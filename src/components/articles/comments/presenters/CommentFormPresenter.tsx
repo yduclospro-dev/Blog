@@ -1,4 +1,4 @@
-import { Button, Textarea } from "@/components/ui";
+import { Button, TextArea } from "@/components/ui";
 
 interface CommentFormPresenterProps {
     content: string;
@@ -16,7 +16,7 @@ export default function CommentFormPresenter({
             <h3 className="text-lg font-semibold text-gray-900 mb-4">
                 💬 Ajouter un commentaire
             </h3>
-            <Textarea
+            <TextArea
                 label="Votre commentaire"
                 value={content}
                 onChange={(e) => onInputChange(e.target.value)}
