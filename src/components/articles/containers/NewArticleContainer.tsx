@@ -3,7 +3,6 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useArticleStore } from "@/stores/articlesStore";
-import { useRequireAuth } from "@/lib/hooks/useRequireAuth";
 import { useUserStore } from "@/stores/userStore";
 import ForbiddenAccess from "@/components/ForbiddenAccess";
 import NewArticlePresenter from "../presenters/NewArticlePresenter";
@@ -12,7 +11,6 @@ export default function NewArticleContainer() {
     const router = useRouter();
     const { addArticle } = useArticleStore();
     const { currentUser } = useUserStore();
-    const isAuthenticated = useRequireAuth();
 
     const [formData, setFormData] = useState({
         title: "",
@@ -49,7 +47,7 @@ export default function NewArticleContainer() {
         router.push("/articles");
     };
 
-    if (!isAuthenticated) {
+    if (!currentUser) {
         return (
             <ForbiddenAccess 
                 message="Vous devez être connecté pour créer un nouvel article."

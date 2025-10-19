@@ -2,7 +2,7 @@
 
 import { useParams, useRouter } from "next/navigation";
 import { useArticleStore } from "@/stores/articlesStore";
-import { useRequireAuth } from "@/lib/hooks/useRequireAuth";
+import { useUserStore } from "@/stores/userStore";
 import { useState } from "react";
 import ForbiddenAccess from "@/components/ForbiddenAccess";
 import EditArticlePresenter from "../presenters/EditArticlePresenter";
@@ -11,7 +11,7 @@ export default function EditArticleContainer() {
   const { id } = useParams();
   const router = useRouter();
   const { getArticleById, updateArticle } = useArticleStore();
-  const isAuthenticated = useRequireAuth();
+  const { currentUser } = useUserStore();
 
   const article = getArticleById(String(id));
   const [formData, setFormData] = useState({
@@ -39,7 +39,7 @@ export default function EditArticleContainer() {
     }
   };
 
-  if (!isAuthenticated) {
+  if (!currentUser) {
     return (
       <ForbiddenAccess 
         message="Vous devez être connecté pour modifier cet article."
