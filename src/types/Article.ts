@@ -5,6 +5,7 @@ export interface Article {
     authorId: string;
     date: string;
     content: string;
+    imageUrl?: string;
     likes: string[];
     dislikes: string[];
 }

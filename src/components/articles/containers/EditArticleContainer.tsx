@@ -13,13 +13,14 @@ import ClientOnly from "@/components/ClientOnly";
 export default function EditArticleContainer() {
   const { id } = useParams();
   const router = useRouter();
-  const { getArticleById, updateArticle } = useArticleStore();
+  const { getArticleById, safeUpdateArticle } = useArticleStore();
   const { currentUser } = useUserStore();
 
   const article = getArticleById(String(id));
   const [formData, setFormData] = useState({
     title: article?.title || "",
     content: article?.content || "",
+    imageUrl: article?.imageUrl || "",
   });
   const [toast, setToast] = useState<{ message: string; type: ToastType } | null>(null);
 
@@ -27,17 +28,33 @@ export default function EditArticleContainer() {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleSave = () => {
+  const handleImageChange = (imageUrl: string | null) => {
+    setFormData(prev => ({ ...prev, imageUrl: imageUrl || "" }));
+  };
+
+  const handleImageError = (message: string) => {
+    setToast({ message, type: "error" });
+  };
+
+  const handleSave = async () => {
     if (article) {
-      updateArticle(article.id, {
-        title: formData.title,
-        content: formData.content
-      });
-      setToast({ message: "Article modifié avec succès !", type: "success" });
-      
-      setTimeout(() => {
-        router.push(`/articles/${article.id}`);
-      }, 1500);
+      try {
+        await safeUpdateArticle(article.id, {
+          title: formData.title,
+          content: formData.content,
+          imageUrl: formData.imageUrl || undefined
+        });
+        setToast({ message: "Article modifié avec succès !", type: "success" });
+        
+        setTimeout(() => {
+          router.push(`/articles/${article.id}`);
+        }, 1500);
+      } catch (error) {
+        setToast({ 
+          message: error instanceof Error ? error.message : "Erreur lors de la modification de l'article", 
+          type: "error" 
+        });
+      }
     }
   };
 
@@ -86,6 +103,8 @@ export default function EditArticleContainer() {
         <EditArticlePresenter
           formData={formData}
           onInputChange={handleInputChange}
+          onImageChange={handleImageChange}
+          onImageError={handleImageError}
           onSave={handleSave}
           onCancel={handleCancel}
         />

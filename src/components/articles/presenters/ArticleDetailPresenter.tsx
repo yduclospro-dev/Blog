@@ -4,6 +4,8 @@ import ConfirmModal from "@/components/ConfirmModal";
 import { Button, ButtonLink, Card, LikeDislikeButtons } from "@/components/ui";
 import CommentsListContainer from "../comments/containers/CommentsListContainer";
 import CommentFormContainer from "../comments/containers/CommentFormContainer";
+import { isValidImageDataUrl } from "@/utils/imageValidation";
+import Image from "next/image";
 
 interface ArticleDetailPresenterProps {
     article: Article;
@@ -99,6 +101,19 @@ export default function ArticleDetailPresenter({
                             })}
                         </span>
                     </div>
+
+                    {article.imageUrl && isValidImageDataUrl(article.imageUrl) && (
+                        <div className="mb-8 rounded-lg overflow-hidden relative w-full h-96">
+                            <Image 
+                                src={article.imageUrl} 
+                                alt={article.title}
+                                fill
+                                className="object-cover"
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 50vw"
+                                priority
+                            />
+                        </div>
+                    )}
 
                     <div className="prose prose-lg max-w-none text-justify text-gray-900 dark:text-slate-100">
                         {article.content.split("\n").map((paragraph, i) => (

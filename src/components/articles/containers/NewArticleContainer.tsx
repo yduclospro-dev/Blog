@@ -12,12 +12,13 @@ import ClientOnly from "@/components/ClientOnly";
 
 export default function NewArticleContainer() {
     const router = useRouter();
-    const { addArticle } = useArticleStore();
+    const { safeAddArticle } = useArticleStore();
     const { currentUser } = useUserStore();
 
     const [formData, setFormData] = useState({
         title: "",
         content: "",
+        imageUrl: "",
     });
 
     const [toast, setToast] = useState<{ message: string; type: ToastType } | null>(null);
@@ -26,7 +27,15 @@ export default function NewArticleContainer() {
         setFormData(prev => ({ ...prev, [field]: value }));
     };
 
-    const handleSave = () => {
+    const handleImageChange = (imageUrl: string | null) => {
+        setFormData(prev => ({ ...prev, imageUrl: imageUrl || "" }));
+    };
+
+    const handleImageError = (message: string) => {
+        setToast({ message, type: "error" });
+    };
+
+    const handleSave = async () => {
         if (!formData.title.trim() || !formData.content.trim()) {
             setToast({ message: "Le titre et le contenu sont requis !", type: "error" });
             return;
@@ -40,16 +49,24 @@ export default function NewArticleContainer() {
         const newArticle = {
             title: formData.title,
             content: formData.content,
+            imageUrl: formData.imageUrl || undefined,
             author: currentUser.username,
             authorId: currentUser.id,
         };
 
-        addArticle(newArticle);
-        setToast({ message: "Article créé avec succès !", type: "success" });
-        
-        setTimeout(() => {
-            router.push("/articles");
-        }, 1500);
+        try {
+            await safeAddArticle(newArticle);
+            setToast({ message: "Article créé avec succès !", type: "success" });
+            
+            setTimeout(() => {
+                router.push("/articles");
+            }, 1500);
+        } catch (error) {
+            setToast({ 
+                message: error instanceof Error ? error.message : "Erreur lors de la création de l'article", 
+                type: "error" 
+            });
+        }
     };
 
     const handleCancel = () => {
@@ -81,6 +98,8 @@ export default function NewArticleContainer() {
                 <NewArticlePresenter
                     formData={formData}
                     onInputChange={handleInputChange}
+                    onImageChange={handleImageChange}
+                    onImageError={handleImageError}
                     onSave={handleSave}
                     onCancel={handleCancel}
                 />

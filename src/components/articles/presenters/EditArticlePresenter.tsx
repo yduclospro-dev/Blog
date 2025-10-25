@@ -1,14 +1,17 @@
 import { useRef, useEffect } from "react";
-import { Button, Input, TextArea, Card } from "@/components/ui";
+import { Button, Input, TextArea, Card, ImageUpload } from "@/components/ui";
 
 interface EditArticleFormData {
   title: string;
   content: string;
+  imageUrl?: string;
 }
 
 interface EditArticlePresenterProps {
   formData: EditArticleFormData;
   onInputChange: (field: string, value: string) => void;
+  onImageChange: (imageUrl: string | null) => void;
+  onImageError?: (message: string) => void;
   onSave: () => void;
   onCancel: () => void;
 }
@@ -16,6 +19,8 @@ interface EditArticlePresenterProps {
 export default function EditArticlePresenter({
   formData,
   onInputChange,
+  onImageChange,
+  onImageError,
   onSave,
   onCancel,
 }: EditArticlePresenterProps) {
@@ -45,6 +50,18 @@ export default function EditArticlePresenter({
             onChange={(e) => onInputChange('title', e.target.value)}
             variant="default"
           />
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
+              Image de l'article (optionnel)
+            </label>
+            <ImageUpload
+              value={formData.imageUrl}
+              onChange={onImageChange}
+              onError={onImageError}
+              placeholder="Modifier l'image"
+            />
+          </div>
 
           <TextArea
             ref={textareaRef}
