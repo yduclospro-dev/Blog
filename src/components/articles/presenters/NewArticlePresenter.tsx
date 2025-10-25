@@ -33,16 +33,16 @@ export default function NewArticlePresenter({
     }, [formData.content]);
 
     return (
-        <div className="bg-gradient-to-b from-gray-50 to-white min-h-screen py-16 px-6 md:px-20 lg:px-32">
+        <div className="bg-gradient-to-b from-gray-50 to-white dark:from-slate-900 dark:to-slate-800 min-h-screen py-16 px-6 md:px-20 lg:px-32 transition-colors">
             <Card variant="default" padding="lg" className="max-w-3xl mx-auto">
                 <button
                     onClick={onCancel}
-                    className="text-blue-600 hover:text-blue-800 mb-6 text-sm transition cursor-pointer"
+                    className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 mb-6 text-sm transition cursor-pointer"
                 >
                     ← Retour à la liste
                 </button>
 
-                <h1 className="text-4xl font-extrabold text-gray-900 mb-8">📰 Créer un nouvel article</h1>
+                <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white mb-8">📰 Créer un nouvel article</h1>
 
                 <div className="space-y-6">
                     <Input

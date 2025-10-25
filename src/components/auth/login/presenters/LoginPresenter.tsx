@@ -25,16 +25,16 @@ export default function LoginPresenter({
   onSubmit,
 }: LoginPresenterProps) {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-slate-900 dark:to-slate-800 p-4 transition-colors">
       <div className="w-full max-w-md">
         <Card variant="auth" padding="lg">
           <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-indigo-600 rounded-2xl mb-4">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-500 rounded-2xl mb-4">
               <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
             </div>
-            <p className="text-gray-600">Connectez-vous à votre compte</p>
+            <p className="text-gray-600 dark:text-slate-300">Connectez-vous à votre compte</p>
           </div>
 
           <form onSubmit={onSubmit} className="space-y-6">
@@ -61,13 +61,13 @@ export default function LoginPresenter({
             />
 
             {successMessage && (
-              <p className="text-green-600 text-sm font-medium text-center bg-green-50 p-3 rounded-lg">
+              <p className="text-green-600 dark:text-green-400 text-sm font-medium text-center bg-green-50 dark:bg-green-900/20 p-3 rounded-lg">
                 {successMessage}
               </p>
             )}
 
             {error && (
-              <p className="text-red-500 text-sm font-medium text-center">
+              <p className="text-red-500 dark:text-red-400 text-sm font-medium text-center">
                 {error}
               </p>
             )}
@@ -81,9 +81,9 @@ export default function LoginPresenter({
             />
           </form>
 
-          <p className="mt-6 text-center text-sm text-gray-600">
+          <p className="mt-6 text-center text-sm text-gray-600 dark:text-slate-300">
             Pas encore de compte ?{" "}
-            <Link href="/registration" className="text-indigo-600 hover:text-indigo-500 font-medium">
+            <Link href="/registration" className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300 font-medium">
               S&apos;inscrire
             </Link>
           </p>

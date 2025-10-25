@@ -12,8 +12,8 @@ export default function CommentFormPresenter({
     onSubmit,
 }: CommentFormPresenterProps) {
     return (
-        <div className="bg-white border-2 border-gray-200 rounded-xl p-6 shadow-sm">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+        <div className="bg-white dark:bg-slate-800 border-2 border-gray-200 dark:border-slate-700 rounded-xl p-6 shadow-sm">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                 💬 Ajouter un commentaire
             </h3>
             <TextArea

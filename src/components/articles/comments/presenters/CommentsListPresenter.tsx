@@ -37,7 +37,7 @@ export default function CommentsListPresenter({
 }: CommentsListPresenterProps) {
     if (comments.length === 0) {
         return (
-            <div className="text-center py-8 text-gray-500">
+            <div className="text-center py-8 text-gray-500 dark:text-slate-400">
                 Aucun commentaire pour le moment. Soyez le premier à commenter !
             </div>
         );
@@ -45,7 +45,7 @@ export default function CommentsListPresenter({
 
     return (
         <div className="space-y-4">
-            <h3 className="text-xl font-bold text-gray-900 mb-6">
+            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">
                 💬 Commentaires ({comments.length})
             </h3>
             {comments.map((comment) => {
@@ -57,16 +57,16 @@ export default function CommentsListPresenter({
                         key={comment.id}
                         className={`border rounded-lg p-5 shadow-sm hover:shadow-md transition-shadow ${
                             isAuthor
-                                ? 'bg-blue-50 border-blue-200'
-                                : 'bg-gray-50 border-gray-200'
+                                ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800'
+                                : 'bg-gray-50 dark:bg-slate-800 border-gray-200 dark:border-slate-700'
                         }`}
                     >
                         <div className="flex justify-between items-start mb-3">
                             <div>
-                                <p className="font-semibold text-gray-900">
+                                <p className="font-semibold text-gray-900 dark:text-white">
                                     {comment.authorName}
                                 </p>
-                                <p className="text-sm text-gray-500">
+                                <p className="text-sm text-gray-500 dark:text-slate-400">
                                     {new Date(comment.date).toLocaleDateString("fr-FR", {
                                         day: "numeric",
                                         month: "long",
@@ -129,7 +129,7 @@ export default function CommentsListPresenter({
                             </div>
                         ) : (
                             <>
-                                <p className="text-gray-700 leading-relaxed mb-3">
+                                <p className="text-gray-700 dark:text-slate-300 leading-relaxed mb-3">
                                     {comment.content}
                                 </p>
                                 {currentUserId && !isAuthor && (
