@@ -14,7 +14,7 @@ export const isValidImageDataUrl = (url: string): boolean => {
     if (!url) return false;
     
     // Check if it's a data URL with image content
-    const dataUrlRegex = /^data:image\/(jpeg|jpg|png|gif|webp);base64,/i;
+    const dataUrlRegex = /^data:image\/(jpeg|png|gif|webp);base64,/i;
     return dataUrlRegex.test(url);
 };
 
