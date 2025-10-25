@@ -20,6 +20,7 @@ export default function EditArticleContainer() {
   const [formData, setFormData] = useState({
     title: article?.title || "",
     content: article?.content || "",
+    imageUrl: article?.imageUrl || "",
   });
   const [toast, setToast] = useState<{ message: string; type: ToastType } | null>(null);
 
@@ -27,11 +28,16 @@ export default function EditArticleContainer() {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
+  const handleImageChange = (imageUrl: string | null) => {
+    setFormData(prev => ({ ...prev, imageUrl: imageUrl || "" }));
+  };
+
   const handleSave = () => {
     if (article) {
       updateArticle(article.id, {
         title: formData.title,
-        content: formData.content
+        content: formData.content,
+        imageUrl: formData.imageUrl || undefined
       });
       setToast({ message: "Article modifié avec succès !", type: "success" });
       
@@ -86,6 +92,7 @@ export default function EditArticleContainer() {
         <EditArticlePresenter
           formData={formData}
           onInputChange={handleInputChange}
+          onImageChange={handleImageChange}
           onSave={handleSave}
           onCancel={handleCancel}
         />
