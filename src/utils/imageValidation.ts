@@ -3,7 +3,7 @@ export const MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024; // 5MB
 export const MAX_FILE_SIZE_MB = 5;
 
 // Image validation
-export const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+export const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
 
 /**
  * Validates if a URL is a safe data URL for images
