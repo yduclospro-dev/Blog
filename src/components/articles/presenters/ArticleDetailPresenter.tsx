@@ -5,6 +5,7 @@ import { Button, ButtonLink, Card, LikeDislikeButtons } from "@/components/ui";
 import CommentsListContainer from "../comments/containers/CommentsListContainer";
 import CommentFormContainer from "../comments/containers/CommentFormContainer";
 import { isValidImageDataUrl } from "@/utils/imageValidation";
+import Image from "next/image";
 
 interface ArticleDetailPresenterProps {
     article: Article;
@@ -102,11 +103,14 @@ export default function ArticleDetailPresenter({
                     </div>
 
                     {article.imageUrl && isValidImageDataUrl(article.imageUrl) && (
-                        <div className="mb-8 rounded-lg overflow-hidden">
-                            <img 
+                        <div className="mb-8 rounded-lg overflow-hidden relative w-full h-96">
+                            <Image 
                                 src={article.imageUrl} 
                                 alt={article.title}
-                                className="w-full h-auto max-h-96 object-cover"
+                                fill
+                                className="object-cover"
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 50vw"
+                                priority
                             />
                         </div>
                     )}

@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { ImageUploadProps } from "./imageUploadTypes";
 import Button from "../Button/Button";
 import { validateImageFile, isValidImageDataUrl, MAX_FILE_SIZE_MB } from "@/utils/imageValidation";
+import Image from "next/image";
 
 export default function ImageUpload({
     value,
@@ -79,11 +80,15 @@ export default function ImageUpload({
 
             {value && isValidImageDataUrl(value) ? (
                 <div className="relative group">
-                    <img
-                        src={value}
-                        alt="Preview"
-                        className="w-full h-48 object-cover rounded-lg border-2 border-gray-200 dark:border-slate-600"
-                    />
+                    <div className="relative w-full h-48 rounded-lg border-2 border-gray-200 dark:border-slate-600 overflow-hidden">
+                        <Image
+                            src={value}
+                            alt="Preview"
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 768px) 100vw, 50vw"
+                        />
+                    </div>
                     <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-lg flex items-center justify-center">
                         <div className="flex gap-2">
                             <Button
