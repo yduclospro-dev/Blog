@@ -104,7 +104,7 @@ export default function ArticleDetailContainer() {
     if (!article) {
         return (
             <ClientOnly fallback={
-                <div className="min-h-screen flex items-center justify-center bg-gray-100">
+                <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-slate-900">
                     <p className="text-center text-gray-500 text-lg">Chargement...</p>
                 </div>
             }>
@@ -125,7 +125,7 @@ export default function ArticleDetailContainer() {
                 />
             )}
             <ClientOnly fallback={
-                <div className="min-h-screen flex items-center justify-center bg-gray-100">
+                <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-slate-900">
                     <p className="text-center text-gray-500 text-lg">Chargement...</p>
                 </div>
             }>
