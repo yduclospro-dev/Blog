@@ -4,6 +4,7 @@ import ConfirmModal from "@/components/ConfirmModal";
 import { Button, ButtonLink, Card, LikeDislikeButtons } from "@/components/ui";
 import CommentsListContainer from "../comments/containers/CommentsListContainer";
 import CommentFormContainer from "../comments/containers/CommentFormContainer";
+import { isValidImageDataUrl } from "@/utils/imageValidation";
 
 interface ArticleDetailPresenterProps {
     article: Article;
@@ -100,7 +101,7 @@ export default function ArticleDetailPresenter({
                         </span>
                     </div>
 
-                    {article.imageUrl && (
+                    {article.imageUrl && isValidImageDataUrl(article.imageUrl) && (
                         <div className="mb-8 rounded-lg overflow-hidden">
                             <img 
                                 src={article.imageUrl} 

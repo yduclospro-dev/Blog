@@ -32,6 +32,10 @@ export default function EditArticleContainer() {
     setFormData(prev => ({ ...prev, imageUrl: imageUrl || "" }));
   };
 
+  const handleImageError = (message: string) => {
+    setToast({ message, type: "error" });
+  };
+
   const handleSave = () => {
     if (article) {
       updateArticle(article.id, {
@@ -93,6 +97,7 @@ export default function EditArticleContainer() {
           formData={formData}
           onInputChange={handleInputChange}
           onImageChange={handleImageChange}
+          onImageError={handleImageError}
           onSave={handleSave}
           onCancel={handleCancel}
         />
