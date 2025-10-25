@@ -40,3 +40,17 @@ export const validateImageFile = (file: File): { isValid: boolean; error?: strin
 
     return { isValid: true };
 };
+
+/**
+ * Checks if an error is a localStorage quota exceeded error
+ * @param error - The error to check
+ * @returns boolean - true if it's a quota error
+ */
+export const isQuotaExceededError = (error: unknown): boolean => {
+    return error instanceof DOMException && (
+        error.code === 22 ||
+        error.code === 1014 ||
+        error.name === 'QuotaExceededError' ||
+        error.name === 'NS_ERROR_DOM_QUOTA_REACHED'
+    );
+};
