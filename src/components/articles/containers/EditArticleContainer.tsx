@@ -13,7 +13,7 @@ import ClientOnly from "@/components/ClientOnly";
 export default function EditArticleContainer() {
   const { id } = useParams();
   const router = useRouter();
-  const { getArticleById, updateArticle } = useArticleStore();
+  const { getArticleById, safeUpdateArticle } = useArticleStore();
   const { currentUser } = useUserStore();
 
   const article = getArticleById(String(id));
@@ -36,18 +36,25 @@ export default function EditArticleContainer() {
     setToast({ message, type: "error" });
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (article) {
-      updateArticle(article.id, {
-        title: formData.title,
-        content: formData.content,
-        imageUrl: formData.imageUrl || undefined
-      });
-      setToast({ message: "Article modifié avec succès !", type: "success" });
-      
-      setTimeout(() => {
-        router.push(`/articles/${article.id}`);
-      }, 1500);
+      try {
+        await safeUpdateArticle(article.id, {
+          title: formData.title,
+          content: formData.content,
+          imageUrl: formData.imageUrl || undefined
+        });
+        setToast({ message: "Article modifié avec succès !", type: "success" });
+        
+        setTimeout(() => {
+          router.push(`/articles/${article.id}`);
+        }, 1500);
+      } catch (error) {
+        setToast({ 
+          message: error instanceof Error ? error.message : "Erreur lors de la modification de l'article", 
+          type: "error" 
+        });
+      }
     }
   };
 
