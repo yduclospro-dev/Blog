@@ -100,6 +100,16 @@ export default function ArticleDetailPresenter({
                         </span>
                     </div>
 
+                    {article.imageUrl && (
+                        <div className="mb-8 rounded-lg overflow-hidden">
+                            <img 
+                                src={article.imageUrl} 
+                                alt={article.title}
+                                className="w-full h-auto max-h-96 object-cover"
+                            />
+                        </div>
+                    )}
+
                     <div className="prose prose-lg max-w-none text-justify text-gray-900 dark:text-slate-100">
                         {article.content.split("\n").map((paragraph, i) => (
                             <p key={i} className="mb-4">{paragraph}</p>

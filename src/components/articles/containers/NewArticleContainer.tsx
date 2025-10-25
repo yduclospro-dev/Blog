@@ -18,12 +18,17 @@ export default function NewArticleContainer() {
     const [formData, setFormData] = useState({
         title: "",
         content: "",
+        imageUrl: "",
     });
 
     const [toast, setToast] = useState<{ message: string; type: ToastType } | null>(null);
 
     const handleInputChange = (field: string, value: string) => {
         setFormData(prev => ({ ...prev, [field]: value }));
+    };
+
+    const handleImageChange = (imageUrl: string | null) => {
+        setFormData(prev => ({ ...prev, imageUrl: imageUrl || "" }));
     };
 
     const handleSave = () => {
@@ -40,6 +45,7 @@ export default function NewArticleContainer() {
         const newArticle = {
             title: formData.title,
             content: formData.content,
+            imageUrl: formData.imageUrl || undefined,
             author: currentUser.username,
             authorId: currentUser.id,
         };
@@ -81,6 +87,7 @@ export default function NewArticleContainer() {
                 <NewArticlePresenter
                     formData={formData}
                     onInputChange={handleInputChange}
+                    onImageChange={handleImageChange}
                     onSave={handleSave}
                     onCancel={handleCancel}
                 />

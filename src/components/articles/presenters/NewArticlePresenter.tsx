@@ -1,14 +1,16 @@
 import { useRef, useEffect } from "react";
-import { Button, Input, TextArea, Card } from "@/components/ui";
+import { Button, Input, TextArea, Card, ImageUpload } from "@/components/ui";
 
 interface NewArticleFormData {
     title: string;
     content: string;
+    imageUrl?: string;
 }
 
 interface NewArticlePresenterProps {
     formData: NewArticleFormData;
     onInputChange: (field: string, value: string) => void;
+    onImageChange: (imageUrl: string | null) => void;
     onSave: () => void;
     onCancel: () => void;
 }
@@ -16,6 +18,7 @@ interface NewArticlePresenterProps {
 export default function NewArticlePresenter({
     formData,
     onInputChange,
+    onImageChange,
     onSave,
     onCancel,
 }: NewArticlePresenterProps) {
@@ -52,6 +55,17 @@ export default function NewArticlePresenter({
                         onChange={(e) => onInputChange('title', e.target.value)}
                         variant="default"
                     />
+
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
+                            Image de l'article (optionnel)
+                        </label>
+                        <ImageUpload
+                            value={formData.imageUrl}
+                            onChange={onImageChange}
+                            placeholder="Ajouter une image"
+                        />
+                    </div>
 
                     <TextArea
                         ref={textareaRef}
