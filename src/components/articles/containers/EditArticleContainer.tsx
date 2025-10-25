@@ -8,6 +8,7 @@ import ForbiddenAccess from "@/components/ForbiddenAccess";
 import EditArticlePresenter from "../presenters/EditArticlePresenter";
 import { Toast } from "@/components/ui";
 import type { ToastType } from "@/components/ui/Toast/toastTypes";
+import ClientOnly from "@/components/ClientOnly";
 
 export default function EditArticleContainer() {
   const { id } = useParams();
@@ -56,9 +57,15 @@ export default function EditArticleContainer() {
 
   if (!article) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <p className="text-center text-gray-500 text-lg">Article introuvable.</p>
-      </div>
+      <ClientOnly fallback={
+        <div className="min-h-screen flex items-center justify-center bg-gray-100">
+          <p className="text-center text-gray-500 text-lg">Chargement...</p>
+        </div>
+      }>
+        <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-slate-900 transition-colors">
+          <p className="text-center text-gray-500 dark:text-slate-400 text-lg">Article introuvable.</p>
+        </div>
+      </ClientOnly>
     );
   }
 
@@ -71,12 +78,18 @@ export default function EditArticleContainer() {
           onClose={() => setToast(null)} 
         />
       )}
-      <EditArticlePresenter
-        formData={formData}
-        onInputChange={handleInputChange}
-        onSave={handleSave}
-        onCancel={handleCancel}
-      />
+      <ClientOnly fallback={
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-50 to-white p-4">
+          <p className="text-gray-500">Chargement...</p>
+        </div>
+      }>
+        <EditArticlePresenter
+          formData={formData}
+          onInputChange={handleInputChange}
+          onSave={handleSave}
+          onCancel={handleCancel}
+        />
+      </ClientOnly>
     </>
   );
 }

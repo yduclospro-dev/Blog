@@ -28,7 +28,7 @@ export default function Input({
   if (label) {
     return (
       <div className="w-full">
-        <label htmlFor={id} className="block text-sm font-medium text-gray-700 mb-2">
+        <label htmlFor={id} className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
           {label}
         </label>
         <input
@@ -42,7 +42,7 @@ export default function Input({
           className={combinedClassName}
         />
         {error && (
-          <p className="mt-1 text-sm text-red-500">{error}</p>
+          <p className="mt-1 text-sm text-red-500 dark:text-red-400">{error}</p>
         )}
       </div>
     );

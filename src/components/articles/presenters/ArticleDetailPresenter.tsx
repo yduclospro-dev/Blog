@@ -45,7 +45,7 @@ export default function ArticleDetailPresenter({
     onCommentDislike,
 }: ArticleDetailPresenterProps) {
     return (
-        <div className="bg-gradient-to-b from-gray-50 to-white min-h-screen py-16 px-6 md:px-20 lg:px-32">
+        <div className="bg-gradient-to-b from-gray-50 to-white dark:from-slate-900 dark:to-slate-800 min-h-screen py-16 px-6 md:px-20 lg:px-32 transition-colors">
             <Card variant="default" padding="lg" className="max-w-3xl mx-auto relative">
                 <div className="mb-6 flex items-center justify-between">
                     <Button
@@ -84,11 +84,11 @@ export default function ArticleDetailPresenter({
                 </div>
 
                 <article>
-                    <h1 className="text-4xl font-extrabold text-gray-900 mb-4 leading-tight">
+                    <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white mb-4 leading-tight">
                         {article.title}
                     </h1>
 
-                    <div className="text-sm text-gray-500 mb-8 flex justify-between">
+                    <div className="text-sm text-gray-500 dark:text-slate-400 mb-8 flex justify-between">
                         <span>✍️ {article.author}</span>
                         <span>
                             📅{" "}
@@ -100,7 +100,7 @@ export default function ArticleDetailPresenter({
                         </span>
                     </div>
 
-                    <div className="prose prose-lg max-w-none text-justify text-gray-900">
+                    <div className="prose prose-lg max-w-none text-justify text-gray-900 dark:text-slate-100">
                         {article.content.split("\n").map((paragraph, i) => (
                             <p key={i} className="mb-4">{paragraph}</p>
                         ))}
@@ -120,14 +120,14 @@ export default function ArticleDetailPresenter({
                     )}
                 </article>
 
-                <div className="mt-12 pt-8 border-t-2 border-gray-200">
+                <div className="mt-12 pt-8 border-t-2 border-gray-200 dark:border-slate-700">
                     {isAuthenticated ? (
                         <div className="mb-8">
                             <CommentFormContainer onSubmit={onAddComment} />
                         </div>
                     ) : (
-                        <div className="mb-8 p-6 bg-blue-50 border border-blue-200 rounded-lg text-center">
-                            <p className="text-blue-800">
+                        <div className="mb-8 p-6 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg text-center">
+                            <p className="text-blue-800 dark:text-blue-300">
                                 🔒 <strong>Connectez-vous</strong> pour ajouter un commentaire
                             </p>
                         </div>

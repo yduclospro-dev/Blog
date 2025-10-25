@@ -6,6 +6,7 @@ import { useUserStore } from '@/stores/userStore'
 import RegistrationPresenter from '../presenters/RegistrationPresenter'
 import { Toast } from "@/components/ui";
 import type { ToastType } from "@/components/ui/Toast/toastTypes";
+import ClientOnly from "@/components/ClientOnly";
 
 export default function RegistrationContainer() {
   const [formData, setFormData] = useState({
@@ -70,13 +71,19 @@ export default function RegistrationContainer() {
           onClose={() => setToast(null)} 
         />
       )}
-      <RegistrationPresenter
-        formData={formData}
-        isLoading={isLoading}
-        error="" // Deprecated: now using Toast
-        onInputChange={handleInputChange}
-        onSubmit={handleSubmit}
-      />
+      <ClientOnly fallback={
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+          <p className="text-gray-600">Chargement...</p>
+        </div>
+      }>
+        <RegistrationPresenter
+          formData={formData}
+          isLoading={isLoading}
+          error="" // Deprecated: now using Toast
+          onInputChange={handleInputChange}
+          onSubmit={handleSubmit}
+        />
+      </ClientOnly>
     </>
   )
 }

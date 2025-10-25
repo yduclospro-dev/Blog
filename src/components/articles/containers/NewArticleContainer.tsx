@@ -8,6 +8,7 @@ import ForbiddenAccess from "@/components/ForbiddenAccess";
 import NewArticlePresenter from "../presenters/NewArticlePresenter";
 import { Toast } from "@/components/ui";
 import type { ToastType } from "@/components/ui/Toast/toastTypes";
+import ClientOnly from "@/components/ClientOnly";
 
 export default function NewArticleContainer() {
     const router = useRouter();
@@ -72,12 +73,18 @@ export default function NewArticleContainer() {
                     onClose={() => setToast(null)} 
                 />
             )}
-            <NewArticlePresenter
-                formData={formData}
-                onInputChange={handleInputChange}
-                onSave={handleSave}
-                onCancel={handleCancel}
-            />
+            <ClientOnly fallback={
+                <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-50 to-white p-4">
+                    <p className="text-gray-500">Chargement...</p>
+                </div>
+            }>
+                <NewArticlePresenter
+                    formData={formData}
+                    onInputChange={handleInputChange}
+                    onSave={handleSave}
+                    onCancel={handleCancel}
+                />
+            </ClientOnly>
         </>
     );
 }

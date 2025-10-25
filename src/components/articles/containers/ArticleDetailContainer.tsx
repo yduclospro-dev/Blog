@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import ArticleDetailPresenter from "../presenters/ArticleDetailPresenter";
 import { Toast } from "@/components/ui";
 import type { ToastType } from "@/components/ui/Toast/toastTypes";
+import ClientOnly from "@/components/ClientOnly";
 
 export default function ArticleDetailContainer() {
     const { id } = useParams();
@@ -102,9 +103,15 @@ export default function ArticleDetailContainer() {
 
     if (!article) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-gray-100">
-                <p className="text-center text-gray-500 text-lg">Article introuvable.</p>
-            </div>
+            <ClientOnly fallback={
+                <div className="min-h-screen flex items-center justify-center bg-gray-100">
+                    <p className="text-center text-gray-500 text-lg">Chargement...</p>
+                </div>
+            }>
+                <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-slate-900 transition-colors">
+                    <p className="text-center text-gray-500 dark:text-slate-400 text-lg">Article introuvable.</p>
+                </div>
+            </ClientOnly>
         );
     }
 
@@ -117,25 +124,31 @@ export default function ArticleDetailContainer() {
                     onClose={() => setToast(null)} 
                 />
             )}
-            <ArticleDetailPresenter
-                article={article}
-                isAuthenticated={isAuthenticated}
-                isAuthor={isAuthor}
-                showConfirm={showConfirm}
-                onDelete={handleDelete}
-                onCancelDelete={handleCancelDelete}
-                onShowConfirm={handleShowConfirm}
-                onBack={handleBack}
-                comments={comments}
-                currentUserId={currentUser?.id}
-                onAddComment={handleAddComment}
-                onUpdateComment={handleUpdateComment}
-                onDeleteComment={handleDeleteComment}
-                onArticleLike={handleArticleLike}
-                onArticleDislike={handleArticleDislike}
-                onCommentLike={handleCommentLike}
-                onCommentDislike={handleCommentDislike}
-            />
+            <ClientOnly fallback={
+                <div className="min-h-screen flex items-center justify-center bg-gray-100">
+                    <p className="text-center text-gray-500 text-lg">Chargement...</p>
+                </div>
+            }>
+                <ArticleDetailPresenter
+                    article={article}
+                    isAuthenticated={isAuthenticated}
+                    isAuthor={isAuthor}
+                    showConfirm={showConfirm}
+                    onDelete={handleDelete}
+                    onCancelDelete={handleCancelDelete}
+                    onShowConfirm={handleShowConfirm}
+                    onBack={handleBack}
+                    comments={comments}
+                    currentUserId={currentUser?.id}
+                    onAddComment={handleAddComment}
+                    onUpdateComment={handleUpdateComment}
+                    onDeleteComment={handleDeleteComment}
+                    onArticleLike={handleArticleLike}
+                    onArticleDislike={handleArticleDislike}
+                    onCommentLike={handleCommentLike}
+                    onCommentDislike={handleCommentDislike}
+                />
+            </ClientOnly>
         </>
     );
 }

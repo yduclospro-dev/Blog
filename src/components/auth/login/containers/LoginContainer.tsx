@@ -5,6 +5,7 @@ import { useUserStore } from "@/stores/userStore";
 import LoginPresenter from "../presenters/LoginPresenter";
 import { Toast } from "@/components/ui";
 import type { ToastType } from "@/components/ui/Toast/toastTypes";
+import ClientOnly from "@/components/ClientOnly";
 
 export default function LoginContainer() {
   const router = useRouter();
@@ -67,14 +68,20 @@ export default function LoginContainer() {
           onClose={() => setToast(null)} 
         />
       )}
-      <LoginPresenter
-        formData={formData}
-        error="" // Deprecated: now using Toast
-        successMessage="" // Deprecated: now using Toast
-        isLoading={isLoading}
-        onInputChange={handleInputChange}
-        onSubmit={handleLogin}
-      />
+      <ClientOnly fallback={
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+          <p className="text-gray-600">Chargement...</p>
+        </div>
+      }>
+        <LoginPresenter
+          formData={formData}
+          error="" // Deprecated: now using Toast
+          successMessage="" // Deprecated: now using Toast
+          isLoading={isLoading}
+          onInputChange={handleInputChange}
+          onSubmit={handleLogin}
+        />
+      </ClientOnly>
     </>
   );
 }
