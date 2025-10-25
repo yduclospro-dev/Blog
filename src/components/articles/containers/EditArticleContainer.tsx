@@ -58,7 +58,7 @@ export default function EditArticleContainer() {
   if (!article) {
     return (
       <ClientOnly fallback={
-        <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-slate-900">
           <p className="text-center text-gray-500 text-lg">Chargement...</p>
         </div>
       }>
@@ -79,7 +79,7 @@ export default function EditArticleContainer() {
         />
       )}
       <ClientOnly fallback={
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-50 to-white p-4">
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-50 to-white dark:from-slate-900 dark:to-slate-800 p-4">
           <p className="text-gray-500">Chargement...</p>
         </div>
       }>
