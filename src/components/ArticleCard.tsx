@@ -1,6 +1,7 @@
 import { Article } from "@/types/Article";
 import { Card } from "@/components/ui";
 import { isValidImageDataUrl } from "@/utils/imageValidation";
+import Image from "next/image";
 
 interface Props {
     article: Article;
@@ -15,11 +16,13 @@ export default function ArticleCard({ article }: Props) {
     return (
         <Card variant="default" padding="none" hover className="overflow-hidden flex flex-col">
             {article.imageUrl && isValidImageDataUrl(article.imageUrl) ? (
-                <div className="h-32 w-full overflow-hidden">
-                    <img 
+                <div className="h-32 w-full overflow-hidden relative">
+                    <Image 
                         src={article.imageUrl} 
                         alt={article.title}
-                        className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+                        fill
+                        className="object-cover transition-transform duration-300 hover:scale-105"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     />
                 </div>
             ) : (
