@@ -3,10 +3,12 @@
 import { useRef, useState } from "react";
 import { ImageUploadProps } from "./imageUploadTypes";
 import Button from "../Button/Button";
+import { validateImageFile, isValidImageDataUrl, MAX_FILE_SIZE_MB } from "@/utils/imageValidation";
 
 export default function ImageUpload({
     value,
     onChange,
+    onError,
     placeholder = "Choisir une image",
     className = "",
 }: ImageUploadProps) {
@@ -17,15 +19,10 @@ export default function ImageUpload({
         const file = event.target.files?.[0];
         if (!file) return;
 
-        // Validate file type
-        if (!file.type.startsWith('image/')) {
-            alert('Veuillez sélectionner un fichier image valide.');
-            return;
-        }
-
-        // Validate file size (max 5MB)
-        if (file.size > 5 * 1024 * 1024) {
-            alert('L\'image doit faire moins de 5MB.');
+        // Validate file
+        const validation = validateImageFile(file);
+        if (!validation.isValid) {
+            onError?.(validation.error!);
             return;
         }
 
@@ -36,17 +33,25 @@ export default function ImageUpload({
             const reader = new FileReader();
             reader.onload = (e) => {
                 const base64String = e.target?.result as string;
+                
+                // Validate the generated data URL
+                if (!isValidImageDataUrl(base64String)) {
+                    onError?.('Format d\'image non valide.');
+                    setIsUploading(false);
+                    return;
+                }
+                
                 onChange(base64String);
                 setIsUploading(false);
             };
             reader.onerror = () => {
-                alert('Erreur lors du chargement de l\'image.');
+                onError?.('Erreur lors du chargement de l\'image.');
                 setIsUploading(false);
             };
             reader.readAsDataURL(file);
         } catch (error) {
             console.error('Error uploading image:', error);
-            alert('Erreur lors du chargement de l\'image.');
+            onError?.('Erreur lors du chargement de l\'image.');
             setIsUploading(false);
         }
     };
@@ -72,7 +77,7 @@ export default function ImageUpload({
                 className="hidden"
             />
 
-            {value ? (
+            {value && isValidImageDataUrl(value) ? (
                 <div className="relative group">
                     <img
                         src={value}
@@ -121,7 +126,7 @@ export default function ImageUpload({
                                 label={isUploading ? "Chargement..." : placeholder}
                             />
                             <p className="text-sm text-gray-500 dark:text-slate-400 mt-2">
-                                PNG, JPG, JPEG jusqu'à 5MB
+                                PNG, JPG, JPEG, GIF, WebP jusqu'à {MAX_FILE_SIZE_MB}MB
                             </p>
                         </div>
                     </div>

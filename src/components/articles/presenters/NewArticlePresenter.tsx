@@ -11,6 +11,7 @@ interface NewArticlePresenterProps {
     formData: NewArticleFormData;
     onInputChange: (field: string, value: string) => void;
     onImageChange: (imageUrl: string | null) => void;
+    onImageError?: (message: string) => void;
     onSave: () => void;
     onCancel: () => void;
 }
@@ -19,6 +20,7 @@ export default function NewArticlePresenter({
     formData,
     onInputChange,
     onImageChange,
+    onImageError,
     onSave,
     onCancel,
 }: NewArticlePresenterProps) {
@@ -63,6 +65,7 @@ export default function NewArticlePresenter({
                         <ImageUpload
                             value={formData.imageUrl}
                             onChange={onImageChange}
+                            onError={onImageError}
                             placeholder="Ajouter une image"
                         />
                     </div>

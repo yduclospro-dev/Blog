@@ -31,6 +31,10 @@ export default function NewArticleContainer() {
         setFormData(prev => ({ ...prev, imageUrl: imageUrl || "" }));
     };
 
+    const handleImageError = (message: string) => {
+        setToast({ message, type: "error" });
+    };
+
     const handleSave = () => {
         if (!formData.title.trim() || !formData.content.trim()) {
             setToast({ message: "Le titre et le contenu sont requis !", type: "error" });
@@ -88,6 +92,7 @@ export default function NewArticleContainer() {
                     formData={formData}
                     onInputChange={handleInputChange}
                     onImageChange={handleImageChange}
+                    onImageError={handleImageError}
                     onSave={handleSave}
                     onCancel={handleCancel}
                 />

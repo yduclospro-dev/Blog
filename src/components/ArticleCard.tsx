@@ -1,5 +1,6 @@
 import { Article } from "@/types/Article";
 import { Card } from "@/components/ui";
+import { isValidImageDataUrl } from "@/utils/imageValidation";
 
 interface Props {
     article: Article;
@@ -13,7 +14,7 @@ export default function ArticleCard({ article }: Props) {
 
     return (
         <Card variant="default" padding="none" hover className="overflow-hidden flex flex-col">
-            {article.imageUrl ? (
+            {article.imageUrl && isValidImageDataUrl(article.imageUrl) ? (
                 <div className="h-32 w-full overflow-hidden">
                     <img 
                         src={article.imageUrl} 

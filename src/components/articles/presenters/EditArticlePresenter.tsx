@@ -11,6 +11,7 @@ interface EditArticlePresenterProps {
   formData: EditArticleFormData;
   onInputChange: (field: string, value: string) => void;
   onImageChange: (imageUrl: string | null) => void;
+  onImageError?: (message: string) => void;
   onSave: () => void;
   onCancel: () => void;
 }
@@ -19,6 +20,7 @@ export default function EditArticlePresenter({
   formData,
   onInputChange,
   onImageChange,
+  onImageError,
   onSave,
   onCancel,
 }: EditArticlePresenterProps) {
@@ -56,6 +58,7 @@ export default function EditArticlePresenter({
             <ImageUpload
               value={formData.imageUrl}
               onChange={onImageChange}
+              onError={onImageError}
               placeholder="Modifier l'image"
             />
           </div>
