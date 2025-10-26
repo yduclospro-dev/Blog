@@ -155,7 +155,7 @@ describe('ArticlesListContainer', () => {
       const { rerender } = render(<ArticlesListContainer />)
       expect(screen.getByTestId('articles-count')).toHaveTextContent('2')
 
-      // Act - Update store data
+      // Act
       mockArticleStore.articles = [...mockArticles, { ...mockArticles[0], id: '3' }]
       rerender(<ArticlesListContainer />)
 
@@ -168,7 +168,7 @@ describe('ArticlesListContainer', () => {
       const { rerender } = render(<ArticlesListContainer />)
       expect(screen.getByTestId('is-authenticated')).toHaveTextContent('authenticated')
 
-      // Act - Update authentication
+      // Act
       mockUserStore.isAuthenticated = false
       rerender(<ArticlesListContainer />)
 
