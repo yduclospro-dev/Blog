@@ -17,6 +17,8 @@ jest.mock('@/components/ui', () => ({
       />
     </div>
   )
+  ,
+  ImageUpload: ({ value }: { value?: string | null }) => <div data-testid="image-upload">{value}</div>
 }))
 
 describe('CommentFormPresenter', () => {

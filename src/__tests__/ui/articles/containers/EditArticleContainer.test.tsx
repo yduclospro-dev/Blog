@@ -39,7 +39,8 @@ let mockCurrentUser: { id: string; username: string; email: string; password: st
 jest.mock('@/stores/articlesStore', () => ({
   useArticleStore: () => ({
     getArticleById: mockGetArticleById,
-    updateArticle: mockUpdateArticle
+    updateArticle: mockUpdateArticle,
+    safeUpdateArticle: mockUpdateArticle
   })
 }))
 
@@ -64,6 +65,8 @@ jest.mock('@/components/ui', () => ({
       {message}
     </div>
   )
+  ,
+  ImageUpload: ({ value }: { value?: string | null }) => <div data-testid="image-upload">{value}</div>
 }))
 
 // Mock EditArticlePresenter

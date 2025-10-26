@@ -13,6 +13,8 @@ jest.mock('@/components/ui', () => ({
     <textarea value={value} onChange={onChange} placeholder={placeholder} rows={rows} />
   ),
   Card: ({ children }: { children: React.ReactNode }) => <div>{children}</div>
+  ,
+  ImageUpload: ({ value }: { value?: string | null }) => <div data-testid="image-upload">{value}</div>
 }))
 
 describe('NewArticlePresenter', () => {
@@ -22,6 +24,8 @@ describe('NewArticlePresenter', () => {
       content: ''
     },
     onInputChange: jest.fn(),
+    onImageChange: jest.fn(),
+    onImageError: jest.fn(),
     onSave: jest.fn(),
     onCancel: jest.fn()
   }

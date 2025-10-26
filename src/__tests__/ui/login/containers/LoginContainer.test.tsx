@@ -30,6 +30,8 @@ jest.mock('@/components/ui', () => ({
       {message}
     </div>
   )
+  ,
+  ImageUpload: ({ value }: { value?: string | null }) => <div data-testid="image-upload">{value}</div>
 }))
 
 jest.mock('@/components/auth/login/presenters/LoginPresenter', () => ({
