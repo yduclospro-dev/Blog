@@ -150,7 +150,7 @@ export default function CommentsListPresenter({
                 );
             })}
 
-            {/* Modale de confirmation de suppression */}
+            
             {deleteConfirmId && (
                 <ConfirmModal
                     message="Êtes-vous sûr de vouloir supprimer ce commentaire ? Cette action est irréversible."

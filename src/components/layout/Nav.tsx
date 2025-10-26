@@ -57,9 +57,9 @@ export default function Navbar() {
       )}
       <nav className="bg-blue-600 dark:bg-slate-800 shadow-lg sticky top-0 z-50 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
-        {/* Desktop & Mobile Header */}
+        
         <div className="flex items-center justify-between">
-          {/* Logo */}
+          
           <div className="flex-shrink-0">
             <Link 
               href="/" 
@@ -85,7 +85,7 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Desktop Navigation */}
+          
           <div className="hidden lg:flex flex-1 justify-center">
             <Link 
               href="/articles" 
@@ -95,7 +95,7 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Desktop Auth Buttons */}
+          
           <div className="hidden lg:flex items-center space-x-3">
             {isAuthenticated && currentUser ? (
               <>
@@ -134,7 +134,7 @@ export default function Navbar() {
               </>
             )}
 
-            {/* Theme Toggle Button */}
+            
             <button
               onClick={toggleTheme}
               className="w-12 h-12 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-colors flex items-center justify-center"
@@ -153,7 +153,7 @@ export default function Navbar() {
             </button>
           </div>
 
-          {/* Mobile Burger Button */}
+          
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className="lg:hidden flex items-center justify-center w-10 h-10 text-white hover:bg-white/10 rounded-lg transition-colors"
@@ -171,11 +171,11 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* Mobile Menu */}
+        
         {isMenuOpen && (
           <div className="lg:hidden fixed inset-0 top-[73px] bg-blue-600 dark:bg-slate-800 z-40 overflow-y-auto transition-colors">
             <div className="px-4 py-6 space-y-4">
-              {/* Articles Link */}
+              
               <Link 
                 href="/articles" 
                 className="flex items-center text-white text-lg font-semibold hover:bg-white/10 px-4 py-3 rounded-lg transition-colors"
@@ -184,7 +184,7 @@ export default function Navbar() {
                 Articles
               </Link>
 
-              {/* Theme Toggle Button */}
+              
               <button
                 onClick={toggleTheme}
                 className="flex items-center text-white text-lg font-semibold hover:bg-white/10 px-4 py-3 rounded-lg transition-colors w-full text-left"
@@ -195,7 +195,7 @@ export default function Navbar() {
 
               <div className="border-t border-white/20 my-4"></div>
 
-              {/* Auth Section */}
+              
               {isAuthenticated && currentUser ? (
                 <div className="space-y-4">
                   <div className="flex items-center gap-3 bg-white/10 px-4 py-3 rounded-lg">

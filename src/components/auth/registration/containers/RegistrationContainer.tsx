@@ -55,7 +55,7 @@ export default function RegistrationContainer() {
 
       router.push('/login?registered=true')
       router.refresh()
-    } catch (error) {
+    } catch {
       setToast({ message: 'Une erreur est survenue. Veuillez réessayer.', type: 'error' })
     }
     
@@ -79,7 +79,7 @@ export default function RegistrationContainer() {
         <RegistrationPresenter
           formData={formData}
           isLoading={isLoading}
-          error="" // Deprecated: now using Toast
+          error=""
           onInputChange={handleInputChange}
           onSubmit={handleSubmit}
         />

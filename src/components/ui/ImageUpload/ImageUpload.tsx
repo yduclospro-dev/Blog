@@ -20,7 +20,6 @@ export default function ImageUpload({
         const file = event.target.files?.[0];
         if (!file) return;
 
-        // Validate file
         const validation = validateImageFile(file);
         if (!validation.isValid) {
             onError?.(validation.error!);
@@ -30,18 +29,16 @@ export default function ImageUpload({
         setIsUploading(true);
 
         try {
-            // Convert to base64 for local storage
             const reader = new FileReader();
             reader.onload = (e) => {
                 const base64String = e.target?.result as string;
-                
-                // Validate the generated data URL
+
                 if (!isValidImageDataUrl(base64String)) {
                     onError?.('Format d\'image non valide.');
                     setIsUploading(false);
                     return;
                 }
-                
+
                 onChange(base64String);
                 setIsUploading(false);
             };
@@ -131,8 +128,8 @@ export default function ImageUpload({
                                 label={isUploading ? "Chargement..." : placeholder}
                             />
                             <p className="text-sm text-gray-500 dark:text-slate-400 mt-2">
-                                PNG, JPG, JPEG, GIF, WebP jusqu'à {MAX_FILE_SIZE_MB}MB
-                            </p>
+                                    PNG, JPG, JPEG, GIF, WebP jusqu&#39;à {MAX_FILE_SIZE_MB}MB
+                                </p>
                         </div>
                     </div>
                 </div>
