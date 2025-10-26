@@ -53,7 +53,7 @@ export default function LoginContainer() {
       setTimeout(() => {
         router.push("/");
       }, 1500);
-    } catch (error) {
+    } catch {
       setToast({ message: "Une erreur est survenue. Veuillez réessayer.", type: "error" });
       setIsLoading(false);
     }
@@ -75,8 +75,8 @@ export default function LoginContainer() {
       }>
         <LoginPresenter
           formData={formData}
-          error="" // Deprecated: now using Toast
-          successMessage="" // Deprecated: now using Toast
+          error=""
+          successMessage=""
           isLoading={isLoading}
           onInputChange={handleInputChange}
           onSubmit={handleLogin}

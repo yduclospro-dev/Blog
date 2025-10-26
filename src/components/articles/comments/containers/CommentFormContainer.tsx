@@ -23,7 +23,7 @@ export default function CommentFormContainer({ onSubmit }: CommentFormContainerP
             return;
         }
         onSubmit(content);
-        setContent(""); // Réinitialiser le formulaire
+        setContent("");
     };
 
     return (

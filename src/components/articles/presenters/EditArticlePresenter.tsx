@@ -53,7 +53,7 @@ export default function EditArticlePresenter({
 
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
-              Image de l'article (optionnel)
+              Image de l&apos;article (optionnel)
             </label>
             <ImageUpload
               value={formData.imageUrl}

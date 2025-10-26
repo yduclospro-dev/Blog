@@ -14,7 +14,6 @@ interface ArticleStore {
     deleteArticle: (id: string) => void;
     toggleArticleLike: (articleId: string, userId: string) => void;
     toggleArticleDislike: (articleId: string, userId: string) => void;
-    // Safe versions that handle quota errors
     safeAddArticle: (articleData: Omit<Article, "id" | "date" | "likes" | "dislikes">) => Promise<void>;
     safeUpdateArticle: (id: string, updatedData: Partial<Article>) => Promise<void>;
 }
