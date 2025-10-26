@@ -286,9 +286,9 @@ describe('useArticleStore', () => {
       
       // Assert
       expect(latestArticles).toHaveLength(3)
-      expect(latestArticles[0].id).toBe('article-2') // Most recent
-      expect(latestArticles[1].id).toBe('article-3') // Middle
-      expect(latestArticles[2].id).toBe('article-1') // Oldest
+      expect(latestArticles[0].id).toBe('article-2')
+      expect(latestArticles[1].id).toBe('article-3')
+      expect(latestArticles[2].id).toBe('article-1')
     })
 
     it('should limit results to specified count', () => {
@@ -584,28 +584,28 @@ describe('useArticleStore', () => {
       }
       useArticleStore.setState({ articles: [article] })
       
-      // Act & Assert - Like
+      // Act & Assert
       act(() => {
         useArticleStore.getState().toggleArticleLike('article-1', 'user-2')
       })
       expect(useArticleStore.getState().articles[0].likes).toEqual(['user-2'])
       expect(useArticleStore.getState().articles[0].dislikes).toEqual([])
       
-      // Act & Assert - Dislike (should remove like)
+      // Act & Assert
       act(() => {
         useArticleStore.getState().toggleArticleDislike('article-1', 'user-2')
       })
       expect(useArticleStore.getState().articles[0].likes).toEqual([])
       expect(useArticleStore.getState().articles[0].dislikes).toEqual(['user-2'])
       
-      // Act & Assert - Like again (should remove dislike)
+      // Act & Assert
       act(() => {
         useArticleStore.getState().toggleArticleLike('article-1', 'user-2')
       })
       expect(useArticleStore.getState().articles[0].likes).toEqual(['user-2'])
       expect(useArticleStore.getState().articles[0].dislikes).toEqual([])
       
-      // Act & Assert - Unlike (should have neither)
+      // Act & Assert
       act(() => {
         useArticleStore.getState().toggleArticleLike('article-1', 'user-2')
       })
@@ -627,7 +627,7 @@ describe('useArticleStore', () => {
       }
       useArticleStore.setState({ articles: [article] })
       
-      // Act - Multiple users react
+      // Act
       act(() => {
         useArticleStore.getState().toggleArticleLike('article-1', 'user-2')
         useArticleStore.getState().toggleArticleLike('article-1', 'user-3')

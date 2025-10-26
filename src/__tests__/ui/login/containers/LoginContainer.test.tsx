@@ -2,7 +2,6 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import LoginContainer from '@/components/auth/login/containers/LoginContainer'
 
-// Mock router and searchParams
 const mockPush = jest.fn()
 const mockSearchParams = {
   get: jest.fn()
@@ -15,7 +14,6 @@ jest.mock('next/navigation', () => ({
   useSearchParams: () => mockSearchParams
 }))
 
-// Mock userStore
 const mockLogin = jest.fn()
 jest.mock('@/stores/userStore', () => ({
   useUserStore: () => ({
@@ -23,7 +21,6 @@ jest.mock('@/stores/userStore', () => ({
   })
 }))
 
-// Mock Toast component
 jest.mock('@/components/ui', () => ({
   Toast: ({ message, type }: { message: string; type: string }) => (
     <div data-testid="toast" data-message={message} data-type={type}>
@@ -281,14 +278,12 @@ describe('LoginContainer', () => {
       fireEvent.change(passwordInput, { target: { value: 'password123' } })
       fireEvent.click(submitButton)
 
-      // Wait for login to complete and Toast to appear
       await waitFor(() => {
         const toast = screen.getByTestId('toast')
         expect(toast).toHaveAttribute('data-message', 'Connexion réussie !')
         expect(toast).toHaveAttribute('data-type', 'success')
       })
 
-      // Fast-forward time to trigger redirect
       jest.advanceTimersByTime(1500)
 
       // Assert
@@ -307,7 +302,7 @@ describe('LoginContainer', () => {
       const passwordInput = screen.getByTestId('password-input')
       const submitButton = screen.getByTestId('submit-button')
 
-      // Act - First attempt
+      // Act
       fireEvent.change(emailInput, { target: { value: 'wrong@test.com' } })
       fireEvent.change(passwordInput, { target: { value: 'wrongpass' } })
       fireEvent.click(submitButton)
@@ -317,14 +312,14 @@ describe('LoginContainer', () => {
         expect(toast).toHaveAttribute('data-message', 'Invalid credentials')
       })
 
-      // Act - Second attempt (successful)
+      // Act
       jest.useFakeTimers()
       mockLogin.mockResolvedValue({ success: true })
       fireEvent.change(emailInput, { target: { value: 'correct@test.com' } })
       fireEvent.change(passwordInput, { target: { value: 'correctpass' } })
       fireEvent.click(submitButton)
 
-      // Assert - Should show success toast
+      // Assert
       await waitFor(() => {
         const toast = screen.getByTestId('toast')
         expect(toast).toHaveAttribute('data-message', 'Connexion réussie !')
@@ -413,7 +408,7 @@ describe('LoginContainer', () => {
       const passwordInput = screen.getByTestId('password-input')
       const submitButton = screen.getByTestId('submit-button')
 
-      // Act - First attempt
+      // Act
       fireEvent.change(emailInput, { target: { value: 'user1@test.com' } })
       fireEvent.change(passwordInput, { target: { value: 'pass1' } })
       fireEvent.click(submitButton)
@@ -423,7 +418,7 @@ describe('LoginContainer', () => {
         expect(toast).toHaveAttribute('data-message', 'Error 1')
       })
 
-      // Act - Second attempt
+      // Act
       mockLogin.mockResolvedValue({ success: false, error: 'Error 2' })
       fireEvent.change(emailInput, { target: { value: 'user2@test.com' } })
       fireEvent.change(passwordInput, { target: { value: 'pass2' } })

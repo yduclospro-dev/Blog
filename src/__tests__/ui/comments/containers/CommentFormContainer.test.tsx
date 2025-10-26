@@ -2,7 +2,6 @@ import { render, screen, fireEvent } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import CommentFormContainer from '@/components/articles/comments/containers/CommentFormContainer'
 
-// Mock Toast component
 jest.mock('@/components/ui', () => ({
   Toast: ({ message, type }: { message: string; type: string }) => (
     <div data-testid="toast" data-message={message} data-type={type}>
@@ -154,7 +153,7 @@ describe('CommentFormContainer', () => {
       fireEvent.change(input, { target: { value: '  Valid comment  ' } })
       fireEvent.click(submitButton)
 
-      // Assert - Container passes raw values, store handles trimming
+      // Assert
       expect(mockOnSubmit).toHaveBeenCalledWith('  Valid comment  ')
       expect(screen.queryByTestId('toast')).not.toBeInTheDocument()
     })
@@ -167,11 +166,11 @@ describe('CommentFormContainer', () => {
       const input = screen.getByTestId('content-input')
       const submitButton = screen.getByTestId('submit-button')
 
-      // Act - First submission
+      // Act
       fireEvent.change(input, { target: { value: 'First comment' } })
       fireEvent.click(submitButton)
 
-      // Act - Second submission
+      // Act
       fireEvent.change(input, { target: { value: 'Second comment' } })
       fireEvent.click(submitButton)
 
@@ -187,12 +186,12 @@ describe('CommentFormContainer', () => {
       const input = screen.getByTestId('content-input')
       const submitButton = screen.getByTestId('submit-button')
 
-      // Act - First submission
+      // Act
       fireEvent.change(input, { target: { value: 'Comment 1' } })
       fireEvent.click(submitButton)
       const valueAfterFirst = (input as HTMLInputElement).value
 
-      // Act - Second submission
+      // Act
       fireEvent.change(input, { target: { value: 'Comment 2' } })
       fireEvent.click(submitButton)
       const valueAfterSecond = (input as HTMLInputElement).value

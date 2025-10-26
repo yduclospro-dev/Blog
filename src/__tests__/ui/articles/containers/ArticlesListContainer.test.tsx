@@ -3,7 +3,6 @@ import '@testing-library/jest-dom'
 import ArticlesListContainer from '@/components/articles/containers/ArticlesListContainer'
 import { Article } from '@/types/Article'
 
-// Mock articles data
 const mockArticles: Article[] = [
   {
     id: '1',
@@ -27,7 +26,6 @@ const mockArticles: Article[] = [
   }
 ]
 
-// Mock stores
 const mockArticleStore = {
   articles: mockArticles
 }
@@ -44,7 +42,6 @@ jest.mock('@/stores/userStore', () => ({
   useUserStore: () => mockUserStore
 }))
 
-// Mock ArticlesListPresenter
 jest.mock('@/components/articles/presenters/ArticlesListPresenter', () => ({
   __esModule: true,
   default: ({ articles, isAuthenticated }: { articles: Article[]; isAuthenticated: boolean }) => (

@@ -134,13 +134,12 @@ describe('CommentsListPresenter', () => {
         btn.getAttribute('data-variant') === 'primary' || 
         btn.getAttribute('data-variant') === 'danger'
       )
-      // user1 owns comment 1, so we should have 2 buttons (edit + delete)
       expect(editDeleteButtons.length).toBeGreaterThanOrEqual(2)
     })
 
     it('should not show edit/delete buttons for other users comments', () => {
       // Arrange
-      const comment = mockComments[1] // Bob's comment (user2)
+      const comment = mockComments[1]
       const props = { ...mockProps, comments: [comment] }
 
       // Act
@@ -152,7 +151,6 @@ describe('CommentsListPresenter', () => {
         btn.getAttribute('data-variant') === 'primary' || 
         btn.getAttribute('data-variant') === 'danger'
       )
-      // No edit/delete buttons for other users' comments
       expect(editDeleteButtons.length).toBe(0)
     })
 
@@ -286,7 +284,7 @@ describe('CommentsListPresenter', () => {
   describe('Like/Dislike functionality', () => {
     it('should show like/dislike buttons for other users comments', () => {
       // Arrange
-      const comment = mockComments[1] // Bob's comment
+      const comment = mockComments[1]
       const props = { ...mockProps, comments: [comment] }
 
       // Act
@@ -298,7 +296,7 @@ describe('CommentsListPresenter', () => {
 
     it('should not show like/dislike buttons for own comments', () => {
       // Arrange
-      const comment = mockComments[0] // Alice's comment (user1)
+      const comment = mockComments[0]
       const props = { ...mockProps, comments: [comment] }
 
       // Act

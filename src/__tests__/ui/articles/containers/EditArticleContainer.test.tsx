@@ -3,7 +3,6 @@ import '@testing-library/jest-dom'
 import EditArticleContainer from '@/components/articles/containers/EditArticleContainer'
 import { Article } from '@/types/Article'
 
-// Mock router
 const mockPush = jest.fn()
 const mockParams = { id: 'article1' }
 
@@ -14,7 +13,6 @@ jest.mock('next/navigation', () => ({
   useParams: () => mockParams
 }))
 
-// Mock article data
 const mockArticle: Article = {
   id: 'article1',
   title: 'Existing Article',
@@ -26,7 +24,6 @@ const mockArticle: Article = {
   dislikes: []
 }
 
-// Mock stores
 const mockGetArticleById = jest.fn()
 const mockUpdateArticle = jest.fn()
 let mockCurrentUser: { id: string; username: string; email: string; password: string } | null = {
@@ -50,7 +47,6 @@ jest.mock('@/stores/userStore', () => ({
   })
 }))
 
-// Mock ForbiddenAccess
 jest.mock('@/components/ForbiddenAccess', () => ({
   __esModule: true,
   default: ({ message }: { message: string }) => (
@@ -58,7 +54,6 @@ jest.mock('@/components/ForbiddenAccess', () => ({
   )
 }))
 
-// Mock Toast
 jest.mock('@/components/ui', () => ({
   Toast: ({ message, type }: { message: string; type: string }) => (
     <div data-testid="toast" data-message={message} data-type={type}>
@@ -69,7 +64,6 @@ jest.mock('@/components/ui', () => ({
   ImageUpload: ({ value }: { value?: string | null }) => <div data-testid="image-upload">{value}</div>
 }))
 
-// Mock EditArticlePresenter
 jest.mock('@/components/articles/presenters/EditArticlePresenter', () => ({
   __esModule: true,
   default: ({
@@ -169,7 +163,7 @@ describe('EditArticleContainer', () => {
       // Act
       render(<EditArticleContainer />)
 
-      // Assert - Even with null article, container should handle it gracefully
+      // Assert
       expect(screen.getByText(/article introuvable/i)).toBeInTheDocument()
     })
   })
@@ -219,10 +213,10 @@ describe('EditArticleContainer', () => {
       render(<EditArticleContainer />)
       const titleInput = screen.getByTestId('title-input')
 
-      // Act - Only modify title
+      // Act
       fireEvent.change(titleInput, { target: { value: 'Changed Title' } })
 
-      // Assert - Content should remain unchanged
+      // Assert
       expect(screen.getByTestId('content-value')).toHaveTextContent('Existing content')
     })
   })
@@ -256,14 +250,14 @@ describe('EditArticleContainer', () => {
       // Act
       fireEvent.click(saveButton)
 
-      // Assert - Toast appears
+      // Assert
       await waitFor(() => {
         const toast = screen.getByTestId('toast')
         expect(toast).toHaveAttribute('data-message', 'Article modifié avec succès !')
         expect(toast).toHaveAttribute('data-type', 'success')
       })
       
-      // Assert - Redirect happens after delay
+      // Assert
       jest.advanceTimersByTime(1500)
       
       await waitFor(() => {
@@ -403,11 +397,11 @@ describe('EditArticleContainer', () => {
       const titleInput = screen.getByTestId('title-input')
       const saveButton = screen.getByTestId('save-button')
 
-      // Act - First edit
+      // Act
       fireEvent.change(titleInput, { target: { value: 'Edit 1' } })
       fireEvent.click(saveButton)
 
-      // Act - Second edit
+      // Act
       fireEvent.change(titleInput, { target: { value: 'Edit 2' } })
       fireEvent.click(saveButton)
 

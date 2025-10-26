@@ -3,7 +3,6 @@ import '@testing-library/jest-dom'
 import CommentsListContainer from '@/components/articles/comments/containers/CommentsListContainer'
 import { Comment } from '@/types/Comment'
 
-// Mock Toast component
 jest.mock('@/components/ui', () => ({
   Toast: ({ message, type }: { message: string; type: string }) => (
     <div data-testid="toast" data-message={message} data-type={type}>
@@ -195,7 +194,7 @@ describe('CommentsListContainer', () => {
       fireEvent.change(input, { target: { value: '  Nouveau contenu  ' } })
       fireEvent.click(saveButton)
 
-      // Assert - Container passes raw values, store handles trimming
+      // Assert
       expect(mockProps.onUpdate).toHaveBeenCalledWith('1', '  Nouveau contenu  ')
     })
 
@@ -271,11 +270,11 @@ describe('CommentsListContainer', () => {
       // Arrange
       render(<CommentsListContainer {...mockProps} />)
       
-      // Act - Edit first comment
+      // Act
       fireEvent.click(screen.getByText('Edit 1'))
       const firstContent = screen.getByTestId('edit-content').textContent
 
-      // Act - Edit second comment
+      // Act
       fireEvent.click(screen.getByText('Edit 2'))
       const secondContent = screen.getByTestId('edit-content').textContent
 
