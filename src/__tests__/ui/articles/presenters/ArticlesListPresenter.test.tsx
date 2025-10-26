@@ -103,7 +103,7 @@ describe('ArticlesListPresenter', () => {
       render(<ArticlesListPresenter articles={[]} isAuthenticated={false} />)
 
       // Assert
-      expect(screen.getAllByText('Articles')).toHaveLength(2) // Mobile + Desktop headers
+      expect(screen.getAllByText('Articles')).toHaveLength(2)
     })
 
     it('should not render any cards when empty', () => {
@@ -125,7 +125,7 @@ describe('ArticlesListPresenter', () => {
         author: 'Author',
         authorId: 'user-1',
         date: '2024-01-01',
-        content: 'A'.repeat(200), // Very long content
+        content: 'A'.repeat(200),
         likes: [],
         dislikes: []
       }]
@@ -133,7 +133,7 @@ describe('ArticlesListPresenter', () => {
       // Act
       const { container } = render(<ArticlesListPresenter articles={longContentArticles} isAuthenticated={false} />)
 
-      // Assert - Mock truncates to 100 chars
+      // Assert
       const contentText = container.querySelector('p:last-child')
       expect(contentText?.textContent?.length).toBeLessThanOrEqual(100)
     })
@@ -199,9 +199,9 @@ describe('ArticlesListPresenter', () => {
 
       // Assert
       const buttonLinks = screen.getAllByTestId('button-link')
-      expect(buttonLinks).toHaveLength(2) // Mobile + Desktop buttons
+      expect(buttonLinks).toHaveLength(2)
       const labels = screen.getAllByText('+ Créer un article')
-      expect(labels).toHaveLength(2) // Mobile + Desktop labels
+      expect(labels).toHaveLength(2)
     })
 
     it('should not show create button when not authenticated', () => {

@@ -517,28 +517,28 @@ describe('useCommentsStore', () => {
       }
       useCommentsStore.setState({ comments: [comment] })
       
-      // Act & Assert - Like
+      // Act & Assert
       act(() => {
         useCommentsStore.getState().toggleCommentLike('comment-1', 'user-2')
       })
       expect(useCommentsStore.getState().comments[0].likes).toEqual(['user-2'])
       expect(useCommentsStore.getState().comments[0].dislikes).toEqual([])
       
-      // Act & Assert - Dislike (should remove like)
+      // Act & Assert
       act(() => {
         useCommentsStore.getState().toggleCommentDislike('comment-1', 'user-2')
       })
       expect(useCommentsStore.getState().comments[0].likes).toEqual([])
       expect(useCommentsStore.getState().comments[0].dislikes).toEqual(['user-2'])
       
-      // Act & Assert - Like again (should remove dislike)
+      // Act & Assert
       act(() => {
         useCommentsStore.getState().toggleCommentLike('comment-1', 'user-2')
       })
       expect(useCommentsStore.getState().comments[0].likes).toEqual(['user-2'])
       expect(useCommentsStore.getState().comments[0].dislikes).toEqual([])
       
-      // Act & Assert - Unlike (should have neither)
+      // Act & Assert
       act(() => {
         useCommentsStore.getState().toggleCommentLike('comment-1', 'user-2')
       })
@@ -560,7 +560,7 @@ describe('useCommentsStore', () => {
       }
       useCommentsStore.setState({ comments: [comment] })
       
-      // Act - Multiple users react
+      // Act
       act(() => {
         useCommentsStore.getState().toggleCommentLike('comment-1', 'user-2')
         useCommentsStore.getState().toggleCommentLike('comment-1', 'user-3')

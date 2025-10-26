@@ -2,7 +2,6 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import NewArticleContainer from '@/components/articles/containers/NewArticleContainer'
 
-// Mock router
 const mockPush = jest.fn()
 jest.mock('next/navigation', () => ({
   useRouter: () => ({
@@ -10,7 +9,6 @@ jest.mock('next/navigation', () => ({
   })
 }))
 
-// Mock stores
 const mockAddArticle = jest.fn()
 let mockCurrentUser: { id: string; username: string; email: string; password: string } | null = { 
   id: 'user1', 
@@ -32,7 +30,6 @@ jest.mock('@/stores/userStore', () => ({
   })
 }))
 
-// Mock Toast component
 jest.mock('@/components/ui', () => ({
   Toast: ({ message, type }: { message: string; type: string }) => (
     <div data-testid="toast" data-message={message} data-type={type}>
@@ -43,7 +40,6 @@ jest.mock('@/components/ui', () => ({
   ImageUpload: ({ value }: { value?: string | null }) => <div data-testid="image-upload">{value}</div>
 }))
 
-// Mock ForbiddenAccess
 jest.mock('@/components/ForbiddenAccess', () => ({
   __esModule: true,
   default: ({ message }: { message: string }) => (
@@ -51,7 +47,6 @@ jest.mock('@/components/ForbiddenAccess', () => ({
   )
 }))
 
-// Mock NewArticlePresenter
 jest.mock('@/components/articles/presenters/NewArticlePresenter', () => ({
   __esModule: true,
   default: ({
@@ -251,14 +246,12 @@ describe('NewArticleContainer', () => {
       fireEvent.change(contentInput, { target: { value: 'Content' } })
       fireEvent.click(saveButton)
 
-      // Wait for Toast to appear
       await waitFor(() => {
         const toast = screen.getByTestId('toast')
         expect(toast).toHaveAttribute('data-message', 'Article créé avec succès !')
         expect(toast).toHaveAttribute('data-type', 'success')
       })
 
-      // Fast-forward time to trigger redirect
       jest.advanceTimersByTime(1500)
 
       // Assert
@@ -335,7 +328,7 @@ describe('NewArticleContainer', () => {
       fireEvent.change(contentInput, { target: { value: '  Spaced Content  ' } })
       fireEvent.click(saveButton)
 
-      // Assert - Container passes raw values, store handles trimming
+      // Assert
       expect(mockAddArticle).toHaveBeenCalledWith({
         title: '   Spaced Title   ',
         content: '  Spaced Content  ',
@@ -364,7 +357,7 @@ describe('NewArticleContainer', () => {
       fireEvent.change(contentInput, { target: { value: 'Content' } })
       fireEvent.click(saveButton)
 
-      // Assert - Whitespace-only should be rejected
+      // Assert
       const toast = screen.getByTestId('toast')
       expect(toast).toHaveAttribute('data-message', 'Le titre et le contenu sont requis !')
       expect(toast).toHaveAttribute('data-type', 'error')
@@ -378,19 +371,19 @@ describe('NewArticleContainer', () => {
       const contentInput = screen.getByTestId('content-input')
       const saveButton = screen.getByTestId('save-button')
 
-      // Act - First save (invalid)
+      // Act
       fireEvent.click(saveButton)
 
-      // Assert - Toast shown for invalid attempt
+      // Assert
       expect(screen.getByTestId('toast')).toBeInTheDocument()
 
-      // Act - Second save (valid)
+      // Act
       fireEvent.change(titleInput, { target: { value: 'Title' } })
       fireEvent.change(contentInput, { target: { value: 'Content' } })
       fireEvent.click(saveButton)
 
       // Assert
-      expect(mockAddArticle).toHaveBeenCalledTimes(1) // Only for valid attempt
+      expect(mockAddArticle).toHaveBeenCalledTimes(1)
     })
 
     it('should handle form changes after cancel', () => {
@@ -403,7 +396,7 @@ describe('NewArticleContainer', () => {
       fireEvent.change(titleInput, { target: { value: 'Initial Title' } })
       fireEvent.click(cancelButton)
 
-      // Assert - Form should still have the value (not reset on cancel)
+      // Assert
       expect(screen.getByTestId('title-value')).toHaveTextContent('Initial Title')
     })
   })

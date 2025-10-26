@@ -133,7 +133,7 @@ describe('LikeDislikeButtons', () => {
         />
       )
 
-      // Assert - Check for blue border (active like styling)
+      // Assert
       const likeButton = container.querySelector('button:first-child')
       expect(likeButton).toHaveClass('border-blue-700')
     })
@@ -151,7 +151,7 @@ describe('LikeDislikeButtons', () => {
         />
       )
 
-      // Assert - Check for red border (active dislike styling)
+      // Assert
       const dislikeButton = container.querySelector('button:last-child')
       expect(dislikeButton).toHaveClass('border-red-700')
     })
@@ -292,7 +292,7 @@ describe('LikeDislikeButtons', () => {
 
   describe('Props Validation', () => {
     it('should handle hasLiked and hasDisliked both true (edge case)', () => {
-      // Arrange & Act - This shouldn't happen in practice due to mutual exclusivity
+      // Arrange & Act
       render(
         <LikeDislikeButtons
           likesCount={1}
@@ -304,13 +304,13 @@ describe('LikeDislikeButtons', () => {
         />
       )
 
-      // Assert - Component should still render
+      // Assert
       expect(screen.getByText('👍')).toBeInTheDocument()
       expect(screen.getByText('👎')).toBeInTheDocument()
     })
 
     it('should handle negative counts gracefully (edge case)', () => {
-      // Arrange & Act - This shouldn't happen in practice
+      // Arrange & Act
       render(
         <LikeDislikeButtons
           likesCount={-1}
@@ -322,7 +322,7 @@ describe('LikeDislikeButtons', () => {
         />
       )
 
-      // Assert - Component should still render
+      // Assert
       expect(screen.getByText('-1')).toBeInTheDocument()
       expect(screen.getByText('-5')).toBeInTheDocument()
     })
