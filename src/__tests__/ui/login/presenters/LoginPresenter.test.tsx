@@ -30,6 +30,8 @@ jest.mock('@/components/ui', () => ({
     </div>
   ),
   Card: ({ children }: { children: React.ReactNode }) => <div>{children}</div>
+  ,
+  ImageUpload: ({ value }: { value?: string | null }) => <div data-testid="image-upload">{value}</div>
 }))
 
 describe('LoginPresenter', () => {

@@ -21,7 +21,8 @@ let mockCurrentUser: { id: string; username: string; email: string; password: st
 
 jest.mock('@/stores/articlesStore', () => ({
   useArticleStore: () => ({
-    addArticle: mockAddArticle
+    addArticle: mockAddArticle,
+    safeAddArticle: mockAddArticle
   })
 }))
 
@@ -38,6 +39,8 @@ jest.mock('@/components/ui', () => ({
       {message}
     </div>
   )
+  ,
+  ImageUpload: ({ value }: { value?: string | null }) => <div data-testid="image-upload">{value}</div>
 }))
 
 // Mock ForbiddenAccess

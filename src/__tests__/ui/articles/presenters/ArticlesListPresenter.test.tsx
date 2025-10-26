@@ -15,6 +15,8 @@ jest.mock('@/components/ui', () => ({
   ButtonLink: ({ href, label }: { href: string; label: string }) => (
     <a href={href} data-testid="button-link">{label}</a>
   )
+  ,
+  ImageUpload: ({ value }: { value?: string | null }) => <div data-testid="image-upload">{value}</div>
 }))
 
 jest.mock('@/components/ArticleCard', () => {

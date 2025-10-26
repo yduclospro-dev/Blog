@@ -22,7 +22,8 @@ jest.mock('@/components/ui', () => ({
         Dislike ({dislikesCount})
       </button>
     </div>
-  )
+  ),
+  ImageUpload: ({ value }: { value?: string | null }) => <div data-testid="image-upload">{value}</div>
 }))
 
 jest.mock('@/components/ConfirmModal', () => ({
